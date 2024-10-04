@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "570875230722",
+    "project_id": "driver-app-2458c",
+    "storage_bucket": "driver-app-2458c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:570875230722:android:694f365b062a99d236451b",
+        "android_client_info": {
+          "package_name": "io.ionic.starter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaKb4S4_op5m0tT5WsMQHrH-it9T7F0Ao"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

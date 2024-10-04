@@ -1,0 +1,32 @@
+.button-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  background-color: var(--bg-neutral-100);
+}
+
+.btn-flex {
+  flex: 1;
+  border: none;
+  border-radius: 0;
+  font-size: 16px;
+  text-align: center;
+}
+.reject {
+  background-color: var(--bg-neutral-100);
+  color: var(--bg-black-100);
+}
+.accept {
+  background-color: var(--bg-blue-100);
+  color: var(--bg-neutral-100);
+}
+.extra-item-container {
+  margin-top: 3rem;
+}
+.passenger-details {
+  background-color: var(--bg-primary-100);
+  .reservation {
+    font-size: 13px;
+  }
+}
+

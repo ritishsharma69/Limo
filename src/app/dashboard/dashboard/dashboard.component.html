@@ -1,0 +1,83 @@
+<!-- dashboard.components -->
+
+<ion-header>
+  <div class="border-bottom">
+  <ion-toolbar>
+      <!-- Start: Menu Button -->
+      <ion-buttons slot="start">
+        <ion-menu-button autoHide="false" (click)="menuClicked()"></ion-menu-button>
+      </ion-buttons>
+
+      <!-- Driver's Name with Image -->
+      <div
+        class="d-flex justify-content-start align-items-center w-100 overflow-scroll"
+      >
+        <img
+          src="../../assets/imgs/limo-driver.jpg"
+          alt="Driver Profile"
+          style="
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            margin-right: 10px;
+          "
+        />
+        <div
+          class="overflow-scroll d-flex align-items-center"
+          [routerLink]="['/driver-profile']"
+          style="white-space: nowrap"
+        >
+          <span
+            class="fw-bold"
+            style="
+              max-width: 200px;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            "
+          >
+            Hello, {{ firstName }} {{ lastName }}
+          </span>
+        </div>
+      </div>
+
+      <!-- End: Toggle OnDuty/OffDuty -->
+      <ion-buttons slot="end" class="d-flex align-items-center">
+        <div class="text-center border-primary mx-2">
+          <div class="card-body">
+            <h6
+              class="card-title m-0"
+              [ngClass]="{ 'text-success': isOnDuty, 'text-danger': !isOnDuty }"
+            >
+              {{ isOnDuty ? "On Duty" : "Off Duty" }}
+            </h6>
+          </div>
+        </div>
+
+        <!-- Toggle Button -->
+        <ion-toggle
+          aria-label="On Duty Toggle"
+          color="success"
+          mode="ios"
+          [checked]="isOnDuty"
+          (ionChange)="onToggleChange($event)"
+        ></ion-toggle>
+      </ion-buttons>
+    </ion-toolbar>
+  </div>
+
+  <!-- Segments for dashboard -->
+  <ion-toolbar>
+    <ion-segment
+      [(ngModel)]="selectedSegment"
+      (ionChange)="segmentChanged($event)"
+    >
+      <ion-segment-button value="pending"> Pending </ion-segment-button>
+      <ion-segment-button value="upcoming"> Upcoming </ion-segment-button>
+      <ion-segment-button value="in-progress"> In Progress </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-router-outlet></ion-router-outlet>
+</ion-content>

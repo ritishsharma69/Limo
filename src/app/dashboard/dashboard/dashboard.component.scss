@@ -1,0 +1,13 @@
+.active {
+  background-color: #3880ff;
+  color: white;
+}
+
+/* dashboard.component.scss */
+ion-segment-button.active {
+  --color: var(--ion-color-primary);
+  --background: var(--ion-color-primary-tint);
+}
+ion-menu-button {
+  pointer-events: auto; /* Ensure it can be clicked */
+}

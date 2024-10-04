@@ -1,0 +1,31 @@
+.header {
+    background-color: var(--bg-primary-100);
+    color: var(--bg-neutral-100);
+    
+}
+
+.image {
+    aspect-ratio: 1 / 1;
+    width: 70%;
+    height: auto;
+    object-fit: cover;
+}
+.rating {
+    background-color: var(--bg-primary-300);
+    color: var(--bg-neutral-100);
+    border-radius: 500px;
+}
+.stare {
+    color: yellow;
+}
+
+.box {
+    background-color: var(--bg-neutral-300);
+    color: var(--bg-black-100);
+    width: 80px;
+    height: 80px;
+}
+.tripHistory {
+    background-color: var(--bg-blue-100);
+    color: var(--bg-neutral-100);
+}

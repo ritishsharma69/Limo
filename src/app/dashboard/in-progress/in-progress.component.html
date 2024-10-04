@@ -1,0 +1,138 @@
+<ion-content>
+  <div class="p-3">
+    <div class="d-flex justify-content-between p-2">
+      <span>{{ selectedReservation.date }}</span>
+      <span>ID: {{ selectedReservation.id }}</span>
+    </div>
+
+    <div class="mb-3 border">
+      <app-headline-comp title="REQUIREMENTS"></app-headline-comp>
+      <p class="ion-text-left p-3 mb-0 text-center">
+        {{ selectedReservation.requirements }}
+      </p>
+    </div>
+
+    <div class="mb-3 border">
+      <p
+        class="passanger-info border-bottom text-center p-2 ion-text-uppercase mb-0"
+      >
+        PASSENGER INFO
+      </p>
+
+      <div class="text-black mb-2 text-center fs-4">
+        <div class="flex-grow-1 ps-3 ion-align-items-start">
+          <p class="mb-2 text-center fs-1 mt-2">
+            {{ selectedReservation.name }}
+          </p>
+          <div class="d-flex justify-content-center gap-4">
+            <a
+              href="tel:+1234567890"
+              class="text-decoration-none"
+              aria-label="Call Us"
+            >
+              <div
+                class="border rounded-circle p-3 shadow-lg d-flex align-items-center justify-content-center"
+              >
+                <i class="icon fa-solid fa-phone"></i>
+              </div>
+            </a>
+            <a
+              href="mailto:example@example.com"
+              class="text-decoration-none"
+              aria-label="Email Us"
+            >
+              <div
+                class="border rounded-circle p-3 shadow-lg d-flex align-items-center justify-content-center"
+              >
+                <i class="icon fa-regular fa-envelope"></i>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Routing info-->
+    <div>
+      <app-headline-comp title="Routing Details"></app-headline-comp>
+      <div class="border p-4">
+        <app-pick-drop
+          [pickupAddress]="selectedReservation.pickupAddress"
+          [dropoffAddress]="selectedReservation.dropoffAddress"
+        ></app-pick-drop>
+
+        <app-navigate-button></app-navigate-button>
+      </div>
+    </div>
+
+    <div>
+      <div class="button-container">
+        <button
+          *ngIf="startTrip"
+          class="change-status btn-flex btn p-3 text-uppercase"
+          (click)="openStatusChangeModal(selectedReservation.id)"
+        >
+          Change Status
+        </button>
+        <button
+          *ngIf="!startTrip"
+          class="start-trip btn-flex btn p-3 text-uppercase"
+          (click)="readyForTrip()"
+        >
+          Start Trip
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <app-common-confirmation-modal
+    [isOpen]="isModalOpen"
+    [actionTitle]="'Start Trip'"
+    [actionText]="'Are you sure you want to start the trip? This will happen'"
+    (confirmAction)="handleConfirmAction($event)"
+    (isOpenChange)="onModalClose()"
+  ></app-common-confirmation-modal>
+
+  <!-- Change Status Modal -->
+  <app-action-confirmation-modal
+    [isOpen]="showStatusChangeModal"
+    title="Change Status"
+    message="Are you sure you want to change the status?"
+    [buttons]="[
+      { text: 'Other >', action: 'other' },
+      { text: 'Drop off Passenger >', action: 'dropoff' }
+    ]"
+    (willDismiss)="cancelStatusChange()"
+    (buttonClick)="confirmStatusChange($event)"
+    [showBackButton]="false"
+  ></app-action-confirmation-modal>
+
+  <!-- Drop off Passenger Modal -->
+  <app-action-confirmation-modal
+    [isOpen]="showDropOffModal"
+    title="Trip Completed"
+    message="Would you like to mark this trip as done or leave a review?"
+    [buttons]="[
+      { text: 'Done', action: 'done' },
+      { text: 'Review', action: 'review' }
+    ]"
+    (willDismiss)="closeDropOffModal()"
+    (buttonClick)="finalizeAction($event)"
+    [showBackButton]="true"
+  ></app-action-confirmation-modal>
+
+  <!-- Other Status Modal -->
+  <app-action-confirmation-modal
+    [isOpen]="showOtherStatusModal"
+    title="Other Actions"
+    message="Select an option to proceed:"
+    [buttons]="[
+      { text: 'Cancel Trip', action: 'canceled' },
+      { text: 'Reschedule Trip', action: 'rescheduled' }
+    ]"
+    (willDismiss)="closeOtherStatusModal()"
+    (buttonClick)="finalizeAction($event)"
+    [showBackButton]="true"
+  ></app-action-confirmation-modal>
+</ion-content>

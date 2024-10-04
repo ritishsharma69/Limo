@@ -1,0 +1,118 @@
+import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
+import { FirebaseInitializerService } from 'src/app/services/analytics/firebase-initializer.service';
+import {
+  IonSegment,
+  IonSegmentButton,
+  IonToolbar,
+  IonHeader,
+  IonContent,
+  IonRouterOutlet,
+  IonButtons,
+  IonToggle,
+  IonMenuButton,
+  MenuController,
+  IonApp,
+} from '@ionic/angular/standalone';
+import { IUser } from 'src/app/model/interface';
+
+@Component({
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss'],
+  standalone: true,
+  imports: [
+    IonApp,
+    IonMenuButton,
+    IonToggle,
+    IonButtons,
+    CommonModule,
+    FormsModule,
+    IonSegment,
+    IonSegmentButton,
+    IonToolbar,
+    IonHeader,
+    IonContent,
+    IonRouterOutlet,
+    RouterLink,
+  ],
+})
+export class DashboardComponent implements OnInit {
+  userData: IUser = {};
+  firstName: string | undefined;
+  lastName: string | undefined;
+  email: string | undefined;
+  isOnDuty: boolean = false;
+  selectedSegment: string = 'pending';
+  route = inject(Router);
+
+  constructor(
+    private router: Router,
+    private firebaseInitializer: FirebaseInitializerService
+  ) {}
+
+  ngOnInit() {
+    this.loadUserData();
+
+    // Load isOnDuty state from localStorage if it exists
+    const savedOnDutyState = localStorage.getItem('isOnDuty');
+    if (savedOnDutyState !== null) {
+      this.isOnDuty = JSON.parse(savedOnDutyState);
+    }
+    
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.updateSelectedSegment(event.url);
+      }
+    });
+  }
+
+  private updateSelectedSegment(url: string): void {
+    const segments = ['pending', 'upcoming', 'in-progress'];
+    this.selectedSegment =
+      segments.find((segment) => url.includes(`/dashboard/${segment}`)) ||
+      'pending';
+  }
+
+  // Method to navigate to the selected segment
+  segmentChanged(event: CustomEvent): void {
+    const selectedValue = event.detail.value;
+    this.router.navigate([`/dashboard/${selectedValue}`]);
+  }
+
+  onToggleChange(event: CustomEvent) {
+    this.isOnDuty = event.detail.checked;
+    console.log('On Duty:', this.isOnDuty);
+
+    // Save the state to localStorage
+    localStorage.setItem('isOnDuty', JSON.stringify(this.isOnDuty));
+
+    // Log the "On Duty" or "Off Duty" event to Firebase
+    const dutyStatus = this.isOnDuty ? 'On Duty' : 'Off Duty';
+    this.firebaseInitializer.logEvent('duty_status_change', {
+      status: dutyStatus,
+      email: this.email,
+    });
+  }
+
+  loadUserData() {
+    const userDataString = localStorage.getItem('userData');
+    if (userDataString) {
+      try {
+        this.userData = JSON.parse(userDataString);
+        this.firstName = this.userData.f_name;
+        this.lastName = this.userData.l_name;
+        this.email = this.userData.email;
+      } catch (error) {
+        console.error('Error parsing userData:', error);
+      }
+    }
+  }
+
+  menuClicked() {
+    // this.menu.toggle('main-content');
+    console.log('Menu button clicked');
+  }
+}

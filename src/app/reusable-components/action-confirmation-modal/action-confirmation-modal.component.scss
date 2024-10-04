@@ -1,0 +1,21 @@
+ion-modal {
+    --height: auto;
+    --max-height: 80%;
+    --background: rgba(0, 0, 0, 0.1); 
+    backdrop-filter: blur(2px);
+  }
+
+  .modal-content {
+    width: 100%;
+    background-color: var(--bg-neutral-100);
+  }
+
+  .red {
+    color: var(--bg-neutral-100);
+    background-color: var(--bg-red-200);
+  }
+
+  .green {
+    background-color: var(--bg-green-100);
+    color: var(--bg-neutral-100);
+  }

@@ -1,0 +1,13 @@
+<ion-modal [isOpen]="isOpen" class="ion-padding"  (willDismiss)="onWillDismiss()">
+  <ng-template>
+    <div
+      class="modal-content text-center rounded ion-text-center d-flex gap-2 mt-2"
+    >
+      <h4>{{ actionTitle }}</h4>
+      <p>{{ actionText }} in {{ countdown }} seconds...</p>
+      <button (click)="cancel()" class="cancelAction p-2 text-uppercase"
+        >Cancel</button
+      >
+    </div>
+  </ng-template>
+</ion-modal>

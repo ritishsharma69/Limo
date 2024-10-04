@@ -1,0 +1,72 @@
+.button-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+.reservation {
+  background-color: var(--bg-primary-100);
+  color: var(--bg-neutral-100);
+  letter-spacing: 1px;
+}
+
+/* Styling for buttons */
+.btn-flex {
+  flex: 1;
+  border: none;
+  border-radius: 0;
+  font-size: 16px;
+  text-align: center;
+}
+
+ion-modal {
+  --height: auto;
+  --max-height: 80%;
+  --background: rgba(0, 0, 0, 0.1); 
+  backdrop-filter: blur(2px);
+}
+
+.modal-content {
+  width: 100%;
+  background-color: var(--bg-neutral-100);
+}
+.cancelAction {
+  background-color: var(--bg-primary-200);
+  color: var(--bg-neutral-100);
+}
+
+.icon {
+  color: var(--bg-orange-100);
+  font-size: 1.5rem;
+}
+.passanger-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+.image-container {
+  width: 33.33%;
+  max-width: 150px;
+}
+.change-status {
+  background-color: var(--bg-neutral-100);
+  color: var(--bg-black-100);
+}
+.start-trip {
+  background-color: var(--bg-green-100);
+  color: var(--bg-neutral-100);
+}
+.icon-container {
+  width: 60px;
+  height: 60px;
+}
+.s-class {
+  max-width: 120px;
+}
+
+.statusReject {
+  color: var(--bg-neutral-100);
+  background-color: var(--bg-red-200);
+}
+.statusConform {
+  color: var(--bg-neutral-100);
+  background-color: var(--bg-green-100);
+}

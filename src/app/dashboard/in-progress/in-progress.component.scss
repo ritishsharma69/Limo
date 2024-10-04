@@ -1,0 +1,54 @@
+.button-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+  }
+ 
+  /* Styling for buttons */
+  .btn-flex {
+    flex: 1;
+    border: none;
+    border-radius: 0;
+    font-size: 16px;
+    text-align: center;
+  }
+ 
+  .passanger-info {
+    background-color: var(--bg-primary-100);
+    color: var(--bg-neutral-100);
+  }
+  .change-status {
+    background-color: var(--bg-neutral-100);
+    color: var(--bg-black-100);
+    border: 1px solid var(--bg-primary-100);
+  }
+  .start-trip {
+    background-color: var(--bg-green-100);
+    color: var(--bg-neutral-100);
+  }
+
+  .statusReject {
+    color: var(--bg-neutral-100);
+    background-color: var(--bg-red-200);
+  }
+  .statusConform {
+    color: var(--bg-neutral-100);
+    background-color: var(--bg-green-100);
+  }
+  
+  ion-modal {
+    --height: auto;
+    --max-height: 80%;
+    --background: rgba(0, 0, 0, 0.1); 
+    backdrop-filter: blur(2px);
+  }
+
+  .modal-content {
+    width: 100%;
+    background-color: var(--bg-neutral-100);
+  }
+
+  .icon {
+    color: var(--bg-orange-100);
+    font-size: 1.5rem;
+  }

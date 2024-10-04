@@ -1,0 +1,34 @@
+<div class="text-end mt-4">
+  <button
+    class="navigate btn btn-sm rounded-pill text-white"
+    (click)="openNavigateModal()"
+  >
+    Navigate <i class="fa-solid fa-diamond-turn-right"></i>
+  </button>
+</div>
+
+<!-- Modal with two buttons -->
+<ion-modal
+  [isOpen]="showModal"
+  (willDismiss)="closeModal()"
+  class="ion-padding"
+>
+  <ng-template>
+    <div class="modal-content text-center p-4">
+      <h4>Choose Destination</h4>
+      <div class="d-flex flex-column justify-content-around mt-4 gap-4">
+        <button class="btn startToEnd" (click)="navigateWithWaypoints()">
+          Navigate to Destination
+        </button>
+        <button
+          class="btn navigateWithLiveLocation"
+          (click)="navigateWithLiveLocation()"
+        >
+        <!-- Navigation with Live Location -->
+        <!-- Live Location to Destination -->
+        Live Location to start Point
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</ion-modal>

@@ -1,0 +1,137 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/" />
+    </ion-buttons>
+    <ion-title>Driver Profile</ion-title>
+    <div
+      slot="end"
+      [routerLink]="['/trip-history']"
+      routerLinkActive="router-link-active"
+    >
+      <button class="btn tripHistory m-2 ps-1">
+        <i class="fa-solid fa-clock-rotate-left"></i> Trip History
+      </button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content scrollY="true" class="ion-padding">
+  <div class="profile-container">
+    <ion-grid>
+      <ion-row class="d-flex justify-content-between">
+        <ion-col size="8">
+          <p class="font-bold fs-2">
+            {{ driverProfile?.user?.f_name }} {{ driverProfile?.user?.l_name }}
+          </p>
+          <span class="px-3 py-2 rating"
+            ><i class="fa-solid fa-star stare"></i>
+            {{ driverProfile?.rating || "4.7" }}</span
+          >
+        </ion-col>
+        <ion-col size="4" class="text-center">
+          <img
+            class="rounded-circle image"
+            src="{{
+              driverProfile?.user?.image || '../../assets/imgs/login-image.jpg'
+            }}"
+            alt="Profile Picture"
+          />
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <br />
+
+    <div class="border p-1 mb-3 shadow">
+      <ion-card-content>
+        <div class="mb-2">
+          <app-headline-comp title="Personal Information"></app-headline-comp>
+        </div>
+        <ion-item class="ion-justify-content-between d-flex flex-column">
+          <ion-label class="fw-semibold">Name</ion-label>
+          <div class="ps-4">
+            {{ driverProfile?.user?.f_name }} {{ driverProfile?.user?.l_name }}
+          </div>
+        </ion-item>
+        <ion-item class="ion-justify-content-between d-flex flex-column">
+          <ion-label class="fw-semibold">Email</ion-label>
+          <div class="ps-4 overflow-scroll">{{ driverProfile?.user?.email || "---" }}</div>
+        </ion-item>
+        <ion-item class="ion-justify-content-between d-flex flex-column">
+          <ion-label class="fw-semibold">Phone</ion-label>
+          <div class="ps-4">
+            {{ driverProfile?.user?.primary_phone || "---" }}
+          </div>
+        </ion-item>
+      </ion-card-content>
+    </div>
+
+    <div class="border p-1 mb-3 shadow">
+      <ion-card-content>
+        <div class="mb-2">
+          <app-headline-comp title="License Details"></app-headline-comp>
+        </div>
+        <ion-item class="ion-justify-content-between d-flex flex-column">
+          <ion-label class="fw-semibold">License Number</ion-label>
+          <div class="ps-4">{{ driverProfile?.license || "---" }}</div>
+        </ion-item>
+        <ion-item class="ion-justify-content-between d-flex flex-column">
+          <ion-label class="fw-semibold">Expiration Date</ion-label>
+          <div class="ps-4">{{ driverProfile?.expirationDate || "---" }}</div>
+        </ion-item>
+      </ion-card-content>
+    </div>
+
+    <div class="border p-1 mb-3 shadow">
+      <ion-card-content>
+        <div class="mb-2">
+          <app-headline-comp title="Contact Details"></app-headline-comp>
+        </div>
+        <ion-item class="ion-justify-content-between d-flex flex-column">
+          <ion-label class="fw-semibold">Address</ion-label>
+          <div class="ps-4">
+            {{ driverProfile?.user?.street_address_1 || "---" }}
+          </div>
+        </ion-item>
+      </ion-card-content>
+    </div>
+
+    <div class="border p-1 mb-3 shadow">
+      <ion-card-content>
+        <div class="mb-2">
+          <app-headline-comp title="Driving Statistics"></app-headline-comp>
+        </div>
+        <ion-item class="ion-justify-content-between d-flex flex-column">
+          <ion-label class="fw-semibold">Total Trips Completed</ion-label>
+          <div class="ps-4">{{ driverProfile?.totalTrips || "---" }}</div>
+        </ion-item>
+        <ion-item class="ion-justify-content-between d-flex flex-column">
+          <ion-label class="fw-semibold">Duration with Limo</ion-label>
+          <div class="ps-4">{{ driverProfile?.service_years || "---" }}</div>
+        </ion-item>
+        <ion-item class="ion-justify-content-between d-flex flex-column">
+          <ion-label class="fw-semibold">Compliments and Badges</ion-label>
+          <div class="ps-4">{{ driverProfile?.description || "---" }}</div>
+        </ion-item>
+      </ion-card-content>
+    </div>
+
+    <div class="border p-1 mb-3 shadow">
+      <ion-card-content>
+        <div class="mb-2">
+          <app-headline-comp title="More About You"></app-headline-comp>
+        </div>
+        <ion-item class="ion-justify-content-between d-flex flex-column">
+          <ion-label class="fw-semibold">Your Hometown</ion-label>
+          <div class="ps-4">
+            {{ driverProfile?.user?.street_address_2 || "---" }}
+          </div>
+        </ion-item>
+        <ion-item class="ion-justify-content-between d-flex flex-column">
+          <ion-label class="fw-semibold">Languages Spoken</ion-label>
+          <div class="ps-4">{{ driverProfile?.user?.languages || "---" }}</div>
+        </ion-item>
+      </ion-card-content>
+    </div>
+  </div>
+</ion-content>

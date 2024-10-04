@@ -1,0 +1,21 @@
+<ion-app>
+  <ion-menu contentId="main-content" type="reveal">
+    <ion-content>
+      <ion-list-header>
+        <h4 class="fw-bold">Limo Driver App</h4>
+      </ion-list-header>
+      <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
+        <ion-item
+          [routerLink]="[p.url]"
+          [ngClass]="{ 'active-menu-item': isActive(p.url) }"
+          lines="none"
+          detail="false"
+        >
+          <i class="{{ p.icon }} me-4"></i>
+          <ion-label>{{ p.title }}</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet id="main-content"></ion-router-outlet>
+</ion-app>

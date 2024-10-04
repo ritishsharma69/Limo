@@ -1,0 +1,8 @@
+{
+  "name": "limo-app",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/driver-profile" />
+    </ion-buttons>
+    <ion-title>Trip History</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content scrollY="true" class="ion-padding">
+    <p class="radio-container p-2 mx-2 mb-4 rounded">
+      <ion-radio-group 
+        value="{{selectedStatus}}"
+        (ionChange)="onStatusChange($event)" 
+        class="radio-group">
+        
+        <ion-radio value="Completed" color="light" labelPlacement="end">
+          <ion-label>Completed ({{completedTrips.length}})</ion-label>
+        </ion-radio>
+        <div class="border"></div>
+        
+        <ion-radio value="Rejected" color="light" labelPlacement="end">
+          <ion-label>Rejected ({{rejectedTrips.length}})</ion-label>
+        </ion-radio>
+      </ion-radio-group>
+    </p>
+
+  <div *ngFor="let trip of selectedStatus === 'Completed' ? completedTrips : rejectedTrips">
+    <ion-card (click)="viewTripDetails(trip)">
+      <ion-item  lines="none">
+        <img [src]="trip.image" alt="{{ trip.name }}" class="image rounded-circle me-4">
+        <ion-label>
+          <div class="d-flex justify-content-between">
+
+            <h2>{{ trip.name }}</h2>
+            <p [ngClass]="{
+              'status-complete': selectedStatus === 'Completed',
+              'status-rejected': selectedStatus !== 'Completed'
+            }">{{ trip.status }}</p>
+          </div>
+          <p>{{ trip.date }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+  </div>
+
+  <div *ngIf="(selectedStatus === 'Completed' && completedTrips.length === 0) || (selectedStatus === 'Rejected' && rejectedTrips.length === 0)" class="ion-padding text-center">
+    <p>No Trip History</p>
+  </div>
+</ion-content>

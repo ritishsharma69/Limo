@@ -1,0 +1,13 @@
+ion-modal {
+  --height: auto;
+  --max-height: 80%;
+}
+.modal-content {
+  width: 100%;
+  background-color: var(--bg-neutral-100);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.cancelAction {
+  background-color: var(--bg-primary-200);
+  color: var(--bg-neutral-100);
+}
