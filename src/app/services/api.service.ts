@@ -14,29 +14,29 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  acceptRequest (): Observable<ResponseModel> {
-    return this.http.get<ResponseModel>(`${environment.API_ENDPOINT}posts`);
-  }
+  // acceptRequest (): Observable<ResponseModel> {
+  //   return this.http.get<ResponseModel>(`${environment.API_ENDPOINT}posts`);
+  // }
 
-  rejectRequest (): Observable<any> {
-    return this.http.get<ResponseModel>(`${environment.API_ENDPOINT}posts`);
-  }
+  // rejectRequest (): Observable<any> {
+  //   return this.http.get<ResponseModel>(`${environment.API_ENDPOINT}posts`);
+  // }
   
-  changeStatus (): Observable<ResponseModel> {
-    return this.http.get<ResponseModel>(`${environment.API_ENDPOINT}posts`);
-  }
+  // changeStatus (): Observable<ResponseModel> {
+  //   return this.http.get<ResponseModel>(`${environment.API_ENDPOINT}posts`);
+  // }
 
-  startTrip(id: string): Observable<any> {
-    return this.http.post<ResponseModel>(`${environment.API_ENDPOINT}posts`, { id });
-  }  
+  // startTrip(id: string): Observable<any> {
+  //   return this.http.post<ResponseModel>(`${environment.API_ENDPOINT}posts`, { id });
+  // }  
 
-  upcomingStatusChange(status: string): Observable<any> {
-    return this.http.post<ResponseModel>(`${environment.API_ENDPOINT}posts`, { status });
-  }  
+  // upcomingStatusChange(status: string): Observable<any> {
+  //   return this.http.post<ResponseModel>(`${environment.API_ENDPOINT}posts`, { status });
+  // }  
 
-  inprogressStartTrip(id: string): Observable<any> {
-    return this.http.post<ResponseModel>(`${environment.API_ENDPOINT}posts`, { id });
-  }  
+  // inprogressStartTrip(id: string): Observable<any> {
+  //   return this.http.post<ResponseModel>(`${environment.API_ENDPOINT}posts`, { id });
+  // }  
   
   fetchBookingDetails(options: IFetchBookingDetails = {}): Observable<any> {
     const params = new URLSearchParams();

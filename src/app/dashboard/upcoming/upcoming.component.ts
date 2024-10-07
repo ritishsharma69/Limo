@@ -173,15 +173,15 @@ export class UpcomingComponent {
   }
 
   confirmStatusChange(status: string) {
-    this.apiService.upcomingStatusChange(status).subscribe({
-      next: () => {
-        this.showStatusChangeModal = false;
-      },
-      error: (error) => {
-        console.error('Error changing status:', error);
-        this.showStatusChangeModal = false;
-      },
-    });
+    // this.apiService.upcomingStatusChange(status).subscribe({
+    //   next: () => {
+    //     this.showStatusChangeModal = false;
+    //   },
+    //   error: (error) => {
+    //     console.error('Error changing status:', error);
+    //     this.showStatusChangeModal = false;
+    //   },
+    // });
   }
 
   cancelStatusChange() {
@@ -204,17 +204,17 @@ export class UpcomingComponent {
   }
 
   confirmTrip(reservationId: string) {
-    this.apiService.startTrip(reservationId).subscribe({
-      next: () => {
-        this.showConfirmationModal = false;
-      },
-      error: (error) => {
-        console.log(reservationId);
+    // this.apiService.startTrip(reservationId).subscribe({
+    //   next: () => {
+    //     this.showConfirmationModal = false;
+    //   },
+    //   error: (error) => {
+    //     console.log(reservationId);
 
-        console.error('Error starting trip:', error);
-        this.router.navigate(['/dashboard/in-progress']);
-      },
-    });
+    //     console.error('Error starting trip:', error);
+    //     this.router.navigate(['/dashboard/in-progress']);
+    //   },
+    // });
   }
 
   onModalClose() {

@@ -6,12 +6,12 @@
       refreshingSpinner="circles"
     />
   </ion-refresher>
-  <div class="p-3 d-flex flex-column gap-3">
+  <div class="d-flex flex-column">
     <!-- <ng-container *ngFor="let trip of trips; let i = index"> -->
     <!-- trip ID Section -->
     @for(trip of tripDetails;track $index){
-    <div class="">
-      <div class="text-center p-1 mb-3 reservation">
+    <div class="shadow-lg">
+      <div class="text-center px-1 m-3 reservation">
         <p
           (click)="toggleDetails($index)"
           class="clickable-text d-flex align-items-center justify-content-center p-2 mb-0"
@@ -33,7 +33,7 @@
       </div>
 
       <!-- Expanded Passenger Details Section -->
-      <div *ngIf="trip.showDetails">
+      <div *ngIf="trip.showDetails" class="m-3">
         <app-headline-comp title="Passenger Details"></app-headline-comp>
 
         <!-- Passenger Information -->
