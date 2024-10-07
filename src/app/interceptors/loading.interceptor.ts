@@ -4,10 +4,16 @@ import { finalize, catchError } from 'rxjs/operators';
 import { LoaderService } from '../services/loading.service';
 import { throwError } from 'rxjs';
 
+const excludedUrls = ['/for-feature'];
+
 export const loaderInterceptor: HttpInterceptorFn = (req, next) => {
   const loaderService = inject(LoaderService);
 
-  loaderService.presentLoading();
+  const shouldShowLoader = !excludedUrls.some((url) => req.url.includes(url));
+
+  if (shouldShowLoader) {
+    loaderService.presentLoading();
+  }
 
   return next(req).pipe(
     catchError((error) => {
@@ -15,7 +21,9 @@ export const loaderInterceptor: HttpInterceptorFn = (req, next) => {
       return throwError(() => error);
     }),
     finalize(() => {
-      loaderService.dismissLoading();
+      if (shouldShowLoader) {
+        loaderService.dismissLoading();
+      }
     })
   );
 };

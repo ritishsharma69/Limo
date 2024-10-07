@@ -45,17 +45,42 @@ export class NotificationService {
     });
 
     // Listener for notification action performed (when tapped)
+    // PushNotifications.addListener('pushNotificationActionPerformed', async (action) => {
+    //   console.log('Push notification action performed:', action);
+    //   const data = action.notification.data;
+
+    //   if (data.url) {
+    //     const navigationExtras: NavigationExtras = {
+    //       queryParams: {
+    //         contentId: data.id,
+    //       },
+    //     };
+    //     await this.router.navigate([data.url], navigationExtras);
+    //   } else {
+    //     console.warn('No URL provided in notification data. Handling default action.');
+    //     await this.router.navigate(['/login']); 
+    //   }
+    // });
+
     PushNotifications.addListener('pushNotificationActionPerformed', async (action) => {
       console.log('Push notification action performed:', action);
+      console.log('Push notification action performed:', action.notification);
+      console.log('Push notification action performed:', action.notification.data);
       const data = action.notification.data;
 
-      if (data.url) {
+      if (data && data.url) {
+
         const navigationExtras: NavigationExtras = {
           queryParams: {
-            contentId: data.id,
-          },
-        };
+            contentId: data.ContentId
+          }
+        }
+
+        console.log('Navigating to:', data.url);
         await this.router.navigate([data.url], navigationExtras);
+      } else {
+        console.warn('No URL provided in notification data. Handling default action.');
+        await this.router.navigate(['/dashboard/pending']); 
       }
     });
   }

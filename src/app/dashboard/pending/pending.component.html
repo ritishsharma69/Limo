@@ -8,7 +8,7 @@
   </ion-refresher>
   <div class="d-flex flex-column">
     @for(trip of tripDetails;track $index){
-    <div class="">
+    <div [id]="'trip-' + trip.id" class="shadow-lg">
       <div class="text-white m-3 passenger-details px-1">
         <div class="text-white">
           <div

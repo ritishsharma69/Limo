@@ -14,11 +14,14 @@ import {
   IonButton,
   IonIcon,
   IonModal,
-  IonTitle, IonRefresher, IonRefresherContent } from '@ionic/angular/standalone';
+  IonTitle,
+  IonRefresher,
+  IonRefresherContent,
+} from '@ionic/angular/standalone';
 import { PickDropComponent } from 'src/app/reusable-components/pick-drop/pick-drop.component';
 import { ExtraItemsComponent } from 'src/app/reusable-components/extra-items/extra-items.component';
 import { HeadlineCompComponent } from '../../reusable-components/headline-comp.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { CommonConfirmationModalComponent } from '../../reusable-components/common-confirmation-modal/common-confirmation-modal.component';
 import { CommonModule } from '@angular/common';
@@ -31,7 +34,9 @@ import { chevronDownCircleOutline } from 'ionicons/icons';
   templateUrl: './pending.component.html',
   styleUrls: ['./pending.component.scss'],
   standalone: true,
-  imports: [IonRefresherContent, IonRefresher, 
+  imports: [
+    IonRefresherContent,
+    IonRefresher,
     IonTitle,
     IonModal,
     IonContent,
@@ -58,6 +63,7 @@ export class PendingComponent {
   private router = inject(Router);
   private apiService = inject(ApiService);
   private commonService = inject(CommonService);
+  private route = inject(ActivatedRoute);
 
   tripDetails: any;
   extraInfo: any;
@@ -68,17 +74,24 @@ export class PendingComponent {
   actionText = '';
   currentAction: 'accept' | 'reject' = 'accept';
 
-
   constructor() {}
 
   ngOnInit() {
     this.fetchBooking();
+
+    this.route.queryParams.subscribe((params) => {
+      const contentId = params['contentId'];
+      if (contentId) {
+        this.focusTripById(contentId);
+      }
+    });
+
     this.registerIcons();
   }
-  
+
   private registerIcons(): void {
     addIcons({
-      'chevron-down-circle-outline': chevronDownCircleOutline
+      'chevron-down-circle-outline': chevronDownCircleOutline,
     });
   }
 
@@ -134,7 +147,7 @@ export class PendingComponent {
     }));
   }
 
-   private pickupAndDropoffAddresses(trips: any[]) {
+  private pickupAndDropoffAddresses(trips: any[]) {
     trips.forEach((trip: any) => {
       const pickup = trip.addresses?.find(
         (addr: any) => addr.type === 'pickup'
@@ -150,7 +163,26 @@ export class PendingComponent {
     this.tripDetails.forEach((trip: { showDetails: boolean }, i: number) => {
       trip.showDetails = i === index ? !trip.showDetails : false;
     });
-  }  
+  }
+
+  // Method to focus on a trip by contentId
+  focusTripById(contentId: string) {
+    const tripIndex = this.tripDetails.findIndex(
+      (trip: any) => trip.id === contentId
+    );
+
+    if (tripIndex !== -1) {
+      this.toggleDetails(tripIndex); // Open the trip details
+
+      const element = document.getElementById(`trip-${contentId}`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' }); // Scroll to trip
+        element.focus(); // Focus on the element
+      }
+    } else {
+      console.warn(`No trip found with ContentId: ${contentId}`);
+    }
+  }
 
   onAccept() {
     this.actionTitle = 'Confirm Acceptance';
@@ -171,25 +203,25 @@ export class PendingComponent {
   handleConfirmation(isConfirmed: boolean) {
     if (isConfirmed) {
       if (this.currentAction == 'accept') {
-        this.apiService.acceptRequest().subscribe({
-          next: () => {
-            this.router.navigate(['/dashboard/upcoming']);
-            console.log('clickd accept');
-          },
-          error: (error) => {
-            console.error('Error occurred:', error);
-          },
-        });
-      } else if (this.currentAction == 'reject') {
-        this.apiService.rejectRequest().subscribe({
-          next: () => {
-            this.router.navigate(['/dashboard']);
-            console.log('clickd reject');
-          },
-          error: (error) => {
-            console.error('Error occurred while rejecting the request:', error);
-          },
-        });
+      //   this.apiService.acceptRequest().subscribe({
+      //     next: () => {
+      //       this.router.navigate(['/dashboard/upcoming']);
+      //       console.log('clickd accept');
+      //     },
+      //     error: (error) => {
+      //       console.error('Error occurred:', error);
+      //     },
+      //   });
+      // } else if (this.currentAction == 'reject') {
+      //   this.apiService.rejectRequest().subscribe({
+      //     next: () => {
+      //       this.router.navigate(['/dashboard']);
+      //       console.log('clickd reject');
+      //     },
+      //     error: (error) => {
+      //       console.error('Error occurred while rejecting the request:', error);
+      //     },
+      //   });
       }
     } else {
       console.log('Action canceled.');
