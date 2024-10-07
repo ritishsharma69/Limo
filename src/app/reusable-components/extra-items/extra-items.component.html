@@ -3,40 +3,45 @@
 >
   <div>
     <!-- Display number of luggage and luggage type below the icon -->
-    @if(extraInfo.no_of_luggage){
-    <div class="iconCount">{{ extraInfo.no_of_luggage }}</div>
-    <div class="luggageType">{{ extraInfo.luggage_type }}</div>
+    @if(extraInfo.no_of_luggage)
+    {
+      <div class="iconCount">{{ extraInfo.no_of_luggage }}</div>
+      <div class="luggageType">{{ extraInfo.luggage_type }}</div>
     }
     <i class="icon fa-solid fa-suitcase-rolling" (click)="openPopup('luggage')"></i>
   </div>
 
   <div>
     <!-- Display number of passengers below the icon -->
-    @if(extraInfo.no_of_passengers){
-    <div class="iconCount">{{ extraInfo.no_of_passengers }}</div>
+    @if(extraInfo.no_of_passengers)
+    {
+      <div class="iconCount">{{ extraInfo.no_of_passengers }}</div>
     }
     <i class="icon fa-solid fa-person" (click)="openPopup('passengers')"></i>
   </div>
 
   <div>
     <!-- Display child seat count and type below the icon -->
-    @if(extraInfo.child_seat_count){
-    <div class="iconCount">{{ extraInfo.child_seat_count }}</div>
-    <div class="childSeatType">{{ extraInfo.child_seat }}</div>
+    @if(extraInfo.child_seat_count)
+    {
+      <div class="iconCount">{{ extraInfo.child_seat_count }}</div>
+      <div class="childSeatType">{{ extraInfo.child_seat }}</div>
     }
     <i class="icon fa-solid fa-baby" (click)="openPopup('child_seat')"></i>
   </div>
 </div>
 
-<!-- Rest of the content remains the same -->
+<!-- Row for miles, more info, and hours -->
 <div class="row mt-3">
-  <div class="col-4">
+  <!-- Column for miles -->
+  <div class="col-4 d-flex justify-content-center align-items-center">
     <p class="rounded py-1 mt-4 text-center" *ngIf="extraInfo.miles">
       {{ extraInfo.miles }} Miles
     </p>
   </div>
 
-  <div class="col-4 text-center d-flex align-items-center">
+  <!-- Column for more info button, ensure it's centered -->
+  <div class="col-4 d-flex justify-content-center align-items-center">
     <div
       *ngIf="showButton"
       (click)="openMoreInfo()"
@@ -46,13 +51,15 @@
     </div>
   </div>
 
-  <div class="col-4">
+  <!-- Column for hours -->
+  <div class="col-4 d-flex justify-content-center align-items-center">
     <p class="rounded py-1 mt-4 text-center" *ngIf="extraInfo.hours">
       {{ extraInfo.hours }} Hours
     </p>
   </div>
 </div>
 
+<!-- Modal for more info -->
 <ion-modal
   [isOpen]="showInfoModal"
   (willDismiss)="closeMoreInfo()"
@@ -76,6 +83,7 @@
   </ng-template>
 </ion-modal>
 
+<!-- Modal for icon popup -->
 <ion-modal
   [isOpen]="isPopupOpen"
   (willDismiss)="closePopup()"

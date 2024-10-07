@@ -1,14 +1,13 @@
-<!-- dashboard.components -->
-
 <ion-header>
   <div class="border-bottom">
-  <ion-toolbar>
-      <!-- Start: Menu Button -->
+    <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-menu-button autoHide="false" (click)="menuClicked()"></ion-menu-button>
+        <ion-menu-button
+          autoHide="false"
+          (click)="menuClicked()"
+        ></ion-menu-button>
       </ion-buttons>
 
-      <!-- Driver's Name with Image -->
       <div
         class="d-flex justify-content-start align-items-center w-100 overflow-scroll"
       >
@@ -23,7 +22,7 @@
           "
         />
         <div
-          class="overflow-scroll d-flex align-items-center"
+          class="overflow-scroll d-flex align-items-center full-name-animation"
           [routerLink]="['/driver-profile']"
           style="white-space: nowrap"
         >
@@ -40,7 +39,6 @@
         </div>
       </div>
 
-      <!-- End: Toggle OnDuty/OffDuty -->
       <ion-buttons slot="end" class="d-flex align-items-center">
         <div class="text-center border-primary mx-2">
           <div class="card-body">
@@ -53,7 +51,6 @@
           </div>
         </div>
 
-        <!-- Toggle Button -->
         <ion-toggle
           aria-label="On Duty Toggle"
           color="success"
@@ -65,7 +62,6 @@
     </ion-toolbar>
   </div>
 
-  <!-- Segments for dashboard -->
   <ion-toolbar>
     <ion-segment
       [(ngModel)]="selectedSegment"

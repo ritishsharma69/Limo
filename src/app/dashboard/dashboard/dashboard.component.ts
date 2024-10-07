@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
@@ -40,6 +40,10 @@ import { IUser } from 'src/app/model/interface';
   ],
 })
 export class DashboardComponent implements OnInit {
+profileImage: any;
+openProfileImageModal() {
+throw new Error('Method not implemented.');
+}
   userData: IUser = {};
   firstName: string | undefined;
   lastName: string | undefined;
@@ -50,18 +54,26 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private renderer: Renderer2, // Renderer for DOM manipulation
     private firebaseInitializer: FirebaseInitializerService
   ) {}
 
   ngOnInit() {
     this.loadUserData();
 
+    // Trigger full-name animation when the component loads
+    const nameElement = document.querySelector('.full-name-animation');
+    if (nameElement) {
+      this.renderer.addClass(nameElement, 'animate'); // Start animation when loaded
+    }
+
     // Load isOnDuty state from localStorage if it exists
     const savedOnDutyState = localStorage.getItem('isOnDuty');
     if (savedOnDutyState !== null) {
       this.isOnDuty = JSON.parse(savedOnDutyState);
     }
-    
+
+    // Subscribe to route changes to update the selected segment
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.updateSelectedSegment(event.url);
