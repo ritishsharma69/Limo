@@ -105,17 +105,14 @@ export class UpcomingComponent {
   }
 
   fetchBooking() {
-    // this.commonService.showSimpleLoader();
-
     this.apiService
       .fetchBookingDetails({
         fetchAddresses: true,
+        fleet: true,
       })
       .subscribe({
         next: (response) => {
-          // this.commonService.hideSimpleLoader();
-
-          if (!response) {
+          if (!response || !response.data) {
             console.error('API response is empty or undefined.');
             return;
           }
@@ -125,19 +122,20 @@ export class UpcomingComponent {
           if (this.tripDetails.length > 0) {
             this.addExtraInfoToTrips(this.tripDetails);
             this.pickupAndDropoffAddresses(this.tripDetails);
-            console.log('Regular Bookings:', this.tripDetails);
+            console.log(
+              'Regular Bookings with Fleet Details:',
+              this.tripDetails
+            );
           } else {
             console.error('Trip details are empty.');
           }
         },
         error: (error) => {
-          console.error('Error occurred while fetching the bookings:', error);
-          // this.commonService.hideSimpleLoader();
+          console.error('Error fetching trip details:', error);
         },
       });
   }
 
-  // Helper method to add extra info to trip details
   private addExtraInfoToTrips(trips: any[]) {
     this.tripDetails = trips.map((trip: any) => ({
       ...trip,
@@ -210,7 +208,6 @@ export class UpcomingComponent {
     //   },
     //   error: (error) => {
     //     console.log(reservationId);
-
     //     console.error('Error starting trip:', error);
     //     this.router.navigate(['/dashboard/in-progress']);
     //   },

@@ -48,6 +48,7 @@ export class ApiService {
     if (options.currency) params.append('withCurrency', String(options.currency));
     if (options.driver) params.append('withDriver', String(options.driver));
     if (options.time) params.append('time', options.time);
+    if (options.fleet) params.append('withFleet',String(options.fleet))
   
     const url = `${environment.API_ENDPOINT}/api/bookings?${params.toString()}`;
     

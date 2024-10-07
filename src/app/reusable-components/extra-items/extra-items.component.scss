@@ -1,20 +1,21 @@
 .more-info {
-    background-color: var(--bg-primary-100);
-    cursor: pointer;
+  background-color: var(--bg-primary-100);
+  cursor: pointer;
 }
+
 .icon {
-    font-size: xx-large;
+  font-size: xx-large;
 }
 
 .modal-content {
-    padding: 20px;
-  }
-  
+  padding: 20px;
+}
+
 .closeButton {
   background-color: var(--bg-primary-200);
   color: var(--bg-neutral-100);
 }
-  
+
 .iconCount {
   position: absolute;
   margin-top: -11px;
@@ -30,8 +31,19 @@
   --height: auto;
   --max-height: 80%;
 }
+
 .icon-info {
   width: 100%;
   background-color: var(--bg-neutral-100);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Disabled luggage styling */
+.disabled-item {
+  opacity: 0.5; /* Grays out the item */
+  pointer-events: none; /* Prevents clicking */
+}
+
+.disabled-icon {
+  color: gray;
 }

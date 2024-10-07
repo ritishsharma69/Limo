@@ -113,16 +113,20 @@
           <div class="p-4">
             <div class="d-flex justify-content-between align-items-start">
               <div class="text-left">
-                <p>Mercedes S Class</p>
+                <p>
+                  {{ trip.fleet.name }}
+                  {{ trip.fleet.model }}
+                </p>
                 <div class="s-class m-0 w-100">
                   <img
-                    src="../../../assets/imgs/car.png"
-                    alt="Passenger Image"
+                    [src]="trip.fleet.images || '../../../assets/imgs/car.png'"
+                    alt="Fleet Image"
                     class="img-fluid"
+                    loading="lazy"
                   />
                 </div>
               </div>
-              <p>Plate Number</p>
+              <p>Plate Number: {{ trip.fleet.plate_number || "N/A" }}</p>
             </div>
           </div>
         </div>

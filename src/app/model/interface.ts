@@ -60,4 +60,5 @@ export interface ResponseModel {
     currency?: boolean;
     driver?: boolean;
     time?: string;
+    fleet?:boolean;
   }
