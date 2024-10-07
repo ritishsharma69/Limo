@@ -18,12 +18,12 @@ import {
 export class ExtraItemsComponent {
   @Input() showButton: boolean = true;
   @Input() extraInfo: {
-luggage_type: any;
-occasion_type: any;
-greeting_sign: any;
-greeting_sign_text: any;
-notes_to_driver: any;
-child_seat: any;
+    luggage_type: any;
+    occasion_type: any;
+    greeting_sign: any;
+    greeting_sign_text: any;
+    notes_to_driver: any;
+    child_seat: any;
     luggage?: string;
     miles?: string;
     hours?: string;

@@ -51,6 +51,9 @@ throw new Error('Method not implemented.');
   isOnDuty: boolean = false;
   selectedSegment: string = 'pending';
   route = inject(Router);
+  pendingNotifications: number = 5;
+  upcomingNotifications: number = 5;
+  inProgressNotifications: number = 0;
 
   constructor(
     private router: Router,

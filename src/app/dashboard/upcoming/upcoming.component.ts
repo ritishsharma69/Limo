@@ -31,6 +31,7 @@ import { NavigateButtonComponent } from '../../reusable-components/navigate-butt
 import { CommonService } from 'src/app/services/common.service';
 import { addIcons } from 'ionicons';
 import { chevronDownCircleOutline } from 'ionicons/icons';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-upcoming',
@@ -83,6 +84,7 @@ export class UpcomingComponent {
   private apiService = inject(ApiService);
   private commonService = inject(CommonService);
   private router = inject(Router);
+  private toastService = inject(ToastService);
 
   constructor() {}
 
@@ -204,6 +206,7 @@ export class UpcomingComponent {
   }
 
   confirmTrip(reservationId: string) {
+    this.toastService.presentToast('Trip Started', 'success');
     // this.apiService.startTrip(reservationId).subscribe({
     //   next: () => {
     //     this.showConfirmationModal = false;

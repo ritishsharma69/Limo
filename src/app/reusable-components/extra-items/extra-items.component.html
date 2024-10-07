@@ -12,6 +12,17 @@
   </div>
 
   <div>
+    <!-- Hardcoded luggage item with 4 bags -->
+    <div class="iconCount">4</div>
+    <i class="icon fa-solid fa-suitcase-rolling" (click)="openPopup('luggage')"></i>
+  </div>
+ 
+  <div class="disabled-item">
+    <!-- Disabled luggage icon when no luggage is available -->
+    <div class="iconCount">0</div>
+    <i class="icon fa-solid fa-suitcase-rolling disabled-icon"></i>
+  </div>
+  <div>
     <!-- Display number of passengers below the icon -->
     @if(extraInfo.no_of_passengers)
     {
