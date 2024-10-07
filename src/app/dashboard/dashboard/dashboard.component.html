@@ -69,8 +69,23 @@
       [(ngModel)]="selectedSegment"
       (ionChange)="segmentChanged($event)"
     >
-      <ion-segment-button value="pending"> Pending </ion-segment-button>
-      <ion-segment-button value="upcoming"> Upcoming </ion-segment-button>
+      <ion-segment-button value="pending" class="relative">
+        Pending
+        <span
+          *ngIf="pendingNotifications > 0"
+          class="notification-badge rounded-circle text-center bg-danger text-white"
+        >
+          {{ pendingNotifications }}
+        </span>
+      </ion-segment-button>
+      <ion-segment-button value="upcoming"> Upcoming 
+        <span
+          *ngIf="upcomingNotifications > 0"
+          class="notification-badge rounded-circle text-center bg-danger text-white"
+        >
+          {{ upcomingNotifications }}
+        </span>
+      </ion-segment-button>
       <ion-segment-button value="in-progress"> In Progress </ion-segment-button>
     </ion-segment>
   </ion-toolbar>

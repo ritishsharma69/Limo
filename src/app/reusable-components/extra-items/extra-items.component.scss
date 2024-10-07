@@ -47,3 +47,14 @@
 .disabled-icon {
   color: gray;
 }
+
+
+/* Disabled luggage styling */
+.disabled-item {
+  opacity: 0.5; /* Grays out the item */
+  pointer-events: none; /* Prevents clicking */
+}
+ 
+.disabled-icon {
+  color: gray;
+}

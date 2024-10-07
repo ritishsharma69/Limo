@@ -28,6 +28,8 @@ import { CommonModule } from '@angular/common';
 import { CommonService } from 'src/app/services/common.service';
 import { addIcons } from 'ionicons';
 import { chevronDownCircleOutline } from 'ionicons/icons';
+import { RouterLink } from '@angular/router';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-pending',
@@ -57,6 +59,7 @@ import { chevronDownCircleOutline } from 'ionicons/icons';
     HeadlineCompComponent,
     CommonConfirmationModalComponent,
     CommonModule,
+    RouterLink,
   ],
 })
 export class PendingComponent {
@@ -64,6 +67,7 @@ export class PendingComponent {
   private apiService = inject(ApiService);
   private commonService = inject(CommonService);
   private route = inject(ActivatedRoute);
+  private toastService = inject(ToastService);
 
   tripDetails: any;
   extraInfo: any;
@@ -203,28 +207,31 @@ export class PendingComponent {
   handleConfirmation(isConfirmed: boolean) {
     if (isConfirmed) {
       if (this.currentAction == 'accept') {
-      //   this.apiService.acceptRequest().subscribe({
-      //     next: () => {
-      //       this.router.navigate(['/dashboard/upcoming']);
-      //       console.log('clickd accept');
-      //     },
-      //     error: (error) => {
-      //       console.error('Error occurred:', error);
-      //     },
-      //   });
-      // } else if (this.currentAction == 'reject') {
-      //   this.apiService.rejectRequest().subscribe({
-      //     next: () => {
-      //       this.router.navigate(['/dashboard']);
-      //       console.log('clickd reject');
-      //     },
-      //     error: (error) => {
-      //       console.error('Error occurred while rejecting the request:', error);
-      //     },
-      //   });
+        this.toastService.presentToast('Trip accepted', 'success');
+        //   this.apiService.acceptRequest().subscribe({
+        //     next: () => {
+        //       this.router.navigate(['/dashboard/upcoming']);
+        //       console.log('clickd accept');
+        //     },
+        //     error: (error) => {
+        //       console.error('Error occurred:', error);
+        //     },
+        //   });
+      } else if (this.currentAction == 'reject') {
+        this.toastService.presentToast('Trip rejected', 'error');
+        //   this.apiService.rejectRequest().subscribe({
+        //     next: () => {
+        //       this.router.navigate(['/dashboard']);
+        //       console.log('clickd reject');
+        //     },
+        //     error: (error) => {
+        //       console.error('Error occurred while rejecting the request:', error);
+        //     },
+        //   });
       }
     } else {
       console.log('Action canceled.');
+      this.toastService.presentToast('Action canceled', 'warning');
     }
     this.showConfirmationModal = false;
   }

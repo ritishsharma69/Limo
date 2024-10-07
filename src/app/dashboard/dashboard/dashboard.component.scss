@@ -38,3 +38,10 @@ ion-menu-button {
   pointer-events: auto; /* Ensure it can be clicked */
 }
 
+.notification-badge {
+  position: absolute;
+  top: 5px;
+  right: -15px;
+  padding: 2px;
+  min-width: 20px;
+}
