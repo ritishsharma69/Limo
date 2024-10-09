@@ -3,13 +3,13 @@ import {
   AlertController,
   LoadingController,
   ToastController,
-} from '@ionic/angular';
+} from '@ionic/angular/standalone';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CommonService {
-  private loader: HTMLIonLoadingElement | null = null; // Store the loader instance
+  private loader: HTMLIonLoadingElement | null = null;
   isLoading = false;
 
   constructor(
@@ -18,11 +18,11 @@ export class CommonService {
     public toastController: ToastController
   ) {}
 
-  async showAlert(title: string, msg: string) {
+  async showAlert(title: string, msg: string, buttons?: any[]) {
     const alert = await this.alertController.create({
       header: title,
       message: msg,
-      buttons: ['OK'],
+      buttons: buttons || ['OK'],
     });
     await alert.present();
   }
@@ -39,14 +39,30 @@ export class CommonService {
     await this.loadingController.dismiss();
   }
 
-  showMessage(msg: string) {
-    this.toastController
-      .create({
-        message: msg,
-        duration: 3000,
-        position: 'bottom',
-      })
-      .then((toast) => toast.present());
+  async showToast(msg: string, type: 'success' | 'error' | 'warning') {
+    let color =
+      type === 'success'
+        ? 'success'
+        : type === 'error'
+        ? 'danger'
+        : type === 'warning'
+        ? 'warning'
+        : 'primary';
+
+    let toast = this.toastController.create({
+      message: msg,
+      color: color,
+      duration: 3000,
+      position: 'bottom',
+      cssClass: 'custom-toast',
+      buttons: [
+        {
+          text: 'Dismiss',
+          role: 'cancel',
+        },
+      ],
+    });
+    await (await toast).present();
   }
 
   async showSimpleLoader() {

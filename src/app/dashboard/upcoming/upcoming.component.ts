@@ -31,7 +31,6 @@ import { NavigateButtonComponent } from '../../reusable-components/navigate-butt
 import { CommonService } from 'src/app/services/common.service';
 import { addIcons } from 'ionicons';
 import { chevronDownCircleOutline } from 'ionicons/icons';
-import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-upcoming',
@@ -84,7 +83,6 @@ export class UpcomingComponent {
   private apiService = inject(ApiService);
   private commonService = inject(CommonService);
   private router = inject(Router);
-  private toastService = inject(ToastService);
 
   constructor() {}
 
@@ -198,14 +196,18 @@ export class UpcomingComponent {
   handleConfirmation(isConfirmed: boolean) {
     if (isConfirmed) {
       this.confirmTrip(this.selectedReservationId);
+    } else {
+      this.commonService.showToast('Action Canceled', 'warning');
     }
     this.showConfirmationModal = false;
     this.selectedReservationId = '';
   }
 
   confirmTrip(reservationId: string) {
-    this.toastService.presentToast('Trip Started', 'success');
-    // this.apiService.startTrip(reservationId).subscribe({
+    this.commonService.showToast('Trip is now In Progress', 'success');
+    setTimeout(() => {
+      this.router.navigate(['/dashboard/in-progress']);
+    }, 300);
     //   next: () => {
     //     this.showConfirmationModal = false;
     //   },

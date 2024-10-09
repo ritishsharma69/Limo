@@ -1,7 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { Geolocation } from '@capacitor/geolocation';
+import { CommonService } from 'src/app/services/common.service';
+import { AlertController } from '@ionic/angular';
+import {
+  NativeSettings,
+  AndroidSettings,
+  IOSSettings,
+} from 'capacitor-native-settings';
 
 @Component({
   selector: 'app-navigate-button',
@@ -15,8 +22,9 @@ export class NavigateButtonComponent implements OnInit {
   @Input() pickupAddress: string = '';
   @Input() dropoffAddress: string = '';
   waypoints = [];
+  private commonService = inject(CommonService);
 
-  constructor() {}
+  constructor(private alertController: AlertController) {}
 
   ngOnInit() {}
 
@@ -60,8 +68,51 @@ export class NavigateButtonComponent implements OnInit {
   //   }
   // };
 
+  // navigateWithLiveLocation = async () => {
+  //   try {
+  //     const coordinates = await Geolocation.getCurrentPosition();
+  //     const userLocation = `${coordinates.coords.latitude},${coordinates.coords.longitude}`;
+
+  //     console.log('User Location:', userLocation);
+
+  //     const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLocation}&destination=${this.pickupAddress}&travelmode=driving`;
+
+  //     window.open(googleMapsUrl, '_system');
+  //     this.closeModal();
+  //   } catch (error) {
+  //     console.error('Error getting location', error);
+  //   }
+  // };
+
   navigateWithLiveLocation = async () => {
     try {
+      const permissionStatus = await Geolocation.checkPermissions();
+
+      if (permissionStatus?.location != 'granted') {
+        const requestStatus = await Geolocation.requestPermissions();
+
+        if (requestStatus.location != 'granted') {
+          this.commonService.showAlert(
+            'Permission Required',
+            'Location permission is needed to access your current location. Please enable it in settings.',
+            [
+              {
+                text: 'Cancel',
+                role: 'cancel',
+              },
+              {
+                text: 'Open Settings',
+                handler: () => {
+                  this.openAppSettings(true);
+                },
+              },
+            ]
+          );
+        }
+        return;
+      }
+
+      // Now attempt to get the current position
       const coordinates = await Geolocation.getCurrentPosition();
       const userLocation = `${coordinates.coords.latitude},${coordinates.coords.longitude}`;
 
@@ -69,10 +120,25 @@ export class NavigateButtonComponent implements OnInit {
 
       const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLocation}&destination=${this.pickupAddress}&travelmode=driving`;
 
+      // Open Google Maps with the user’s current location and destination
       window.open(googleMapsUrl, '_system');
       this.closeModal();
     } catch (error) {
       console.error('Error getting location', error);
+      this.commonService.showAlert(
+        'Location Error',
+        'Please ensure that GPS is enabled on your device. Try again later.'
+      );
     }
   };
+
+  // Method to open app settings
+  async openAppSettings(app = false) {
+    return NativeSettings.open({
+      optionAndroid: app
+        ? AndroidSettings.ApplicationDetails
+        : AndroidSettings.Location,
+      optionIOS: app ? IOSSettings.App : IOSSettings.LocationServices,
+    });
+  }
 }

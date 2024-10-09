@@ -29,7 +29,6 @@ import { CommonService } from 'src/app/services/common.service';
 import { addIcons } from 'ionicons';
 import { chevronDownCircleOutline } from 'ionicons/icons';
 import { RouterLink } from '@angular/router';
-import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-pending',
@@ -67,7 +66,6 @@ export class PendingComponent {
   private apiService = inject(ApiService);
   private commonService = inject(CommonService);
   private route = inject(ActivatedRoute);
-  private toastService = inject(ToastService);
 
   tripDetails: any;
   extraInfo: any;
@@ -180,8 +178,8 @@ export class PendingComponent {
 
       const element = document.getElementById(`trip-${contentId}`);
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' }); // Scroll to trip
-        element.focus(); // Focus on the element
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        element.focus();
       }
     } else {
       console.warn(`No trip found with ContentId: ${contentId}`);
@@ -204,13 +202,16 @@ export class PendingComponent {
     console.log('Modal opened:', this.showConfirmationModal);
   }
 
-  handleConfirmation(isConfirmed: boolean) {
+  async handleConfirmation(isConfirmed: boolean) {
     if (isConfirmed) {
+      this.showConfirmationModal = false;
       if (this.currentAction == 'accept') {
-        this.toastService.presentToast('Trip accepted', 'success');
+        this.commonService.showToast('Trip Accepted', 'success');
+        setTimeout(() => {
+          this.router.navigate(['/dashboard/upcoming']);
+        }, 300);
         //   this.apiService.acceptRequest().subscribe({
         //     next: () => {
-        //       this.router.navigate(['/dashboard/upcoming']);
         //       console.log('clickd accept');
         //     },
         //     error: (error) => {
@@ -218,7 +219,8 @@ export class PendingComponent {
         //     },
         //   });
       } else if (this.currentAction == 'reject') {
-        this.toastService.presentToast('Trip rejected', 'error');
+
+        this.commonService.showToast('Trip Rejected', 'error');
         //   this.apiService.rejectRequest().subscribe({
         //     next: () => {
         //       this.router.navigate(['/dashboard']);
@@ -231,7 +233,7 @@ export class PendingComponent {
       }
     } else {
       console.log('Action canceled.');
-      this.toastService.presentToast('Action canceled', 'warning');
+      this.commonService.showToast('Action Canceled', 'warning');
     }
     this.showConfirmationModal = false;
   }

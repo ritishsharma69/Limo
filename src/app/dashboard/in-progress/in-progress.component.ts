@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   IonCard,
   IonCardHeader,
@@ -27,6 +27,7 @@ import { UpcomingComponent } from '../upcoming/upcoming.component';
 import { CommonConfirmationModalComponent } from '../../reusable-components/common-confirmation-modal/common-confirmation-modal.component';
 import { NavigateButtonComponent } from '../../reusable-components/navigate-button/navigate-button.component';
 import { ActionConfirmationModalComponent } from '../../reusable-components/action-confirmation-modal/action-confirmation-modal.component';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
   selector: 'app-in-progress',
@@ -63,6 +64,8 @@ import { ActionConfirmationModalComponent } from '../../reusable-components/acti
   ],
 })
 export class InProgressComponent implements OnInit {
+  private commonService = inject(CommonService);
+
   startTrip: boolean = false;
   isModalOpen: boolean = false;
   showStatusChangeModal: boolean = false;
@@ -110,9 +113,11 @@ export class InProgressComponent implements OnInit {
   handleConfirmAction(isConfirmed: boolean) {
     if (isConfirmed) {
       this.startTrip = true;
+      this.commonService.showToast('Trip Started', 'success');
       console.log('Trip Started!');
     } else {
       console.log('Trip Cancelled');
+      this.commonService.showToast('Action Canceled', 'warning');
     }
   }
 
