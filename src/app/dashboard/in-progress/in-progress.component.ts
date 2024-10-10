@@ -28,6 +28,7 @@ import { CommonConfirmationModalComponent } from '../../reusable-components/comm
 import { NavigateButtonComponent } from '../../reusable-components/navigate-button/navigate-button.component';
 import { ActionConfirmationModalComponent } from '../../reusable-components/action-confirmation-modal/action-confirmation-modal.component';
 import { CommonService } from 'src/app/services/common.service';
+import { PaymentsTabComponent } from 'src/app/reusable-components/payments-tab/payments-tab.component';
 
 @Component({
   selector: 'app-in-progress',
@@ -61,6 +62,7 @@ import { CommonService } from 'src/app/services/common.service';
     CommonConfirmationModalComponent,
     NavigateButtonComponent,
     ActionConfirmationModalComponent,
+    PaymentsTabComponent
   ],
 })
 export class InProgressComponent implements OnInit {

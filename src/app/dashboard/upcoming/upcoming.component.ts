@@ -31,6 +31,7 @@ import { NavigateButtonComponent } from '../../reusable-components/navigate-butt
 import { CommonService } from 'src/app/services/common.service';
 import { addIcons } from 'ionicons';
 import { chevronDownCircleOutline } from 'ionicons/icons';
+import { PaymentsTabComponent } from 'src/app/reusable-components/payments-tab/payments-tab.component';
 
 @Component({
   selector: 'app-upcoming',
@@ -65,6 +66,7 @@ import { chevronDownCircleOutline } from 'ionicons/icons';
     HeadlineCompComponent,
     CommonConfirmationModalComponent,
     NavigateButtonComponent,
+    PaymentsTabComponent
   ],
 })
 export class UpcomingComponent {
