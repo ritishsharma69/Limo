@@ -16,6 +16,9 @@ import {
   imports: [IonTitle, IonModal, IonCard, IonButton, IonIcon, CommonModule],
 })
 export class ExtraItemsComponent {
+Number(arg0: string) {
+throw new Error('Method not implemented.');
+}
   @Input() showButton: boolean = true;
   @Input() extraInfo: {
     luggage_type: any;

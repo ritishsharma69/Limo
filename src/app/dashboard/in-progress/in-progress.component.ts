@@ -36,6 +36,7 @@ interface Option {
   value: string;
   label: string;
 }
+import { PaymentsTabComponent } from 'src/app/reusable-components/payments-tab/payments-tab.component';
 
 @Component({
   selector: 'app-in-progress',
@@ -69,6 +70,7 @@ interface Option {
     CommonConfirmationModalComponent,
     NavigateButtonComponent,
     ActionConfirmationModalComponent,
+    PaymentsTabComponent,
     IonSelect,
     IonSelectOption,
     FormsModule,

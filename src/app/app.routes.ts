@@ -60,6 +60,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'payment-status',
+    loadComponent: () =>
+      import(
+        './payment-confirmation-page/payment-confirmation-page.component'
+      ).then((m) => m.PaymentConfirmationPageComponent),
+  },
+  {
     path: 'login',
     loadComponent: () =>
       import('./login/login.component').then((m) => m.LoginComponent),

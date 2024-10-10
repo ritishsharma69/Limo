@@ -52,6 +52,7 @@
               {{ trip.booking_f_name + " " + trip.booking_l_name }}
             </p>
             <div class="d-flex justify-content-center gap-4">
+              <!-- Phone link -->
               <a
                 href="tel:{{ trip.booking_phone }}"
                 class="text-decoration-none"
@@ -63,10 +64,12 @@
                   <i class="icon fa-solid fa-phone"></i>
                 </div>
               </a>
+
+              <!-- SMS link -->
               <a
-                href="mailto:{{ trip.booking_email }}"
+                href="sms:{{ trip.booking_phone }}"
                 class="text-decoration-none"
-                aria-label="Email Us"
+                aria-label="Text Us"
               >
                 <div
                   class="icon-container border rounded-circle p-3 shadow-lg d-flex align-items-center justify-content-center"
@@ -109,6 +112,16 @@
             Example: Help Passenger with their luggage.
           </p>
         </div>
+
+        <div class="mb-3">
+          <app-headline-comp title="PAYMENT STATUS"></app-headline-comp>
+          <div class="border p-4">
+            <app-payments-tab
+            
+            >
+            </app-payments-tab>
+          </div>
+        </div>        
 
         <div class="border">
           <app-headline-comp title="Assigned Vehicle"></app-headline-comp>

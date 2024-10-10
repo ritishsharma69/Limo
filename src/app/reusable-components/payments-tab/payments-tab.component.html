@@ -1,0 +1,50 @@
+<div>
+  <!-- Display the total remaining payment (base + additional cost) -->
+  <h3 class="mb-4 text-center">Remaining Payment: <span class="text-success">{{ getTotalRemainingPayment() }} {{ currencySymbol }}</span></h3>
+
+  <!-- Input for Additional Cost -->
+  <div class="mb-4">
+    <label class="form-label">Additional Cost (added by the driver):</label>
+    <input type="number" class="form-control" [(ngModel)]="additionalCost" placeholder="Enter additional cost">
+  </div>
+
+  <p class="fw-bold mb-3">Choose a Payment Option:</p>
+
+  <!-- Cash Option -->
+  <div class="form-check mb-3">
+    <label class="form-check-label">
+      <input type="radio" class="form-check-input" name="paymentMethod" (click)="setPaymentMethod('cash')"> Cash
+    </label>
+    <div *ngIf="selectedPaymentMethod === 'cash'" class="mt-2">
+      <label class="form-label">Amount Collected:</label>
+      <input type="number" class="form-control" [(ngModel)]="collectedAmount" placeholder="Enter amount">
+    </div>
+  </div>
+
+  <!-- Charge Card Option -->
+  <div class="form-check mb-3">
+    <label class="form-check-label">
+      <input type="radio" class="form-check-input" name="paymentMethod" (click)="setPaymentMethod('card')"> Charge Card
+    </label>
+  </div>
+
+  <!-- Other Payment Option -->
+  <div class="form-check mb-3">
+    <label class="form-check-label">
+      <input type="radio" class="form-check-input" name="paymentMethod" (click)="setPaymentMethod('other')"> Other Payment Option
+    </label>
+    <div *ngIf="selectedPaymentMethod === 'other'" class="mt-2">
+      <textarea class="form-control" [(ngModel)]="otherPaymentDetails" placeholder="Enter payment details"></textarea>
+    </div>
+  </div>
+
+  <!-- Finalize Button -->
+  <div class="text-center mt-4">
+    <button class="btn btn-primary btn-lg" (click)="finalizePayment()">Finalize Payment</button>
+  </div>
+
+  <!-- Payment Status -->
+  <div *ngIf="paymentStatus" class="alert alert-success mt-4 text-center">
+    {{ paymentStatus }}
+  </div>
+</div>
