@@ -1,18 +1,14 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
+    <!-- <ion-buttons slot="start">
       <ion-back-button defaultHref="/" />
+    </ion-buttons> -->
+    <ion-buttons slot="start">
+      <ion-menu-button
+        autoHide="false"
+      ></ion-menu-button>
     </ion-buttons>
     <ion-title>Driver Profile</ion-title>
-    <div
-      slot="end"
-      [routerLink]="['/trip-history']"
-      routerLinkActive="router-link-active"
-    >
-      <button class="btn tripHistory m-2 ps-1">
-        <i class="fa-solid fa-clock-rotate-left"></i> Trip History
-      </button>
-    </div>
   </ion-toolbar>
 </ion-header>
 

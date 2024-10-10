@@ -18,6 +18,7 @@ import {
   IonGrid,
   IonCol,
   IonRow,
+  IonMenuButton,
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -51,7 +52,8 @@ import { HeadlineCompComponent } from "../reusable-components/headline-comp.comp
     IonModal,
     CommonModule,
     RouterLink,
-    HeadlineCompComponent
+    HeadlineCompComponent,
+    IonMenuButton,
 ],
 })
 export class DriverProfileComponent implements OnInit {

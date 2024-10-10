@@ -17,6 +17,8 @@ import {
   IonIcon,
   IonModal,
   IonTitle,
+  IonSelect,
+  IonSelectOption,
 } from '@ionic/angular/standalone';
 import { PickDropComponent } from '../../reusable-components/pick-drop/pick-drop.component';
 import { ExtraItemsComponent } from '../../reusable-components/extra-items/extra-items.component';
@@ -28,6 +30,12 @@ import { CommonConfirmationModalComponent } from '../../reusable-components/comm
 import { NavigateButtonComponent } from '../../reusable-components/navigate-button/navigate-button.component';
 import { ActionConfirmationModalComponent } from '../../reusable-components/action-confirmation-modal/action-confirmation-modal.component';
 import { CommonService } from 'src/app/services/common.service';
+import { FormsModule } from '@angular/forms';
+
+interface Option {
+  value: string;
+  label: string;
+}
 
 @Component({
   selector: 'app-in-progress',
@@ -61,18 +69,18 @@ import { CommonService } from 'src/app/services/common.service';
     CommonConfirmationModalComponent,
     NavigateButtonComponent,
     ActionConfirmationModalComponent,
+    IonSelect,
+    IonSelectOption,
+    FormsModule,
   ],
 })
 export class InProgressComponent implements OnInit {
   private commonService = inject(CommonService);
 
-  startTrip: boolean = false;
-  isModalOpen: boolean = false;
-  showStatusChangeModal: boolean = false;
-  showAdditionalOptions: boolean = false;
-
-  showDropOffModal: boolean = false;
-  showOtherStatusModal: boolean = false;
+  currentStatus: string = 'onTheWay';
+  waitingTime: number = 0;
+  waitingButtonLabel: string = 'START';
+  waitingTimer: any;
 
   reservations = [
     {
@@ -99,83 +107,63 @@ export class InProgressComponent implements OnInit {
 
   selectedReservation = this.reservations[0];
 
+  options: Option[] = [
+    { value: 'onTheWay', label: 'On The Way' },
+    { value: 'arrived', label: 'Arrived' },
+    { value: 'passengerInCar', label: 'Passenger In Car' },
+    { value: 'droppedPassenger', label: 'Dropped Passenger' },
+  ];
+
+  visibleOptions: Option[] = [];
+
   constructor() {}
 
   ngOnInit() {
-    // console.log('InProgressComponent initialized');
+    this.visibleOptions = this.options.slice(0, 2);
   }
 
-  readyForTrip() {
-    this.isModalOpen = true;
-    console.log('Ready for trip clicked');
-  }
+  changeStatus() {
+    if (this.currentStatus) {
+      this.commonService.showToast(
+        `Status changed to ${this.currentStatus}`,
+        'success'
+      );
+      console.log(`Status changed to: ${this.currentStatus}`);
 
-  handleConfirmAction(isConfirmed: boolean) {
-    if (isConfirmed) {
-      this.startTrip = true;
-      this.commonService.showToast('Trip Started', 'success');
-      console.log('Trip Started!');
+      if (this.currentStatus === 'arrived') {
+        this.visibleOptions = this.options.slice(2);
+      }
+
+      if (this.waitingTimer) {
+        clearInterval(this.waitingTimer);
+        this.waitingTimer = null;
+        this.waitingButtonLabel = 'START';
+      }
     } else {
-      console.log('Trip Cancelled');
-      this.commonService.showToast('Action Canceled', 'warning');
+      alert('Please select a status first.');
     }
   }
 
-  onModalClose() {
-    this.isModalOpen = false;
-    console.log('Confirmation modal closed');
-  }
-
-  openStatusChangeModal(reservationId: string) {
-    this.showStatusChangeModal = true;
-    console.log(
-      `Open status change modal for reservation ID: ${reservationId}`
-    );
-  }
-
-  // confirmStatusChange(status: string) {
-  //   console.log(`Status changed to: ${status}`);
-  //   this.showStatusChangeModal = false;
-  // }
-
-  // cancelStatusChange() {
-  //   this.showStatusChangeModal = false;
-  //   console.log('Status change cancelled');
-  // }
-
-  confirmStatusChange(status: string) {
-    if (status === 'dropoff') {
-      this.showStatusChangeModal = false;
-      this.showDropOffModal = true;
-    } else if (status === 'other') {
-      this.showStatusChangeModal = false;
-      this.showOtherStatusModal = true;
-    }
-    console.log(`Status selected: ${status}`);
-  }
-
-  cancelStatusChange() {
-    this.showStatusChangeModal = false;
-    console.log('Status change cancelled');
-  }
-
-  finalizeAction(action: string) {
-    if (action === 'done' || action === 'review') {
-      console.log(`Trip finalized with action: ${action}`);
-      this.showDropOffModal = false;
-    } else if (action === 'canceled' || action === 'rescheduled') {
-      console.log(`Trip finalized with action: ${action}`);
-      this.showOtherStatusModal = false;
+  startWaitingTimer() {
+    if (this.waitingTimer) {
+      clearInterval(this.waitingTimer);
+      this.waitingTimer = null;
+      this.waitingButtonLabel = 'START';
+      console.log(`Waiting time logged: ${this.waitingTime} seconds`);
+    } else {
+      this.waitingButtonLabel = 'STOP';
+      this.waitingTime = 0;
+      this.waitingTimer = setInterval(() => {
+        this.waitingTime += 1;
+      }, 1000);
     }
   }
 
-  closeDropOffModal() {
-    this.showDropOffModal = false;
-    console.log('Drop off modal closed');
-  }
-
-  closeOtherStatusModal() {
-    this.showOtherStatusModal = false;
-    console.log('Other status modal closed');
+  formatTime(seconds: number): string {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(
+      remainingSeconds
+    ).padStart(2, '0')}`;
   }
 }

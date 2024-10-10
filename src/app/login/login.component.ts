@@ -18,7 +18,7 @@ import { AppService } from '../services/auth.service';
 import { Analytics, getAnalytics, logEvent } from '@angular/fire/analytics';
 import { FirebaseInitializerService } from '../services/analytics/firebase-initializer.service';
 import { NotificationService } from '../services/notification/notification.service';
-
+import { PermissionService } from '../services/permission.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit {
   analyticss = inject(Analytics);
   firebaseInitializer = inject(FirebaseInitializerService);
   notificationService = inject(NotificationService);
+  permissionService = inject(PermissionService);
 
   showPassword: boolean = false;
 
@@ -90,6 +91,7 @@ export class LoginComponent implements OnInit {
               localStorage.setItem('token', token);
               localStorage.setItem('role', user.role_id.toString());
 
+              this.permissionService.getCurrentLocation();
               // Request notification permissions after successful login
               this.notificationService.initPushNotifications();
 

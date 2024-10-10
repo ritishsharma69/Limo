@@ -104,6 +104,11 @@ export class UpcomingComponent {
     }, 1000);
   }
 
+  formatDateTime(pu_date: string, pu_time: string): string {
+    const dateTime = new Date(`${pu_date}T${pu_time}`);
+    return dateTime.toISOString();
+  }
+
   fetchBooking() {
     this.apiService
       .fetchBookingDetails({
@@ -120,6 +125,13 @@ export class UpcomingComponent {
           this.tripDetails = response.data || [];
 
           if (this.tripDetails.length > 0) {
+            // this is soting code (acc.).
+            this.tripDetails.sort((a: any, b: any) => {
+              const aDateTime = new Date(`${a.pu_date}T${a.pu_time}`).getTime();
+              const bDateTime = new Date(`${b.pu_date}T${b.pu_time}`).getTime();
+              return aDateTime - bDateTime;
+            });
+
             this.addExtraInfoToTrips(this.tripDetails);
             this.pickupAndDropoffAddresses(this.tripDetails);
             console.log(

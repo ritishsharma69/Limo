@@ -11,6 +11,7 @@ import {
   IonLabel,
   IonRadioGroup,
   IonRadio,
+  IonMenuButton,
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -33,6 +34,7 @@ import { Router } from '@angular/router';
     IonItem,
     IonLabel,
     CommonModule,
+    IonMenuButton,
   ],
 })
 export class TripHistoryComponent implements OnInit {

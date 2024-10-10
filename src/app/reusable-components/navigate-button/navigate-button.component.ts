@@ -23,6 +23,8 @@ export class NavigateButtonComponent implements OnInit {
   @Input() dropoffAddress: string = '';
   waypoints = [];
   private commonService = inject(CommonService);
+  // androidPermissions: any;
+  // geolocation: any;
 
   constructor(private alertController: AlertController) {}
 

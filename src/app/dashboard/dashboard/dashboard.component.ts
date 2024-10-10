@@ -126,8 +126,4 @@ throw new Error('Method not implemented.');
     }
   }
 
-  menuClicked() {
-    // this.menu.toggle('main-content');
-    console.log('Menu button clicked');
-  }
 }

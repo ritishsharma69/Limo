@@ -65,74 +65,50 @@
       </div>
     </div>
 
-    <div>
-      <div class="button-container">
-        <button
-          *ngIf="startTrip"
-          class="change-status btn-flex btn p-3 text-uppercase"
-          (click)="openStatusChangeModal(selectedReservation.id)"
-        >
-          Change Status
-        </button>
-        <button
-          *ngIf="!startTrip"
-          class="start-trip btn-flex btn p-3 text-uppercase"
-          (click)="readyForTrip()"
-        >
-          Start Trip
-        </button>
+    <div class="mb-3 p-2 border">
+      <div class="d-flex justify-content-between align-items-center">
+        <!-- Status Section -->
+        <div class="status-section">
+          <strong>Current Status</strong>
+          <ion-select
+            class="currentStatus"
+            [(ngModel)]="currentStatus"
+            interface="popover"
+            placeholder="Select Status"
+            (ionChange)="changeStatus()"
+          >
+            <ion-select-option
+              *ngFor="let option of visibleOptions"
+              [value]="option.value"
+            >
+              {{ option.label }}
+            </ion-select-option>
+          </ion-select>
+        </div>
+
+        <!-- Vertical Divider -->
+        <div class="vertical-divider"></div>
+
+        <!-- Waiting Time Section -->
+        <div class="d-flex flex-column justify-content-between gap-2">
+          <strong>Waiting Time</strong>
+          <div
+            class="waitingTimer font-weight-bold d-flex justify-content-between align-items-center"
+          >
+            <p
+              (click)="startWaitingTimer()"
+              [class.disabled]="currentStatus !== 'arrived'"
+              [style.pointer-events]="
+                currentStatus !== 'arrived' ? 'none' : 'auto'
+              "
+              [style.opacity]="currentStatus !== 'arrived' ? '0.5' : '1'"
+            >
+              {{ waitingButtonLabel }} :
+            </p>
+            <p class="mx-4">{{ formatTime(waitingTime) }}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-
-  <!-- Confirmation Modal -->
-  <app-common-confirmation-modal
-    [isOpen]="isModalOpen"
-    [actionTitle]="'Start Trip'"
-    [actionText]="'Are you sure you want to start the trip? This will happen'"
-    (confirmAction)="handleConfirmAction($event)"
-    (isOpenChange)="onModalClose()"
-  ></app-common-confirmation-modal>
-
-  <!-- Change Status Modal -->
-  <app-action-confirmation-modal
-    [isOpen]="showStatusChangeModal"
-    title="Change Status"
-    message="Are you sure you want to change the status?"
-    [buttons]="[
-      { text: 'Other >', action: 'other' },
-      { text: 'Drop off Passenger >', action: 'dropoff' }
-    ]"
-    (willDismiss)="cancelStatusChange()"
-    (buttonClick)="confirmStatusChange($event)"
-    [showBackButton]="false"
-  ></app-action-confirmation-modal>
-
-  <!-- Drop off Passenger Modal -->
-  <app-action-confirmation-modal
-    [isOpen]="showDropOffModal"
-    title="Trip Completed"
-    message="Would you like to mark this trip as done or leave a review?"
-    [buttons]="[
-      { text: 'Done', action: 'done' },
-      { text: 'Review', action: 'review' }
-    ]"
-    (willDismiss)="closeDropOffModal()"
-    (buttonClick)="finalizeAction($event)"
-    [showBackButton]="true"
-  ></app-action-confirmation-modal>
-
-  <!-- Other Status Modal -->
-  <app-action-confirmation-modal
-    [isOpen]="showOtherStatusModal"
-    title="Other Actions"
-    message="Select an option to proceed:"
-    [buttons]="[
-      { text: 'Cancel Trip', action: 'canceled' },
-      { text: 'Reschedule Trip', action: 'rescheduled' }
-    ]"
-    (willDismiss)="closeOtherStatusModal()"
-    (buttonClick)="finalizeAction($event)"
-    [showBackButton]="true"
-  ></app-action-confirmation-modal>
 </ion-content>

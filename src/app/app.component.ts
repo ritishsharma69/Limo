@@ -78,6 +78,16 @@ export class AppComponent implements OnInit {
       icon: 'fa-solid fa-house-chimney',
     },
     {
+      title: 'Driver Profile',
+      url: '/driver-profile',
+      icon: 'fa-regular fa-id-card',
+    },
+    {
+      title: 'Trip History',
+      url: '/trip-history',
+      icon: 'fa-solid fa-clock-rotate-left',
+    },
+    {
       title: 'Logout',
       url: '/logout',
       icon: 'fa-solid fa-arrow-right-from-bracket',

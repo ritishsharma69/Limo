@@ -1,6 +1,6 @@
 .active-menu-item {
-  background-color: var(--bg-black-100);
-  color: var(--bg-orange-100);
+  --color: var(--bg-neutral-100);
+  --background: var(--bg-orange-300);
 }
 
 ion-list-header > h4 {

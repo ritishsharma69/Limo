@@ -104,6 +104,11 @@ export class PendingComponent {
     }, 1000);
   }
 
+  formatDateTime(pu_date: string, pu_time: string): string {
+    const dateTime = new Date(`${pu_date}T${pu_time}`);
+    return dateTime.toISOString();
+  }
+
   fetchBooking() {
     // this.commonService.showSimpleLoader();
 
@@ -122,6 +127,13 @@ export class PendingComponent {
           }
 
           this.tripDetails = response.data || [];
+
+          // Sort the trip details by created_at in descending order
+          this.tripDetails.sort((a: any, b: any) => {
+            const dateA = new Date(a.created_at).getTime();
+            const dateB = new Date(b.created_at).getTime();
+            return dateB - dateA;
+          });
 
           if (this.tripDetails.length > 0) {
             this.addExtraInfoToTrips(this.tripDetails);
