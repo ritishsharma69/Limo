@@ -4,9 +4,7 @@
       <ion-back-button defaultHref="/" />
     </ion-buttons> -->
     <ion-buttons slot="start">
-      <ion-menu-button
-        autoHide="false"
-      ></ion-menu-button>
+      <ion-menu-button autoHide="false"></ion-menu-button>
     </ion-buttons>
     <ion-title>Driver Profile</ion-title>
   </ion-toolbar>
@@ -38,11 +36,9 @@
     </ion-grid>
     <br />
 
-    <div class="border p-1 mb-3 shadow">
+    <div class="border mb-3 shadow">
+      <app-headline-comp title="Personal Information"></app-headline-comp>
       <ion-card-content>
-        <div class="mb-2">
-          <app-headline-comp title="Personal Information"></app-headline-comp>
-        </div>
         <ion-item class="ion-justify-content-between d-flex flex-column">
           <ion-label class="fw-semibold">Name</ion-label>
           <div class="ps-4">
@@ -51,7 +47,9 @@
         </ion-item>
         <ion-item class="ion-justify-content-between d-flex flex-column">
           <ion-label class="fw-semibold">Email</ion-label>
-          <div class="ps-4 overflow-scroll">{{ driverProfile?.user?.email || "---" }}</div>
+          <div class="ps-4 overflow-scroll">
+            {{ driverProfile?.user?.email || "---" }}
+          </div>
         </ion-item>
         <ion-item class="ion-justify-content-between d-flex flex-column">
           <ion-label class="fw-semibold">Phone</ion-label>
@@ -62,11 +60,9 @@
       </ion-card-content>
     </div>
 
-    <div class="border p-1 mb-3 shadow">
+    <div class="border mb-3 shadow">
+      <app-headline-comp title="License Details"></app-headline-comp>
       <ion-card-content>
-        <div class="mb-2">
-          <app-headline-comp title="License Details"></app-headline-comp>
-        </div>
         <ion-item class="ion-justify-content-between d-flex flex-column">
           <ion-label class="fw-semibold">License Number</ion-label>
           <div class="ps-4">{{ driverProfile?.license || "---" }}</div>
@@ -78,11 +74,9 @@
       </ion-card-content>
     </div>
 
-    <div class="border p-1 mb-3 shadow">
+    <div class="border mb-3 shadow">
+      <app-headline-comp title="Contact Details"></app-headline-comp>
       <ion-card-content>
-        <div class="mb-2">
-          <app-headline-comp title="Contact Details"></app-headline-comp>
-        </div>
         <ion-item class="ion-justify-content-between d-flex flex-column">
           <ion-label class="fw-semibold">Address</ion-label>
           <div class="ps-4">
@@ -92,11 +86,9 @@
       </ion-card-content>
     </div>
 
-    <div class="border p-1 mb-3 shadow">
+    <div class="border mb-3 shadow">
+      <app-headline-comp title="Driving Statistics"></app-headline-comp>
       <ion-card-content>
-        <div class="mb-2">
-          <app-headline-comp title="Driving Statistics"></app-headline-comp>
-        </div>
         <ion-item class="ion-justify-content-between d-flex flex-column">
           <ion-label class="fw-semibold">Total Trips Completed</ion-label>
           <div class="ps-4">{{ driverProfile?.totalTrips || "---" }}</div>
@@ -112,11 +104,9 @@
       </ion-card-content>
     </div>
 
-    <div class="border p-1 mb-3 shadow">
+    <div class="border mb-3 shadow">
+      <app-headline-comp title="More About You"></app-headline-comp>
       <ion-card-content>
-        <div class="mb-2">
-          <app-headline-comp title="More About You"></app-headline-comp>
-        </div>
         <ion-item class="ion-justify-content-between d-flex flex-column">
           <ion-label class="fw-semibold">Your Hometown</ion-label>
           <div class="ps-4">

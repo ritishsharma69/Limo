@@ -31,12 +31,12 @@ import { NavigateButtonComponent } from '../../reusable-components/navigate-butt
 import { ActionConfirmationModalComponent } from '../../reusable-components/action-confirmation-modal/action-confirmation-modal.component';
 import { CommonService } from 'src/app/services/common.service';
 import { FormsModule } from '@angular/forms';
+import { PaymentsTabComponent } from 'src/app/reusable-components/payments-tab/payments-tab.component';
 
 interface Option {
   value: string;
   label: string;
 }
-import { PaymentsTabComponent } from 'src/app/reusable-components/payments-tab/payments-tab.component';
 
 @Component({
   selector: 'app-in-progress',
@@ -77,12 +77,22 @@ import { PaymentsTabComponent } from 'src/app/reusable-components/payments-tab/p
   ],
 })
 export class InProgressComponent implements OnInit {
+submit() {
+throw new Error('Method not implemented.');
+}
   private commonService = inject(CommonService);
 
   currentStatus: string = 'onTheWay';
   waitingTime: number = 0;
   waitingButtonLabel: string = 'START';
   waitingTimer: any;
+
+  notes: string = '';
+  additionalCosts: { name: string; amount: number }[] = [
+    { name: '', amount: 0 },
+  ];
+  mileageIn: number = 0;
+  mileageOut: number = 0;
 
   reservations = [
     {
@@ -112,17 +122,14 @@ export class InProgressComponent implements OnInit {
   options: Option[] = [
     { value: 'onTheWay', label: 'On The Way' },
     { value: 'arrived', label: 'Arrived' },
+    { value: 'noShow', label: 'No Show' },
     { value: 'passengerInCar', label: 'Passenger In Car' },
     { value: 'droppedPassenger', label: 'Dropped Passenger' },
   ];
 
-  visibleOptions: Option[] = [];
-
   constructor() {}
 
-  ngOnInit() {
-    this.visibleOptions = this.options.slice(0, 2);
-  }
+  ngOnInit() {}
 
   changeStatus() {
     if (this.currentStatus) {
@@ -131,10 +138,6 @@ export class InProgressComponent implements OnInit {
         'success'
       );
       console.log(`Status changed to: ${this.currentStatus}`);
-
-      if (this.currentStatus === 'arrived') {
-        this.visibleOptions = this.options.slice(2);
-      }
 
       if (this.waitingTimer) {
         clearInterval(this.waitingTimer);
@@ -167,5 +170,13 @@ export class InProgressComponent implements OnInit {
     return `${String(minutes).padStart(2, '0')}:${String(
       remainingSeconds
     ).padStart(2, '0')}`;
+  }
+
+  addCost() {
+    this.additionalCosts.push({ name: '', amount: 0 });
+  }
+
+  removeCost(index: number) {
+    this.additionalCosts.splice(index, 1);
   }
 }

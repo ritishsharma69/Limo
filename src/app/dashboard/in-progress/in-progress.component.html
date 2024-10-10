@@ -1,18 +1,18 @@
 <ion-content>
   <div class="p-3">
-    <div class="d-flex justify-content-between p-2">
+    <div class="d-flex justify-content-between p-2 border shadow">
       <span>{{ selectedReservation.date }}</span>
       <span>ID: {{ selectedReservation.id }}</span>
     </div>
 
-    <div class="mb-3 border">
+    <div class="mb-3 border border shadow">
       <app-headline-comp title="REQUIREMENTS"></app-headline-comp>
       <p class="ion-text-left p-3 mb-0 text-center">
         {{ selectedReservation.requirements }}
       </p>
     </div>
 
-    <div class="mb-3 border">
+    <div class="mb-3 border border shadow">
       <p
         class="passanger-info border-bottom text-center p-2 ion-text-uppercase mb-0"
       >
@@ -24,7 +24,7 @@
           <p class="mb-2 text-center fs-1 mt-2">
             {{ selectedReservation.name }}
           </p>
-          <div class="d-flex justify-content-center gap-4">
+          <div class="d-flex justify-content-center gap-4 mb-3">
             <a
               href="tel:+1234567890"
               class="text-decoration-none"
@@ -37,9 +37,9 @@
               </div>
             </a>
             <a
-              href="mailto:example@example.com"
+              href="sms:+123456789"
               class="text-decoration-none"
-              aria-label="Email Us"
+              aria-label="Text Us"
             >
               <div
                 class="border rounded-circle p-3 shadow-lg d-flex align-items-center justify-content-center"
@@ -53,7 +53,7 @@
     </div>
 
     <!-- Routing info-->
-    <div>
+    <div class="mb-3 border border shadow">
       <app-headline-comp title="Routing Details"></app-headline-comp>
       <div class="border p-4">
         <app-pick-drop
@@ -65,13 +65,86 @@
       </div>
     </div>
 
-    <div>
+    <div class="mb-3 border shadow">
+      <app-headline-comp title="FINALISE TAB"></app-headline-comp>
+
+      <p class="ion-text-left mb-0 text-center"></p>
+
+      <!-- Notes Section -->
+      <div class="p-3">
+        <label for="notes" class="form-label">Notes:</label>
+        <textarea
+          id="notes"
+          [(ngModel)]="notes"
+          rows="3"
+          class="form-control"
+        ></textarea>
+      </div>
+
+      <!-- Additional Costs Section -->
+      <div class="p-3">
+        <app-headline-comp title="Additional Costs"></app-headline-comp>
+        <div
+          *ngFor="let cost of additionalCosts; let i = index"
+          class="d-flex align-items-center mt-3"
+        >
+          <div class="input-group me-2 flex-grow-1">
+            <input
+              type="text"
+              [(ngModel)]="cost.name"
+              placeholder="Cost Name"
+              class="form-control"
+            />
+            <input
+              type="number"
+              [(ngModel)]="cost.amount"
+              placeholder="Amount"
+              class="form-control"
+            />
+          </div>
+          <button type="button" class="btn btn-danger" (click)="removeCost(i)">
+            Delete
+          </button>
+        </div>
+        <button class="btn btn-primary mt-2" (click)="addCost()">
+          Add More Cost
+        </button>
+      </div>
+
+      <!-- Mileage Section -->
+      <div class="p-3">
+        <app-headline-comp title="Mileage In/Out"></app-headline-comp>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="mileageIn" class="form-label">Mileage In:</label>
+            <input
+              type="number"
+              id="mileageIn"
+              [(ngModel)]="mileageIn"
+              class="form-control"
+            />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="mileageOut" class="form-label">Mileage Out:</label>
+            <input
+              type="number"
+              id="mileageOut"
+              [(ngModel)]="mileageOut"
+              class="form-control"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border shadow">
       <app-headline-comp title="PAYMENT STATUS"></app-headline-comp>
       <div class="border p-4">
         <app-payments-tab></app-payments-tab>
       </div>
     </div>
-
+    
+    <div class="fixed-bottom sticky-bottom mb-3 bg-white">
     <div class="mb-3 p-2 border">
       <div class="d-flex justify-content-between align-items-center">
         <!-- Status Section -->
@@ -85,7 +158,7 @@
             (ionChange)="changeStatus()"
           >
             <ion-select-option
-              *ngFor="let option of visibleOptions"
+              *ngFor="let option of options"
               [value]="option.value"
             >
               {{ option.label }}
@@ -97,22 +170,25 @@
         <div class="vertical-divider"></div>
 
         <!-- Waiting Time Section -->
-        <div class="d-flex flex-column justify-content-between gap-2">
-          <strong>Waiting Time</strong>
           <div
-            class="waitingTimer font-weight-bold d-flex justify-content-between align-items-center"
+            class="d-flex flex-column justify-content-between gap-2"
           >
-            <p
-              (click)="startWaitingTimer()"
-              [class.disabled]="currentStatus !== 'arrived'"
-              [style.pointer-events]="
-                currentStatus !== 'arrived' ? 'none' : 'auto'
-              "
-              [style.opacity]="currentStatus !== 'arrived' ? '0.5' : '1'"
+            <strong>Waiting Time</strong>
+            <div
+              class="waitingTimer font-weight-bold d-flex justify-content-between align-items-center"
             >
-              {{ waitingButtonLabel }} :
-            </p>
-            <p class="mx-4">{{ formatTime(waitingTime) }}</p>
+              <p
+                (click)="startWaitingTimer()"
+                [class.disabled]="currentStatus !== 'arrived'"
+                [style.pointer-events]="
+                  currentStatus !== 'arrived' ? 'none' : 'auto'
+                "
+                [style.opacity]="currentStatus !== 'arrived' ? '0.5' : '1'"
+              >
+                {{ waitingButtonLabel }} :
+              </p>
+              <p class="mx-4">{{ formatTime(waitingTime) }}</p>
+            </div>
           </div>
         </div>
       </div>

@@ -29,7 +29,10 @@
         <div class="d-flex justify-content-between mb-0 p-1">
           <span>{{ trip.booking_f_name }} {{ trip.booking_l_name }}</span>
           <span class="pu-date">
-            {{ formatDateTime(trip.pu_date, trip.pu_time) | date: 'dd MMM, h:mm a' }}
+            {{
+              formatDateTime(trip.pu_date, trip.pu_time)
+                | date : "dd MMM, h:mm a"
+            }}
           </span>
         </div>
       </div>
@@ -39,7 +42,7 @@
         <app-headline-comp title="Passenger Details"></app-headline-comp>
 
         <!-- Passenger Information -->
-        <div class="d-flex align-items-center border p-3 mb-3">
+        <div class="d-flex align-items-center border p-3 mb-3 shadow">
           <div class="image-container">
             <img
               src="../../../assets/imgs/login-image.jpg"
@@ -83,7 +86,7 @@
 
         <div class="mb-3">
           <app-headline-comp title="Routing Details"></app-headline-comp>
-          <div class="border p-4">
+          <div class="border p-4 shadow">
             <app-pick-drop
               [pickupAddress]="trip.pickupAddress"
               [dropoffAddress]="trip.dropoffAddress"
@@ -98,7 +101,7 @@
 
         <div class="mb-3">
           <app-headline-comp title="Additional Details"></app-headline-comp>
-          <div class="border p-4">
+          <div class="border p-4 shadow">
             <app-extra-items
               [extraInfo]="trip.extraInfo"
               [showButton]="false"
@@ -108,24 +111,23 @@
 
         <div class="border mb-3">
           <app-headline-comp title="Notes From ADMIN"></app-headline-comp>
-          <p class="ion-text-center p-4 mb-0">
+          <p class="ion-text-center p-4 mb-0 shadow">
             Example: Help Passenger with their luggage.
           </p>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3 shadow">
           <app-headline-comp title="PAYMENT STATUS"></app-headline-comp>
           <div class="border p-4">
-            <app-payments-tab
-            
-            >
-            </app-payments-tab>
+            <h3 class="text-center mb-0">
+              Remaining Payment: <span class="text-success">100 $</span>
+            </h3>
           </div>
-        </div>        
+        </div>
 
         <div class="border">
           <app-headline-comp title="Assigned Vehicle"></app-headline-comp>
-          <div class="p-4">
+          <div class="p-4 shadow">
             <div class="d-flex justify-content-between align-items-start">
               <div class="text-left">
                 <p>

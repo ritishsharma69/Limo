@@ -18,10 +18,8 @@
 </ion-header>
  
 <ion-content scrollY="true" *ngIf="trip">
-  <div class="m-3 border p-3">
-    <div class="mb-2">
-      <app-headline-comp title="Trip Details"></app-headline-comp>
-    </div>
+  <div class="m-3 border shadow">
+    <app-headline-comp title="Trip Details"></app-headline-comp>
     <ion-item>
       <ion-label class="fw-semibold"> Pick up</ion-label>
       <div>{{ trip.details.pickUp }}</div>
@@ -46,17 +44,9 @@
       <ion-label class="fw-semibold"> Payment Method</ion-label>
       <div>{{ trip.details.paymentMethod }}</div>
     </ion-item>
-    <ion-item>
-      <ion-label class="fw-semibold"> Rating</ion-label>
-      <div>
-        {{ trip.details.rating }} <i class="fa-solid fa-star stare"></i>
-      </div>
-    </ion-item>
   </div>
-  <div class="m-3 border p-3">
-    <div class="mb-2">
-      <app-headline-comp title="Payment Type"></app-headline-comp>
-    </div>
+  <div class="m-3 border shadow">
+    <app-headline-comp title="Payment Type"></app-headline-comp>
     <ion-item>
       <ion-label class="fw-semibold"> Payment Type </ion-label>
       <div>{{ trip.payment.paymentType }}</div>

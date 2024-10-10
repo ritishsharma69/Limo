@@ -1,31 +1,23 @@
-.passanger-info {
+.passanger-info, .notes-section, .additional-costs, .mileage-section {
   background-color: var(--bg-primary-100);
   color: var(--bg-neutral-100);
 }
-
+ 
 .icon {
   color: var(--bg-orange-100);
   font-size: 1.5rem;
 }
-
+ 
 .vertical-divider {
   height: 50px;
   width: 1px;
   background-color: var(--bg-neutral-300);
 }
-
-.status-section {
+ 
+.status-section, .waiting-time-section {
   width: 50%;
 }
-
-.waiting-time-section {
-  width: 50%;
-}
-
-.waitingTimer {
-  color: var(--bg-orange-100);
-}
-
-.currentStatus {
+ 
+.waitingTimer, .currentStatus {
   color: var(--bg-orange-100);
 }
