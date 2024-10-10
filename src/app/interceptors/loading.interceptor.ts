@@ -4,13 +4,12 @@ import { finalize, catchError } from 'rxjs/operators';
 import { LoaderService } from '../services/loading.service';
 import { throwError } from 'rxjs';
 
-// const excludedUrls = ['/for-feature'];
-const excludedUrls = ['/dashboard/pending, /dashboard/upcoming'];
+const excludedUrls = ["/any"];
 
 export const loaderInterceptor: HttpInterceptorFn = (req, next) => {
   const loaderService = inject(LoaderService);
-
-  const shouldShowLoader = !excludedUrls.some((url) => req.url.includes(url));
+  
+  const shouldShowLoader = !excludedUrls.some(url => req.url.includes(url));
 
   if (shouldShowLoader) {
     loaderService.presentLoading();

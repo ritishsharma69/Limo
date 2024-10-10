@@ -12,19 +12,24 @@ export class NotificationService {
   }
 
   // Change the visibility of this method to public
-  public initPushNotifications() {
-    PushNotifications.requestPermissions().then((result) => {
+  async initPushNotifications(): Promise<void> {
+    try {
+      const result = await PushNotifications.requestPermissions();
       console.log('Permission request result:', result);
+      
       if (result.receive === 'granted') {
-        PushNotifications.register();
-
+        await PushNotifications.register();
+        
         // Handle incoming notifications
         this.handlePushNotifications();
       } else {
         console.error('Push notification permission not granted');
       }
-    });
+    } catch (error) {
+      console.error('Error requesting push notification permissions:', error);
+    }
   }
+  
 
   private handlePushNotifications() {
 

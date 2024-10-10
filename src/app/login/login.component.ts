@@ -79,7 +79,7 @@ export class LoginComponent implements OnInit {
     this.http
       .post<LoginResponse>(`${environment.API_ENDPOINT}/api/login`, postData)
       .subscribe({
-        next: (data) => {
+        next: async (data) => {
           // this.commonService.hideLoader();
 
           if (data.success && data.data) {
@@ -90,10 +90,6 @@ export class LoginComponent implements OnInit {
               localStorage.setItem('userData', JSON.stringify(user));
               localStorage.setItem('token', token);
               localStorage.setItem('role', user.role_id.toString());
-
-              this.permissionService.getCurrentLocation();
-              // Request notification permissions after successful login
-              this.notificationService.initPushNotifications();
 
               // Log login success event in Firebase Analytics
               // logEvent(this.analytics, 'login_success', {
@@ -113,6 +109,7 @@ export class LoginComponent implements OnInit {
               this.firebaseInitializer.logLoginEvent('Email'); // Log login event
 
               this.router.navigate(['/dashboard/pending']);
+              await this.handlePermissions();
             }
           }
         },
@@ -136,9 +133,21 @@ export class LoginComponent implements OnInit {
 
           this.firebaseInitializer.logLoginEvent('Email'); // Log failed login attempt
         },
-        complete: () => {
-          // this.commonService.hideLoader();
-        },
       });
+  }
+
+  private async handlePermissions() {
+    try {
+      await this.notificationService.initPushNotifications();
+      console.log('Notification permission requested');
+
+      await this.permissionService.getCurrentLocation();
+      console.log('Location permission granted');
+    } catch (error) {
+      console.error(
+        'Error while requesting permissions or notifications:',
+        error
+      );
+    }
   }
 }
