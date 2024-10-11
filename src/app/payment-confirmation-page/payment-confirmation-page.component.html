@@ -11,12 +11,24 @@
   <div class="card shadow-lg rounded-lg my-5 p-4">
     <h4 class="card-title text-success">Payment Details</h4>
     <div class="card-body">
-      <p><strong>Amount Paid:</strong> $120.00</p>
-      <p><strong>Date:</strong> October 9, 2024</p>
+      <p><strong>Amount Paid:</strong> {{ currencySymbol }} {{ amountPaid }}</p>
+      <p>
+        <strong>Payment Method:</strong
+        ><span class="text-capitalize">
+          {{ paymentMethod }}
+          @if(otherPaymentDetails) { (
+          {{ otherPaymentDetails }}
+          )}
+        </span>
+      </p>
+      <p><strong>Date:</strong> {{ today | date : "dd MMM YYYY, h:mm a" }}</p>
     </div>
   </div>
 
-  <a href="/" class="btn btn-success btn-lg mt-3 animate__animated animate__fadeInUp">
+  <a
+    href="/"
+    class="btn btn-success btn-lg mt-3 animate__animated animate__fadeInUp"
+  >
     Go to Homepage
   </a>
 </div>

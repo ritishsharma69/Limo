@@ -77,22 +77,23 @@ interface Option {
   ],
 })
 export class InProgressComponent implements OnInit {
-submit() {
-throw new Error('Method not implemented.');
-}
+  submit() {
+    throw new Error('Method not implemented.');
+  }
   private commonService = inject(CommonService);
 
   currentStatus: string = 'onTheWay';
   waitingTime: number = 0;
   waitingButtonLabel: string = 'START';
   waitingTimer: any;
+  totalAdditionalPayment: number = 0;
 
   notes: string = '';
   additionalCosts: { name: string; amount: number }[] = [
     { name: '', amount: 0 },
   ];
-  mileageIn: number = 0;
-  mileageOut: number = 0;
+  mileageIn: number | null = null;
+  mileageOut: number | null = null;
 
   reservations = [
     {
@@ -129,7 +130,9 @@ throw new Error('Method not implemented.');
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.calculateTotalAdditionalPayment();
+  }
 
   changeStatus() {
     if (this.currentStatus) {
@@ -174,9 +177,18 @@ throw new Error('Method not implemented.');
 
   addCost() {
     this.additionalCosts.push({ name: '', amount: 0 });
+    this.calculateTotalAdditionalPayment();
   }
 
   removeCost(index: number) {
     this.additionalCosts.splice(index, 1);
+    this.calculateTotalAdditionalPayment();
+  }
+
+  calculateTotalAdditionalPayment() {
+    this.totalAdditionalPayment = this.additionalCosts.reduce(
+      (total, cost) => total + cost.amount,
+      0
+    );
   }
 }

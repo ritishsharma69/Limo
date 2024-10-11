@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';  // Import Router
+import { Router } from '@angular/router'; // Import Router
 
 import { HeadlineCompComponent } from '../headline-comp.component';
 
@@ -10,25 +10,30 @@ import { HeadlineCompComponent } from '../headline-comp.component';
   templateUrl: './payments-tab.component.html',
   styleUrls: ['./payments-tab.component.scss'],
   standalone: true,
-  imports: [
-    HeadlineCompComponent,
-    FormsModule,
-    CommonModule
-  ]
+  imports: [HeadlineCompComponent, FormsModule, CommonModule],
 })
 export class PaymentsTabComponent implements OnInit {
+  @Input() additionalPayment: number = 0;
 
-  remainingPayment = 500; 
-  additionalCost: number | null = null; 
-  currencySymbol = '$';
+  remainingPayment: number = 0;
+  additionalCost: number | null = null;
+  currencySymbol: string = '$';
   selectedPaymentMethod: string | null = null;
   collectedAmount: number | null = null;
   otherPaymentDetails: string | null = null;
   paymentStatus: string | null = null;
 
-  constructor(private router: Router) { }  // Inject Router here
+  constructor(private router: Router) {}
 
   ngOnInit() {}
+
+  ngOnChanges() {
+    this.updateRemainingPayment();
+  }
+
+  updateRemainingPayment() {
+    this.remainingPayment = 500 + this.additionalPayment;
+  }
 
   setPaymentMethod(method: string) {
     this.selectedPaymentMethod = method;
@@ -41,17 +46,33 @@ export class PaymentsTabComponent implements OnInit {
   }
 
   finalizePayment() {
-    if (this.selectedPaymentMethod === 'cash' && this.collectedAmount !== null) {
-      this.paymentStatus = `Transaction Successful! Cash Collected: ${this.collectedAmount} ${this.currencySymbol}`;
-    } else if (this.selectedPaymentMethod === 'card') {
-      this.paymentStatus = 'Transaction Successful! Charged to Card.';
-    } else if (this.selectedPaymentMethod === 'other' && this.otherPaymentDetails) {
-      this.paymentStatus = `Transaction Successful! Other Payment: ${this.otherPaymentDetails}`;
-    } else {
-      this.paymentStatus = 'Please select a payment method and enter the required details.';
+    const totalPaid = this.calculateTotalPaid();
+
+    if (totalPaid === null) {
+      this.paymentStatus =
+        'Please select a payment method and enter the required details.';
+      return;
     }
 
-    this.router.navigate(['/payment-status']);
+    this.router.navigate(['/payment-status'], {
+      state: {
+        remainingPayment: totalPaid,
+        paymentMethod: this.selectedPaymentMethod,
+        currencySymbol: this.currencySymbol,
+        otherPaymentDetails: this.otherPaymentDetails,
+      },
+    });
+  }
 
+  private calculateTotalPaid(): number | null {
+    if (
+      this.selectedPaymentMethod === 'cash' ||
+      this.selectedPaymentMethod === 'card' ||
+      (this.selectedPaymentMethod === 'other' && this.otherPaymentDetails)
+    ) {
+      return this.getTotalRemainingPayment();
+    }
+
+    return null;
   }
 }
