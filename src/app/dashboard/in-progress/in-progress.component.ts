@@ -32,6 +32,7 @@ import { ActionConfirmationModalComponent } from '../../reusable-components/acti
 import { CommonService } from 'src/app/services/common.service';
 import { FormsModule } from '@angular/forms';
 import { PaymentsTabComponent } from 'src/app/reusable-components/payments-tab/payments-tab.component';
+import { ApiService } from 'src/app/services/api.service';
 
 interface Option {
   value: string;
@@ -78,8 +79,9 @@ interface Option {
 })
 export class InProgressComponent implements OnInit {
   private commonService = inject(CommonService);
+  private apiService = inject(ApiService);
 
-  currentStatus: string = 'onTheWay';
+  currentStatus: string = 'ontheway';
   waitingTime: number = 0;
   waitingButtonLabel: string = 'START';
   waitingTimer: any;
@@ -118,17 +120,38 @@ export class InProgressComponent implements OnInit {
 
   selectedReservation = this.reservations[0];
 
-  options: Option[] = [
-    { value: 'onTheWay', label: 'On The Way' },
-    { value: 'arrived', label: 'Arrived' },
-    { value: 'noShow', label: 'No Show' },
-    { value: 'passengerInCar', label: 'Passenger In Car' },
-    { value: 'droppedPassenger', label: 'Dropped Passenger' },
-  ];
+  options: Option[] = [];
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.fetchdriverStatus();
+  }
+
+  // fetchdriverStatus() {
+  //   this.apiService.driverStatus().subscribe({
+  //     next: (response) => {
+  //       console.log(response);
+  //     }
+  //   })
+  // }
+  fetchdriverStatus() {
+    this.apiService.driverStatus().subscribe({
+      next: (response) => {
+        console.log(response);
+
+        this.options = response.data.map((status: { name: string; }) => ({
+          value: status.name.toLowerCase().replace(/\s+/g, ''),
+          label: status.name.replace(/([A-Z])/g, ' $1').trim(),
+        }));
+        console.log(this.options);
+
+      },
+      error: (err) => {
+        console.error('Error fetching driver status:', err);
+      }
+    });
+  }
 
   getCurrentStatusLabel(): string {
     const option = this.options.find((opt) => opt.value === this.currentStatus);
@@ -161,7 +184,6 @@ export class InProgressComponent implements OnInit {
       console.log(`Waiting time logged: ${this.waitingTime} seconds`);
     } else {
       this.waitingButtonLabel = 'STOP';
-      this.waitingTime = 0;
       this.waitingTimer = setInterval(() => {
         this.waitingTime += 1;
       }, 1000);

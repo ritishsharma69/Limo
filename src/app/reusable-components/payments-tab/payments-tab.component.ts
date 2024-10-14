@@ -19,7 +19,9 @@ export class PaymentsTabComponent implements OnInit {
   otherPaymentDetails: string | null = null;
   paymentStatus: string | null = null;
   totalAdditionalPayment: number = 0;
-  additionalCosts: { name: string; amount: number | null }[] = [{ name: '', amount: null }];
+  additionalCosts: { name: string; amount: number | null }[] = [
+    { name: '', amount: null },
+  ];
   submitted: boolean = false;
 
   constructor(private router: Router) {}
@@ -49,6 +51,7 @@ export class PaymentsTabComponent implements OnInit {
     const totalPaid = this.calculateTotalPaid();
     if (totalPaid === null) {
       this.paymentStatus = 'Please enter the required payment details.';
+      this.paymentStatus = 'Please enter the required payment details.';
       return;
     }
 
@@ -64,7 +67,9 @@ export class PaymentsTabComponent implements OnInit {
 
   private calculateTotalPaid(): number | null {
     if (
-      (this.selectedPaymentMethod === 'cash' && this.collectedAmount && this.collectedAmount > 0) ||
+      (this.selectedPaymentMethod === 'cash' &&
+        this.collectedAmount &&
+        this.collectedAmount > 0) ||
       this.selectedPaymentMethod === 'card' ||
       (this.selectedPaymentMethod === 'other' && this.otherPaymentDetails)
     ) {
@@ -74,6 +79,7 @@ export class PaymentsTabComponent implements OnInit {
   }
 
   addCost() {
+    this.additionalCosts.push({ name: '', amount: null });
     this.additionalCosts.push({ name: '', amount: null });
     this.calculateTotalAdditionalPayment();
   }
@@ -86,7 +92,31 @@ export class PaymentsTabComponent implements OnInit {
   calculateTotalAdditionalPayment() {
     this.totalAdditionalPayment = this.additionalCosts.reduce(
       (total, cost) => total + (cost.amount || 0),
+      (total, cost) => total + (cost.amount || 0),
       0
+    );
+  }
+
+  isFormValid(): boolean {
+    const allCostsValid = this.additionalCosts.every(
+      (cost) => !!cost.name && cost.amount !== null && cost.amount > 0
+    );
+
+    const paymentMethodValid =
+      this.selectedPaymentMethod === 'cash'
+        ? this.collectedAmount !== null && this.collectedAmount > 0
+        : this.selectedPaymentMethod === 'other'
+        ? !!this.otherPaymentDetails && this.otherPaymentDetails.trim() !== ''
+        : this.selectedPaymentMethod !== null;
+
+    return allCostsValid || paymentMethodValid;
+  }
+
+  // Helper method to determine if a specific cost is invalid
+  isCostInvalid(cost: { name: string; amount: number | null }): boolean {
+    return (
+      !!this.submitted &&
+      (!cost.name || cost.amount === null || cost.amount <= 0)
     );
   }
 
