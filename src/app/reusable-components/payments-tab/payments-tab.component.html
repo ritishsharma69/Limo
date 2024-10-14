@@ -1,14 +1,13 @@
 <div>
-  <!-- Display the total remaining payment (base + additional cost) -->
   <h3 class="mb-4 text-center">
     Remaining Payment:
-    <span class="text-success"
-      > {{ currencySymbol }} {{ getTotalRemainingPayment() }}</span
+    <span class="text-success">
+      {{ currencySymbol }} {{ getTotalRemainingPayment() }}</span
     >
   </h3>
 
   <!-- Input for Additional Cost -->
-  <div class="mb-4">
+  <!-- <div class="mb-4">
     <label class="form-label">Additional Cost (added by the driver):</label>
     <input
       type="number"
@@ -16,65 +15,94 @@
       [(ngModel)]="additionalCost"
       placeholder="Enter additional cost"
     />
+  </div> -->
+
+  <div class="mb-3">
+    <app-headline-comp title="Additional Costs"></app-headline-comp>
+    <div
+      *ngFor="let cost of additionalCosts; let i = index"
+      class="d-flex align-items-center mt-3"
+    >
+      <div class="input-group me-2 flex-grow-1">
+        <input
+          type="text"
+          [(ngModel)]="cost.name"
+          placeholder="Cost Name"
+          class="form-control"
+        />
+        <input
+          type="number"
+          [(ngModel)]="cost.amount"
+          placeholder="Amount"
+          class="form-control"
+          (ngModelChange)="calculateTotalAdditionalPayment()"
+        />
+      </div>
+      <button type="button" class="btn btn-danger" (click)="removeCost(i)">
+        Delete
+      </button>
+    </div>
+    <button class="btn btn-primary mt-2" (click)="addCost()">
+      Add More Cost
+    </button>
   </div>
+  <div class="my-3">
+    <app-headline-comp title="Choose a Payment Option"></app-headline-comp>
+    <!-- Cash Option -->
+    <div class="form-check my-3">
+      <label class="form-check-label">
+        <input
+          type="radio"
+          class="form-check-input"
+          name="paymentMethod"
+          (click)="setPaymentMethod('cash')"
+        />
+        Cash
+      </label>
+      <div *ngIf="selectedPaymentMethod === 'cash'" class="mt-2">
+        <label class="form-label">Amount Collected:</label>
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="collectedAmount"
+          placeholder="Enter amount"
+        />
+      </div>
+    </div>
 
-  <p class="fw-bold mb-3">Choose a Payment Option:</p>
+    <!-- Charge Card Option -->
+    <div class="form-check mb-3">
+      <label class="form-check-label">
+        <input
+          type="radio"
+          class="form-check-input"
+          name="paymentMethod"
+          (click)="setPaymentMethod('card')"
+        />
+        Charged the card on machine
+      </label>
+    </div>
 
-  <!-- Cash Option -->
-  <div class="form-check mb-3">
-    <label class="form-check-label">
-      <input
-        type="radio"
-        class="form-check-input"
-        name="paymentMethod"
-        (click)="setPaymentMethod('cash')"
-      />
-      Cash
-    </label>
-    <div *ngIf="selectedPaymentMethod === 'cash'" class="mt-2">
-      <label class="form-label">Amount Collected:</label>
-      <input
-        type="number"
-        class="form-control"
-        [(ngModel)]="collectedAmount"
-        placeholder="Enter amount"
-      />
+    <!-- Other Payment Option -->
+    <div class="form-check mb-3">
+      <label class="form-check-label">
+        <input
+          type="radio"
+          class="form-check-input"
+          name="paymentMethod"
+          (click)="setPaymentMethod('other')"
+        />
+        Other Payment Option
+      </label>
+      <div *ngIf="selectedPaymentMethod === 'other'" class="mt-2">
+        <textarea
+          class="form-control"
+          [(ngModel)]="otherPaymentDetails"
+          placeholder="Enter payment details"
+        ></textarea>
+      </div>
     </div>
   </div>
-
-  <!-- Charge Card Option -->
-  <div class="form-check mb-3">
-    <label class="form-check-label">
-      <input
-        type="radio"
-        class="form-check-input"
-        name="paymentMethod"
-        (click)="setPaymentMethod('card')"
-      />
-      Charge Card
-    </label>
-  </div>
-
-  <!-- Other Payment Option -->
-  <div class="form-check mb-3">
-    <label class="form-check-label">
-      <input
-        type="radio"
-        class="form-check-input"
-        name="paymentMethod"
-        (click)="setPaymentMethod('other')"
-      />
-      Other Payment Option
-    </label>
-    <div *ngIf="selectedPaymentMethod === 'other'" class="mt-2">
-      <textarea
-        class="form-control"
-        [(ngModel)]="otherPaymentDetails"
-        placeholder="Enter payment details"
-      ></textarea>
-    </div>
-  </div>
-
   <!-- Finalize Button -->
   <div class="text-center mt-4">
     <button class="btn btn-primary btn-lg" (click)="finalizePayment()">

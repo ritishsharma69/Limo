@@ -25,7 +25,8 @@ export class PaymentConfirmationPageComponent implements OnInit {
       this.currencySymbol =
         navigation.extras.state['currencySymbol'] || this.currencySymbol;
       this.paymentMethod = navigation.extras.state['paymentMethod'] || null;
-      this.otherPaymentDetails = navigation.extras.state['otherPaymentDetails'] || null;
+      this.otherPaymentDetails =
+        navigation.extras.state['otherPaymentDetails'] || null;
     }
   }
 }

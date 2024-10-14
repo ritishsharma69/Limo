@@ -1,8 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router'; // Import Router
-
+import { Router } from '@angular/router';
 import { HeadlineCompComponent } from '../headline-comp.component';
 
 @Component({
@@ -13,27 +12,23 @@ import { HeadlineCompComponent } from '../headline-comp.component';
   imports: [HeadlineCompComponent, FormsModule, CommonModule],
 })
 export class PaymentsTabComponent implements OnInit {
-  @Input() additionalPayment: number = 0;
 
-  remainingPayment: number = 0;
+  remainingPayment: number = 500;
   additionalCost: number | null = null;
   currencySymbol: string = '$';
   selectedPaymentMethod: string | null = null;
   collectedAmount: number | null = null;
   otherPaymentDetails: string | null = null;
   paymentStatus: string | null = null;
-
+  totalAdditionalPayment: number = 0;
+  additionalCosts: { name: string; amount: number }[] = [{ name: '', amount: 0 }];
   constructor(private router: Router) {}
 
-  ngOnInit() {}
-
-  ngOnChanges() {
-    this.updateRemainingPayment();
+  ngOnInit() {
+    this.calculateTotalAdditionalPayment();
   }
 
-  updateRemainingPayment() {
-    this.remainingPayment = 500 + this.additionalPayment;
-  }
+
 
   setPaymentMethod(method: string) {
     this.selectedPaymentMethod = method;
@@ -42,7 +37,7 @@ export class PaymentsTabComponent implements OnInit {
   }
 
   getTotalRemainingPayment(): number {
-    return this.remainingPayment + (this.additionalCost ?? 0);
+    return this.remainingPayment + this.totalAdditionalPayment;
   }
 
   finalizePayment() {
@@ -75,4 +70,22 @@ export class PaymentsTabComponent implements OnInit {
 
     return null;
   }
+
+  addCost() {
+    this.additionalCosts.push({ name: '', amount: 0 });
+    this.calculateTotalAdditionalPayment();
+  }
+
+  removeCost(index: number) {
+    this.additionalCosts.splice(index, 1);
+    this.calculateTotalAdditionalPayment();
+  }
+
+  calculateTotalAdditionalPayment() {
+    this.totalAdditionalPayment = this.additionalCosts.reduce(
+      (total, cost) => total + cost.amount,
+      0
+    );
+  }
+  
 }

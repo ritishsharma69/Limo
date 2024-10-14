@@ -77,21 +77,14 @@ interface Option {
   ],
 })
 export class InProgressComponent implements OnInit {
-  submit() {
-    throw new Error('Method not implemented.');
-  }
   private commonService = inject(CommonService);
 
   currentStatus: string = 'onTheWay';
   waitingTime: number = 0;
   waitingButtonLabel: string = 'START';
   waitingTimer: any;
-  totalAdditionalPayment: number = 0;
 
   notes: string = '';
-  additionalCosts: { name: string; amount: number }[] = [
-    { name: '', amount: 0 },
-  ];
   mileageIn: number | null = null;
   mileageOut: number | null = null;
   finaliseTabOpen: boolean = false;
@@ -135,17 +128,20 @@ export class InProgressComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {
-    this.calculateTotalAdditionalPayment();
+  ngOnInit() {}
+
+  getCurrentStatusLabel(): string {
+    const option = this.options.find((opt) => opt.value === this.currentStatus);
+    return option ? option.label : '';
   }
 
   changeStatus() {
     if (this.currentStatus) {
       this.commonService.showToast(
-        `Status changed to ${this.currentStatus}`,
+        `Status changed to ${this.getCurrentStatusLabel()}`,
         'success'
       );
-      console.log(`Status changed to: ${this.currentStatus}`);
+      console.log(`Status changed to: ${this.getCurrentStatusLabel()}`);
 
       if (this.waitingTimer) {
         clearInterval(this.waitingTimer);
@@ -178,22 +174,5 @@ export class InProgressComponent implements OnInit {
     return `${String(minutes).padStart(2, '0')}:${String(
       remainingSeconds
     ).padStart(2, '0')}`;
-  }
-
-  addCost() {
-    this.additionalCosts.push({ name: '', amount: 0 });
-    this.calculateTotalAdditionalPayment();
-  }
-
-  removeCost(index: number) {
-    this.additionalCosts.splice(index, 1);
-    this.calculateTotalAdditionalPayment();
-  }
-
-  calculateTotalAdditionalPayment() {
-    this.totalAdditionalPayment = this.additionalCosts.reduce(
-      (total, cost) => total + cost.amount,
-      0
-    );
   }
 }

@@ -94,40 +94,6 @@
           ></textarea>
         </div>
 
-        <div class="p-3">
-          <app-headline-comp title="Additional Costs"></app-headline-comp>
-          <div
-            *ngFor="let cost of additionalCosts; let i = index"
-            class="d-flex align-items-center mt-3"
-          >
-            <div class="input-group me-2 flex-grow-1">
-              <input
-                type="text"
-                [(ngModel)]="cost.name"
-                placeholder="Cost Name"
-                class="form-control"
-              />
-              <input
-                type="number"
-                [(ngModel)]="cost.amount"
-                placeholder="Amount"
-                class="form-control"
-                (ngModelChange)="calculateTotalAdditionalPayment()"
-              />
-            </div>
-            <button
-              type="button"
-              class="btn btn-danger"
-              (click)="removeCost(i)"
-            >
-              Delete
-            </button>
-          </div>
-          <button class="btn btn-primary mt-2" (click)="addCost()">
-            Add More Cost
-          </button>
-        </div>
-
         <!-- Mileage Section -->
         <div class="p-3">
           <app-headline-comp title="Mileage In/Out"></app-headline-comp>
@@ -160,9 +126,7 @@
     <div class="border shadow rounded-bottom-2">
       <app-headline-comp title="PAYMENT STATUS"></app-headline-comp>
       <div class="border p-4">
-        <app-payments-tab
-          [additionalPayment]="totalAdditionalPayment"
-        ></app-payments-tab>
+        <app-payments-tab></app-payments-tab>
       </div>
     </div>
 
