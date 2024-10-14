@@ -41,7 +41,7 @@ export class PaymentsTabComponent implements OnInit {
   }
 
   finalizePayment() {
-    this.submitted = true; // Set it to boolean directly
+    this.submitted = true;
 
     if (!this.isFormValid()) {
       this.paymentStatus = 'Please complete all required fields.';
@@ -50,7 +50,6 @@ export class PaymentsTabComponent implements OnInit {
 
     const totalPaid = this.calculateTotalPaid();
     if (totalPaid === null) {
-      this.paymentStatus = 'Please enter the required payment details.';
       this.paymentStatus = 'Please enter the required payment details.';
       return;
     }
@@ -80,7 +79,6 @@ export class PaymentsTabComponent implements OnInit {
 
   addCost() {
     this.additionalCosts.push({ name: '', amount: null });
-    this.additionalCosts.push({ name: '', amount: null });
     this.calculateTotalAdditionalPayment();
   }
 
@@ -91,7 +89,6 @@ export class PaymentsTabComponent implements OnInit {
 
   calculateTotalAdditionalPayment() {
     this.totalAdditionalPayment = this.additionalCosts.reduce(
-      (total, cost) => total + (cost.amount || 0),
       (total, cost) => total + (cost.amount || 0),
       0
     );
@@ -118,25 +115,5 @@ export class PaymentsTabComponent implements OnInit {
       !!this.submitted &&
       (!cost.name || cost.amount === null || cost.amount <= 0)
     );
-  }
-
-  isFormValid(): boolean {
-    const allCostsValid = this.additionalCosts.every(
-      (cost) => !!cost.name && cost.amount !== null && cost.amount > 0
-    );
-
-    const paymentMethodValid =
-      this.selectedPaymentMethod === 'cash'
-        ? this.collectedAmount !== null && this.collectedAmount > 0
-        : this.selectedPaymentMethod === 'other'
-        ? !!this.otherPaymentDetails && this.otherPaymentDetails.trim() !== ''
-        : this.selectedPaymentMethod !== null;
-
-    return allCostsValid || paymentMethodValid;
-  }
-
-  // Helper method to determine if a specific cost is invalid
-  isCostInvalid(cost: { name: string; amount: number | null }): boolean {
-    return !!this.submitted && (!cost.name || cost.amount === null || cost.amount <= 0);
   }
 }

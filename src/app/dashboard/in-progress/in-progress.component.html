@@ -31,7 +31,7 @@
               aria-label="Call Us"
             >
               <div
-                class="border rounded-circle p-3 shadow-lg d-flex align-items-center justify-content-center icon-hover"
+                class="border rounded-circle p-3 shadow-lg d-flex align-items-center justify-content-center"
               >
                 <i class="icon fa-solid fa-phone"></i>
               </div>
@@ -42,7 +42,7 @@
               aria-label="Text Us"
             >
               <div
-                class="border rounded-circle p-3 shadow-lg d-flex align-items-center justify-content-center icon-hover"
+                class="border rounded-circle p-3 shadow-lg d-flex align-items-center justify-content-center"
               >
                 <i class="icon fa-regular fa-envelope"></i>
               </div>
@@ -70,7 +70,7 @@
         class="toggleFinaliseTab d-flex justify-content-center align-items-center gap-2 text-white"
         (click)="toggleFinaliseTab()"
       >
-        <app-headline-comp title="FINALISE TAB"></app-headline-comp>
+        <app-headline-comp title="FINALISE TAB"> </app-headline-comp>
         <i
           [ngClass]="
             finaliseTabOpen
@@ -81,9 +81,9 @@
       </div>
 
       <p class="ion-text-left mb-0 text-center"></p>
-      <div *ngIf="finaliseTabOpen" class="transition-container">
+      <div *ngIf="finaliseTabOpen">
         <!-- Notes Section -->
-        <div class="p-3 notes-section">
+        <div class="p-3">
           <label for="notes" class="form-label">Notes:</label>
           <textarea
             id="notes"
@@ -95,7 +95,7 @@
         </div>
 
         <!-- Mileage Section -->
-        <div class="p-3 mileage-section">
+        <div class="p-3">
           <app-headline-comp title="Mileage In/Out"></app-headline-comp>
           <div class="row mt-3">
             <div class="col-md-6 mb-3">
@@ -168,7 +168,6 @@
                   currentStatus !== 'arrived' ? 'none' : 'auto'
                 "
                 [style.opacity]="currentStatus !== 'arrived' ? '0.5' : '1'"
-                class="waiting-time-text transition-text"
               >
                 {{ waitingButtonLabel }} :
               </p>

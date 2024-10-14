@@ -1,50 +1,23 @@
-.passanger-info,
-.notes-section,
-.additional-costs,
-.mileage-section,
-.toggleFinaliseTab {
+.passanger-info, .notes-section, .additional-costs, .mileage-section, .toggleFinaliseTab {
   background-color: var(--bg-primary-100);
   color: var(--bg-neutral-100);
-  transition: background-color 0.3s ease;
 }
-
+ 
 .icon {
   color: var(--bg-orange-100);
   font-size: 1.5rem;
-  transition: transform 0.3s ease;
 }
-
-.icon-hover:hover {
-  transform: scale(1.1);
-}
-
+ 
 .vertical-divider {
   height: 50px;
   width: 1px;
   background-color: var(--bg-neutral-300);
 }
-
-.status-section,
-.waiting-time-section {
+ 
+.status-section, .waiting-time-section {
   width: 50%;
 }
-
-.waitingTimer,
-.currentStatus {
+ 
+.waitingTimer, .currentStatus {
   color: var(--bg-orange-100);
-  transition: color 0.3s ease;
-}
-
-.transition-container {
-  transition: max-height 0.3s ease-in-out;
-  overflow: hidden;
-}
-
-.toggleFinaliseTab:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-}
-
-.waiting-time-text:hover {
-  color: var(--bg-orange-300);
 }
