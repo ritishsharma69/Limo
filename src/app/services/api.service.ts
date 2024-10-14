@@ -55,5 +55,8 @@ export class ApiService {
     return this.http.get<ResponseModel>(url, this.appService.setHeaders());
   }
   
+  driverStatus(): Observable<any> {
+    return this.http.get(`${environment.API_ENDPOINT}/api/driver-status`)
+  }
   
 }
