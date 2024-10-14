@@ -1,3 +1,31 @@
+.trip-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.trip-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-icon {
+  transition: transform 0.2s ease;
+}
+
+.toggle-icon.fa-chevron-up {
+  transform: rotate(180deg);
+}
+
+.details {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.details.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .button-container {
   width: 100%;
   display: flex;
@@ -11,22 +39,27 @@
   border-radius: 0;
   font-size: 16px;
   text-align: center;
+  transition: background-color 0.3s ease;
 }
+
 .reject {
   background-color: var(--bg-neutral-100);
   color: var(--bg-black-100);
 }
+
 .accept {
   background-color: var(--bg-blue-100);
   color: var(--bg-neutral-100);
 }
+
 .extra-item-container {
   margin-top: 3rem;
 }
+
 .passenger-details {
   background-color: var(--bg-primary-100);
-  .reservation {
-    font-size: 13px;
-  }
 }
 
+.reservation {
+  font-size: 13px;
+}

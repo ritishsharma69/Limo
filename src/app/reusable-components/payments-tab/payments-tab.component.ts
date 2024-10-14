@@ -12,23 +12,21 @@ import { HeadlineCompComponent } from '../headline-comp.component';
   imports: [HeadlineCompComponent, FormsModule, CommonModule],
 })
 export class PaymentsTabComponent implements OnInit {
-
   remainingPayment: number = 500;
-  additionalCost: number | null = null;
   currencySymbol: string = '$';
   selectedPaymentMethod: string | null = null;
   collectedAmount: number | null = null;
   otherPaymentDetails: string | null = null;
   paymentStatus: string | null = null;
   totalAdditionalPayment: number = 0;
-  additionalCosts: { name: string; amount: number }[] = [{ name: '', amount: 0 }];
+  additionalCosts: { name: string; amount: number | null }[] = [{ name: '', amount: null }];
+  submitted: boolean = false;
+
   constructor(private router: Router) {}
 
   ngOnInit() {
     this.calculateTotalAdditionalPayment();
   }
-
-
 
   setPaymentMethod(method: string) {
     this.selectedPaymentMethod = method;
@@ -41,11 +39,16 @@ export class PaymentsTabComponent implements OnInit {
   }
 
   finalizePayment() {
-    const totalPaid = this.calculateTotalPaid();
+    this.submitted = true; // Set it to boolean directly
 
+    if (!this.isFormValid()) {
+      this.paymentStatus = 'Please complete all required fields.';
+      return;
+    }
+
+    const totalPaid = this.calculateTotalPaid();
     if (totalPaid === null) {
-      this.paymentStatus =
-        'Please select a payment method and enter the required details.';
+      this.paymentStatus = 'Please enter the required payment details.';
       return;
     }
 
@@ -61,18 +64,17 @@ export class PaymentsTabComponent implements OnInit {
 
   private calculateTotalPaid(): number | null {
     if (
-      this.selectedPaymentMethod === 'cash' ||
+      (this.selectedPaymentMethod === 'cash' && this.collectedAmount && this.collectedAmount > 0) ||
       this.selectedPaymentMethod === 'card' ||
       (this.selectedPaymentMethod === 'other' && this.otherPaymentDetails)
     ) {
       return this.getTotalRemainingPayment();
     }
-
     return null;
   }
 
   addCost() {
-    this.additionalCosts.push({ name: '', amount: 0 });
+    this.additionalCosts.push({ name: '', amount: null });
     this.calculateTotalAdditionalPayment();
   }
 
@@ -83,9 +85,28 @@ export class PaymentsTabComponent implements OnInit {
 
   calculateTotalAdditionalPayment() {
     this.totalAdditionalPayment = this.additionalCosts.reduce(
-      (total, cost) => total + cost.amount,
+      (total, cost) => total + (cost.amount || 0),
       0
     );
   }
-  
+
+  isFormValid(): boolean {
+    const allCostsValid = this.additionalCosts.every(
+      (cost) => !!cost.name && cost.amount !== null && cost.amount > 0
+    );
+
+    const paymentMethodValid =
+      this.selectedPaymentMethod === 'cash'
+        ? this.collectedAmount !== null && this.collectedAmount > 0
+        : this.selectedPaymentMethod === 'other'
+        ? !!this.otherPaymentDetails && this.otherPaymentDetails.trim() !== ''
+        : this.selectedPaymentMethod !== null;
+
+    return allCostsValid || paymentMethodValid;
+  }
+
+  // Helper method to determine if a specific cost is invalid
+  isCostInvalid(cost: { name: string; amount: number | null }): boolean {
+    return !!this.submitted && (!cost.name || cost.amount === null || cost.amount <= 0);
+  }
 }

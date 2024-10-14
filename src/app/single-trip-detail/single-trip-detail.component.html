@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/trip-history" />
+      <ion-back-button defaultHref="/trip-history"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ trip.name }}</ion-title>
     <p
@@ -18,53 +18,52 @@
 </ion-header>
 
 <ion-content scrollY="true" *ngIf="trip" class="ion-padding">
-  <div class="border mb-3 shadow rounded-bottom-2">
+  <div class="border mb-3 shadow rounded">
     <app-headline-comp title="Trip Details"></app-headline-comp>
     <ion-card-content>
       <ion-item lines="full">
-        <ion-label class="fw-semibold"> Pick up</ion-label>
+        <ion-label class="fw-semibold">Pick up</ion-label>
         <div>{{ trip.details.pickUp }}</div>
       </ion-item>
       <ion-item lines="full">
-        <ion-label class="fw-semibold"> Drop off</ion-label>
+        <ion-label class="fw-semibold">Drop off</ion-label>
         <div>{{ trip.details.dropOff }}</div>
       </ion-item>
       <ion-item lines="full">
-        <ion-label class="fw-semibold"> Vehicle </ion-label>
+        <ion-label class="fw-semibold">Vehicle</ion-label>
         <div>{{ trip.details.vehicle }}</div>
       </ion-item>
       <ion-item lines="full">
-        <ion-label class="fw-semibold"> Duration </ion-label>
+        <ion-label class="fw-semibold">Duration</ion-label>
         <div>{{ trip.details.duration }}</div>
       </ion-item>
       <ion-item lines="full">
-        <ion-label class="fw-semibold"> Total Fare </ion-label>
+        <ion-label class="fw-semibold">Total Fare</ion-label>
         <div>{{ trip.details.totalFare }}</div>
       </ion-item>
       <ion-item lines="full">
-        <ion-label class="fw-semibold"> Payment Method</ion-label>
+        <ion-label class="fw-semibold">Payment Method</ion-label>
         <div>{{ trip.details.paymentMethod }}</div>
       </ion-item>
     </ion-card-content>
   </div>
-
-  <div class="border mb-3 shadow rounded-bottom-2">
+  <div class="border mb-3 shadow rounded" *ngIf="selectedStatus !== 'Rejected'">
     <app-headline-comp title="Payment Type"></app-headline-comp>
     <ion-card-content>
       <ion-item lines="full">
-        <ion-label class="fw-semibold"> Payment Type </ion-label>
+        <ion-label class="fw-semibold">Payment Type</ion-label>
         <div>{{ trip.payment.paymentType }}</div>
       </ion-item>
       <ion-item lines="full">
-        <ion-label class="fw-semibold"> Total </ion-label>
+        <ion-label class="fw-semibold">Total</ion-label>
         <div>{{ trip.payment.total }}</div>
       </ion-item>
       <ion-item lines="full">
-        <ion-label class="fw-semibold"> Amount Paid </ion-label>
+        <ion-label class="fw-semibold">Amount Paid</ion-label>
         <div>{{ trip.payment.amountPaid }}</div>
       </ion-item>
       <ion-item lines="full">
-        <ion-label class="fw-semibold"> Remaining Balance </ion-label>
+        <ion-label class="fw-semibold">Remaining Balance</ion-label>
         <div>{{ trip.payment.remainingBalance }}</div>
       </ion-item>
     </ion-card-content>

@@ -1,8 +1,37 @@
+.trip-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.trip-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-icon {
+  transition: transform 0.2s ease;
+}
+
+.toggle-icon.fa-chevron-up {
+  transform: rotate(180deg);
+}
+
+.details {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.details.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .button-container {
   width: 100%;
   display: flex;
   justify-content: space-around;
 }
+
 .reservation {
   background-color: var(--bg-primary-100);
   color: var(--bg-neutral-100);
@@ -27,10 +56,11 @@ ion-modal {
 
 .modal-content {
   width: 100%;
-  background-color: var(--bg-neutral-100);
+  background: var(--bg-neutral-100);
 }
+
 .cancelAction {
-  background-color: var(--bg-primary-200);
+  background: var(--bg-primary-200);
   color: var(--bg-neutral-100);
 }
 
@@ -38,38 +68,27 @@ ion-modal {
   color: var(--bg-orange-100);
   font-size: 1.5rem;
 }
+
 .passanger-image {
   width: 100%;
   aspect-ratio: 1 / 1;
 }
+
 .image-container {
   width: 33.33%;
   max-width: 150px;
 }
-.change-status {
-  background-color: var(--bg-neutral-100);
-  color: var(--bg-black-100);
-}
+
 .start-trip {
-  background-color: var(--bg-green-100);
+  background: var(--bg-green-100);
   color: var(--bg-neutral-100);
-}
-.icon-container {
-  width: 60px;
-  height: 60px;
-}
-.s-class {
-  max-width: 120px;
 }
 
 .statusReject {
+  background: var(--bg-red-100) ;
   color: var(--bg-neutral-100);
-  background-color: var(--bg-red-200);
 }
-.statusConform {
-  color: var(--bg-neutral-100);
-  background-color: var(--bg-green-100);
-}
-.pu-date {
-  font-size: 13px;
+
+.s-class {
+  max-width: 120px;
 }

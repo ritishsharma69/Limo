@@ -111,7 +111,6 @@ export class PendingComponent {
   }
 
   fetchBooking() {
-    // this.commonService.showSimpleLoader();
 
     this.apiService
       .fetchBookingDetails({
@@ -120,7 +119,6 @@ export class PendingComponent {
       })
       .subscribe({
         next: (response) => {
-          // this.commonService.hideSimpleLoader();
 
           if (!response) {
             console.error('API response is empty or undefined.');
@@ -129,7 +127,6 @@ export class PendingComponent {
 
           this.tripDetails = response.data || [];
 
-          // Sort the trip details by created_at in descending order
           this.tripDetails.sort((a: any, b: any) => {
             const dateA = new Date(a.created_at).getTime();
             const dateB = new Date(b.created_at).getTime();
@@ -146,12 +143,11 @@ export class PendingComponent {
         },
         error: (error) => {
           console.error('Error occurred while fetching the bookings:', error);
-          // this.commonService.hideSimpleLoader();
+
         },
       });
   }
 
-  // Helper method to add extra info to trip details
   private addExtraInfoToTrips(trips: ITripType[]) {
     this.tripDetails = trips.map((trip: ITripType) => {
       const passengers = trip.passengers || [];

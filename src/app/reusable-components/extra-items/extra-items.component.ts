@@ -51,7 +51,6 @@ throw new Error('Method not implemented.');
 
   constructor() {}
 
-  // Open the popup with dynamic content
   openPopup(type: string) {
     this.isPopupOpen = true;
 

@@ -14,7 +14,7 @@
       <p><strong>Amount Paid:</strong> {{ currencySymbol }} {{ amountPaid }}</p>
       <p>
         <strong>Payment Method:</strong
-        ><span class="text-capitalize">
+        ><span>
           <!-- {{ paymentMethod }}
           @if(otherPaymentDetails) { (
           {{ otherPaymentDetails }}
@@ -22,9 +22,14 @@
           <ng-container *ngIf="paymentMethod === 'card'; else paymentDetails">
             Charged the card on machine
           </ng-container>
+
           <ng-template #paymentDetails>
-            {{ paymentMethod }}
-            <ng-container *ngIf="otherPaymentDetails"> ({{ otherPaymentDetails }})</ng-container>
+            <span class="text-capitalize">
+              {{ paymentMethod }}
+              <ng-container *ngIf="otherPaymentDetails">
+                ({{ otherPaymentDetails }})</ng-container
+              >
+            </span>
           </ng-template>
         </span>
       </p>

@@ -1,37 +1,34 @@
 <div class="row">
-  <div class="row mb-2">
-    <div
-      class="text-center col-3 d-flex justify-content-center align-items-center"
-    >
-      <span class="pu rounded-circle p-2 text-white" style="font-size: 15px"
-        >PU</span
-      >
+  <!-- Pickup Address -->
+  <div class="row mb-3">
+    <div class="col-3 d-flex justify-content-center align-items-center">
+      <span class="pu rounded-circle p-2 text-white">PU</span>
     </div>
     <div
-      class="col-9 bg-light border text-center py-2 d-flex justify-content-center align-items-center"
+      class="col-9 bg-light border text-center py-3 d-flex justify-content-center align-items-center rounded"
     >
-      {{ pickupAddress }}
+      <strong>{{ pickupAddress }}</strong>
     </div>
   </div>
 
+  <!-- Arrow Icon -->
+  <div class="row mb-3">
+    <div
+      class="text-center col-3 fs-2 d-flex justify-content-center align-items-center"
+    >
+      <i class="fa-solid fa-arrow-down-long arrow-icon"></i>
+    </div>
+  </div>
+
+  <!-- Drop-off Address -->
   <div class="row">
-    <div class="text-center col-3 fs-4">
-      <i class="fa-solid fa-arrow-down-long"></i>
-    </div>
-  </div>
-
-  <div class="row mt-2">
-    <div
-      class="text-center col-3 d-flex justify-content-center align-items-center"
-    >
-      <span class="pu rounded-circle p-2 text-white" style="font-size: 15px"
-        >DO</span
-      >
+    <div class="col-3 d-flex justify-content-center align-items-center">
+      <span class="pu rounded-circle p-2 text-white">DO</span>
     </div>
     <div
-      class="col-9 bg-light border text-center py-2 d-flex justify-content-center align-items-center"
+      class="col-9 bg-light border text-center py-3 d-flex justify-content-center align-items-center rounded"
     >
-      {{ dropoffAddress }}
+      <strong>{{ dropoffAddress }}</strong>
     </div>
   </div>
 </div>
