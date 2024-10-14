@@ -31,6 +31,7 @@ import { NavigateButtonComponent } from '../../reusable-components/navigate-butt
 import { CommonService } from 'src/app/services/common.service';
 import { addIcons } from 'ionicons';
 import { chevronDownCircleOutline } from 'ionicons/icons';
+import { ITripType } from 'src/app/model/interface';
 
 @Component({
   selector: 'app-upcoming',
@@ -113,7 +114,11 @@ export class UpcomingComponent {
     this.apiService
       .fetchBookingDetails({
         fetchAddresses: true,
+        passengers: true,
         fleet: true,
+        currency: true,
+        driver: true,
+        bookingStatus:true,
       })
       .subscribe({
         next: (response) => {
@@ -148,14 +153,21 @@ export class UpcomingComponent {
       });
   }
 
-  private addExtraInfoToTrips(trips: any[]) {
-    this.tripDetails = trips.map((trip: any) => ({
-      ...trip,
-      extraInfo: {
-        miles: trip.distance,
-        hours: trip.hours,
-      },
-    }));
+  private addExtraInfoToTrips(trips: ITripType[]) {
+    this.tripDetails = trips.map((trip: ITripType) => {
+      const passengers = trip.passengers || [];
+
+      return {
+        ...trip,
+        extraInfo: {
+          miles: trip.distance,
+          hours: trip.hours,
+          no_of_passengers: passengers.length || 0,
+          no_of_luggage: trip.no_of_luggage || 0,
+          child_seat_count: trip.child_seat_count || 0,
+        },
+      };
+    });
   }
 
   // Helper method to  pickup and dropoff addresses

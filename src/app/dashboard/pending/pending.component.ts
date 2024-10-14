@@ -29,6 +29,7 @@ import { CommonService } from 'src/app/services/common.service';
 import { addIcons } from 'ionicons';
 import { chevronDownCircleOutline } from 'ionicons/icons';
 import { RouterLink } from '@angular/router';
+import { ITripType } from 'src/app/model/interface';
 
 @Component({
   selector: 'app-pending',
@@ -151,14 +152,21 @@ export class PendingComponent {
   }
 
   // Helper method to add extra info to trip details
-  private addExtraInfoToTrips(trips: any[]) {
-    this.tripDetails = trips.map((trip: any) => ({
-      ...trip,
-      extraInfo: {
-        miles: trip.distance,
-        hours: trip.hours,
-      },
-    }));
+  private addExtraInfoToTrips(trips: ITripType[]) {
+    this.tripDetails = trips.map((trip: ITripType) => {
+      const passengers = trip.passengers || [];
+
+      return {
+        ...trip,
+        extraInfo: {
+          miles: trip.distance,
+          hours: trip.hours,
+          no_of_passengers: passengers.length || 0,
+          no_of_luggage: trip.no_of_luggage || 0,
+          child_seat_count: trip.child_seat_count || 0,
+        },
+      };
+    });
   }
 
   private pickupAndDropoffAddresses(trips: any[]) {
@@ -231,7 +239,6 @@ export class PendingComponent {
         //     },
         //   });
       } else if (this.currentAction == 'reject') {
-
         this.commonService.showToast('Trip Rejected', 'error');
         //   this.apiService.rejectRequest().subscribe({
         //     next: () => {

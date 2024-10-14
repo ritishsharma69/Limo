@@ -1,32 +1,46 @@
 <div
   class="extra-items d-flex justify-content-around align-items-center text-center"
 >
-  <div>
+  <div
+    [ngClass]="{
+      'icon-active': extraInfo.no_of_luggage,
+      'icon-inactive': !extraInfo.no_of_luggage
+    }"
+  >
     <!-- Display number of luggage and luggage type below the icon -->
-    @if(extraInfo.no_of_luggage)
-    {
-      <div class="iconCount">{{ extraInfo.no_of_luggage }}</div>
-      <div class="luggageType">{{ extraInfo.luggage_type }}</div>
+    @if(extraInfo.no_of_luggage) {
+    <div class="iconCount">{{ extraInfo.no_of_luggage }}</div>
+    <div class="luggageType">{{ extraInfo.luggage_type }}</div>
     }
-    <i class="icon fa-solid fa-suitcase-rolling" (click)="openPopup('luggage')"></i>
+    <i
+      class="icon fa-solid fa-suitcase-rolling"
+      (click)="openPopup('luggage')"
+    ></i>
   </div>
 
-
-  <div>
+  <div
+    [ngClass]="{
+      'icon-active': extraInfo.no_of_passengers,
+      'icon-inactive': !extraInfo.no_of_passengers
+    }"
+  >
     <!-- Display number of passengers below the icon -->
-    @if(extraInfo.no_of_passengers)
-    {
-      <div class="iconCount">{{ extraInfo.no_of_passengers }}</div>
+    @if(extraInfo.no_of_passengers) {
+    <div class="iconCount">{{ extraInfo.no_of_passengers }}</div>
     }
     <i class="icon fa-solid fa-person" (click)="openPopup('passengers')"></i>
   </div>
 
-  <div>
+  <div
+    [ngClass]="{
+      'icon-active': extraInfo.child_seat_count,
+      'icon-inactive': !extraInfo.child_seat_count
+    }"
+  >
     <!-- Display child seat count and type below the icon -->
-    @if(extraInfo.child_seat_count)
-    {
-      <div class="iconCount">{{ extraInfo.child_seat_count }}</div>
-      <div class="childSeatType">{{ extraInfo.child_seat }}</div>
+    @if(extraInfo.child_seat_count) {
+    <div class="iconCount">{{ extraInfo.child_seat_count }}</div>
+    <div class="childSeatType">{{ extraInfo.child_seat }}</div>
     }
     <i class="icon fa-solid fa-baby" (click)="openPopup('child_seat')"></i>
   </div>
@@ -71,11 +85,23 @@
     <div class="modal-content text-center">
       <h4 class="text-uppercase">More Information</h4>
       <div *ngIf="extraInfo" class="mt-3">
-        <p><strong>Notes:</strong> {{ extraInfo.notes || 'Not provided' }}</p>
-        <p><strong>Notes to driver:</strong> {{ extraInfo.notes_to_driver || 'Not provided' }}</p>
-        <p><strong>Occasion Type:</strong> {{ extraInfo.occasion_type || 'Not provided' }}</p>
-        <p><strong>Greeting Sign:</strong> {{ extraInfo.greeting_sign || 'Not provided' }}</p>
-        <p><strong>Greeting Sign Text:</strong> {{ extraInfo.greeting_sign_text || 'Not provided' }}</p>
+        <p><strong>Notes:</strong> {{ extraInfo.notes || "Not provided" }}</p>
+        <p>
+          <strong>Notes to driver:</strong>
+          {{ extraInfo.notes_to_driver || "Not provided" }}
+        </p>
+        <p>
+          <strong>Occasion Type:</strong>
+          {{ extraInfo.occasion_type || "Not provided" }}
+        </p>
+        <p>
+          <strong>Greeting Sign:</strong>
+          {{ extraInfo.greeting_sign || "Not provided" }}
+        </p>
+        <p>
+          <strong>Greeting Sign Text:</strong>
+          {{ extraInfo.greeting_sign_text || "Not provided" }}
+        </p>
       </div>
       <button (click)="closeMoreInfo()" class="closeButton btn text-uppercase">
         Close

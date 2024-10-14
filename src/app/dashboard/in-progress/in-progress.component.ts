@@ -94,6 +94,11 @@ export class InProgressComponent implements OnInit {
   ];
   mileageIn: number | null = null;
   mileageOut: number | null = null;
+  finaliseTabOpen: boolean = false;
+
+  toggleFinaliseTab() {
+    this.finaliseTabOpen = !this.finaliseTabOpen;
+  }
 
   reservations = [
     {

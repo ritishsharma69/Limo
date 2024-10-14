@@ -38,23 +38,11 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Disabled luggage styling */
-.disabled-item {
-  opacity: 0.5; /* Grays out the item */
-  pointer-events: none; /* Prevents clicking */
+.icon-active {
+  color: var(--bg-black-100);
 }
 
-.disabled-icon {
-  color: gray;
-}
-
-
-/* Disabled luggage styling */
-.disabled-item {
-  opacity: 0.5; /* Grays out the item */
-  pointer-events: none; /* Prevents clicking */
-}
- 
-.disabled-icon {
-  color: gray;
+.icon-inactive {
+  pointer-events: none;
+  opacity: 0.4;
 }

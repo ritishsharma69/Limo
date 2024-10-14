@@ -35,6 +35,7 @@ throw new Error('Method not implemented.');
     no_of_passengers?: string;
     child_seat_count?: string;
   } = {
+    
     luggage_type: undefined,
     occasion_type: undefined,
     greeting_sign: undefined,

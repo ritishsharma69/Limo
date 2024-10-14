@@ -42,7 +42,9 @@
         <app-headline-comp title="Passenger Details"></app-headline-comp>
 
         <!-- Passenger Information -->
-        <div class="d-flex align-items-center border p-3 mb-3 shadow rounded-bottom-2 custom-border-radius">
+        <div
+          class="d-flex align-items-center border p-3 mb-3 shadow rounded-bottom-2"
+        >
           <div class="image-container">
             <img
               src="../../../assets/imgs/login-image.jpg"
@@ -86,7 +88,7 @@
 
         <div class="mb-3">
           <app-headline-comp title="Routing Details"></app-headline-comp>
-          <div class="border p-4 shadow rounded-bottom-2 custom-border-radius">
+          <div class="border p-4 shadow rounded-bottom-2">
             <app-pick-drop
               [pickupAddress]="trip.pickupAddress"
               [dropoffAddress]="trip.dropoffAddress"
@@ -101,7 +103,7 @@
 
         <div class="mb-3">
           <app-headline-comp title="Additional Details"></app-headline-comp>
-          <div class="border p-4 shadow rounded-bottom-2 custom-border-radius">
+          <div class="border p-4 shadow rounded-bottom-2">
             <app-extra-items
               [extraInfo]="trip.extraInfo"
               [showButton]="false"
@@ -111,29 +113,32 @@
 
         <div class="mb-3">
           <app-headline-comp title="Notes From ADMIN"></app-headline-comp>
-          <p class="ion-text-center p-4 mb-0 shadow rounded-bottom-2 custom-border-radius">
+          <p
+            class="ion-text-center p-4 mb-0 shadow rounded-bottom-2"
+          >
             Example: Help Passenger with their luggage.
           </p>
         </div>
 
         <div class="mb-3">
           <app-headline-comp title="PAYMENT STATUS"></app-headline-comp>
-          <div class="border p-4 shadow rounded-bottom-2 custom-border-radius">
-            <h3 class="text-center mb-0">
-              Remaining Payment: <span class="text-success">100 $</span>
-            </h3>
+          <div class="border p-4 shadow rounded-bottom-2">
+            <h4 class="text-center mb-0">
+              Remaining Payment:
+              <span class="text-success"
+                >{{ trip.company.currency.symbol
+                }}{{ trip.grand_total || 100 }}</span
+              >
+            </h4>
           </div>
         </div>
 
         <div class="border">
           <app-headline-comp title="Assigned Vehicle"></app-headline-comp>
-          <div class="p-4 shadow rounded-bottom-2 custom-border-radius">
+          <div class="p-4 shadow rounded-bottom-2">
             <div class="d-flex justify-content-between align-items-start">
               <div class="text-left">
-                <p>
-                  {{ trip.fleet.name }}
-                  {{ trip.fleet.model }}
-                </p>
+                <p>{{ trip.fleet.name }}{{ trip.fleet.model }}</p>
                 <div class="s-class m-0 w-100">
                   <img
                     [src]="trip.fleet.images || '../../../assets/imgs/car.png'"

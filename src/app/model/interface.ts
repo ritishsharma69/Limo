@@ -62,3 +62,16 @@ export interface ResponseModel {
     time?: string;
     fleet?:boolean;
   }
+
+  interface Passenger {
+    name: string;
+  }
+
+  export interface ITripType {
+    distance: number;
+    hours: number;
+    passengers: Passenger[];
+    no_of_luggage?: number;
+    child_seat_count?: number;
+  }
+  
