@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -12,6 +12,7 @@ import { HeadlineCompComponent } from '../headline-comp.component';
   imports: [HeadlineCompComponent, FormsModule, CommonModule],
 })
 export class PaymentsTabComponent implements OnInit {
+  @Input() waitingCost: number | undefined;
   remainingPayment: number = 500;
   currencySymbol: string = '$';
   selectedPaymentMethod: string | null = null;
@@ -37,7 +38,7 @@ export class PaymentsTabComponent implements OnInit {
   }
 
   getTotalRemainingPayment(): number {
-    return this.remainingPayment + this.totalAdditionalPayment;
+    return this.remainingPayment + this.totalAdditionalPayment + (this.waitingCost || 0);
   }
 
   finalizePayment() {

@@ -89,10 +89,13 @@ export class InProgressComponent implements OnInit {
   notes: string = '';
   mileageIn: number | null = null;
   mileageOut: number | null = null;
-  finaliseTabOpen: boolean = false;
+  finalizeTabOpen: boolean = false;
 
-  toggleFinaliseTab() {
-    this.finaliseTabOpen = !this.finaliseTabOpen;
+  waitingTimeCost: number = 1;
+  totalWaitingCost: number = 0;
+
+  toggleFinalizeTab() {
+    this.finalizeTabOpen = !this.finalizeTabOpen;
   }
 
   reservations = [
@@ -125,37 +128,40 @@ export class InProgressComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.fetchdriverStatus();
+    this.fetchDriverStatus();
   }
 
-  // fetchdriverStatus() {
+  // fetchDriverStatus() {
   //   this.apiService.driverStatus().subscribe({
   //     next: (response) => {
   //       console.log(response);
   //     }
   //   })
   // }
-  fetchdriverStatus() {
+  fetchDriverStatus() {
     this.apiService.driverStatus().subscribe({
       next: (response) => {
         console.log(response);
 
-        this.options = response.data.map((status: { name: string; }) => ({
+        this.options = response.data.map((status: { name: string }) => ({
           value: status.name.toLowerCase().replace(/\s+/g, ''),
           label: status.name.replace(/([A-Z])/g, ' $1').trim(),
         }));
         console.log(this.options);
-
       },
       error: (err) => {
         console.error('Error fetching driver status:', err);
-      }
+      },
     });
   }
 
   getCurrentStatusLabel(): string {
     const option = this.options.find((opt) => opt.value === this.currentStatus);
     return option ? option.label : '';
+  }
+
+  calculateWaitingCost(): number {
+    return Math.floor(this.waitingTime / 60) * this.waitingTimeCost;
   }
 
   changeStatus() {

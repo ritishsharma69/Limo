@@ -8,66 +8,64 @@
   </ion-refresher>
   <div class="d-flex flex-column">
     @for(trip of tripDetails; track $index) {
-      <div [id]="'trip-' + trip.id" class="shadow-lg trip-card">
-        <div class="text-white m-3 passenger-details px-1">
-          <div class="text-white">
-            <div
-              class="reservation d-flex justify-content-between text-white p-2"
-            >
-              <span class="card-id">{{ trip.booking_id }} (Reservation ID)</span>
-              <span>
-                {{ formatDateTime(trip.pu_date, trip.pu_time) | date: 'dd MMM, h:mm a' }}
-              </span>
-            </div>
-            <div class="border"></div>
-          </div>
-
+    <div [id]="'trip-' + trip.id" class="shadow-lg trip-card">
+      <div class="text-white m-3 passenger-details px-1">
+        <div class="text-white">
           <div
-            class="d-flex justify-content-center align-items-center gap-2"
-            (click)="toggleDetails($index)"
+            class="reservation d-flex justify-content-between text-white p-2"
           >
-            <app-headline-comp
-              [title]="trip.booking_f_name + ' ' + trip.booking_l_name"
-            ></app-headline-comp>
-            <i
-              [ngClass]="
-                trip.showDetails
-                  ? 'fa-solid fa-chevron-up'
-                  : 'fa-solid fa-chevron-down'
-              "
-              class="toggle-icon"
-            ></i>
+            <span class="card-id">{{ trip.booking_id }} (Reservation ID)</span>
+            <span>
+              {{
+                formatDateTime(trip.pu_date, trip.pu_time)
+                  | date : "dd MMM, h:mm a"
+              }}
+            </span>
           </div>
+          <div class="border"></div>
         </div>
-
-        <div *ngIf="trip.showDetails" class="details m-3 border shadow fade-in">
-          <app-headline-comp title="TRIP DETAILS"></app-headline-comp>
-
-          <div class="m-4">
-            <app-pick-drop
-              [pickupAddress]="trip.pickupAddress"
-              [dropoffAddress]="trip.dropoffAddress"
-            ></app-pick-drop>
-            <div class="extra-item-container">
-              <app-extra-items [extraInfo]="trip.extraInfo"></app-extra-items>
-            </div>
-          </div>
-          <div class="button-container mt-2">
-            <button
-              class="reject btn-flex btn border border-secondary p-3 text-uppercase"
-              (click)="onReject()"
-            >
-              REJECT
-            </button>
-            <button
-              class="accept btn-flex btn p-3 text-uppercase"
-              (click)="onAccept()"
-            >
-              ACCEPT
-            </button>
-          </div>
+        <div
+          class="d-flex justify-content-center align-items-center gap-2"
+          (click)="toggleDetails($index)"
+        >
+          <app-headline-comp
+            [title]="trip.booking_f_name + ' ' + trip.booking_l_name"
+          ></app-headline-comp>
+          <i
+            [ngClass]="{ 'toggle-icon': trip.showDetails }"
+            class="fa-solid fa-chevron-down"
+          ></i>
         </div>
       </div>
+
+      <div *ngIf="trip.showDetails" class="details m-3 border shadow fade-in">
+        <app-headline-comp title="TRIP DETAILS"></app-headline-comp>
+
+        <div class="m-4">
+          <app-pick-drop
+            [pickupAddress]="trip.pickupAddress"
+            [dropoffAddress]="trip.dropoffAddress"
+          ></app-pick-drop>
+          <div class="extra-item-container">
+            <app-extra-items [extraInfo]="trip.extraInfo"></app-extra-items>
+          </div>
+        </div>
+        <div class="button-container mt-2">
+          <button
+            class="reject btn-flex btn border border-secondary p-3 text-uppercase"
+            (click)="onReject()"
+          >
+            REJECT
+          </button>
+          <button
+            class="accept btn-flex btn p-3 text-uppercase"
+            (click)="onAccept()"
+          >
+            ACCEPT
+          </button>
+        </div>
+      </div>
+    </div>
     }
   </div>
 

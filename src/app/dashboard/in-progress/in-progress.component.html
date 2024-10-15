@@ -14,7 +14,7 @@
 
     <div class="mb-3 border shadow rounded-bottom-2">
       <p
-        class="passanger-info border-bottom text-center p-2 ion-text-uppercase mb-0"
+        class="passenger-info border-bottom text-center p-2 ion-text-uppercase mb-0"
       >
         PASSENGER INFO
       </p>
@@ -67,21 +67,18 @@
 
     <div class="mb-3 border shadow rounded-bottom-2">
       <div
-        class="toggleFinaliseTab d-flex justify-content-center align-items-center gap-2 text-white"
-        (click)="toggleFinaliseTab()"
+        class="toggleFinalizeTab d-flex justify-content-center align-items-center gap-2 text-white"
+        (click)="toggleFinalizeTab()"
       >
-        <app-headline-comp title="FINALISE TAB"> </app-headline-comp>
+        <app-headline-comp title="FINALIZE TAB"> </app-headline-comp>
         <i
-          [ngClass]="
-            finaliseTabOpen
-              ? 'fa-solid fa-chevron-up'
-              : 'fa-solid fa-chevron-down'
-          "
+          [ngClass]="{ 'toggle-icon': finalizeTabOpen }"
+          class="fa-solid fa-chevron-down"
         ></i>
       </div>
 
       <p class="ion-text-left mb-0 text-center"></p>
-      <div *ngIf="finaliseTabOpen">
+      <div *ngIf="finalizeTabOpen">
         <!-- Notes Section -->
         <div class="p-3">
           <label for="notes" class="form-label">Notes:</label>
@@ -126,7 +123,9 @@
     <div class="border shadow rounded-bottom-2">
       <app-headline-comp title="PAYMENT STATUS"></app-headline-comp>
       <div class="border p-4">
-        <app-payments-tab></app-payments-tab>
+        <app-payments-tab
+          [waitingCost]="calculateWaitingCost()"
+        ></app-payments-tab>
       </div>
     </div>
 

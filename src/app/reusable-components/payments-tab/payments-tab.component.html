@@ -101,7 +101,7 @@
     <!-- Finalize Payment Button -->
     <div class="text-center my-3">
       <button class="btn btn-lg finalizePayment" (click)="finalizePayment()">
-        Finalise Payment
+        Finalize Payment
       </button>
     </div>
 
@@ -109,7 +109,7 @@
       *ngIf="!isFormValid() && submitted"
       class="alert alert-danger mt-2 text-center"
     >
-      Please enter at least one valid additional cost before finalizing payment.
+      Please enter a valid additional cost before finalizing the payment.
     </div>
 
     <!-- Payment Status -->

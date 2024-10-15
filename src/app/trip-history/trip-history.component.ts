@@ -46,7 +46,7 @@ export class TripHistoryComponent implements OnInit {
       name: 'John Doe',
       status: 'Completed',
       date: '2023-09-20',
-      image: '../../assets/imgs/login-image.jpg',
+      image: '../../assets/imgs/passenger-profile.jpg',
       details: {
         pickUp: '123 Main St',
         dropOff: '456 Elm St',
@@ -68,7 +68,7 @@ export class TripHistoryComponent implements OnInit {
       name: 'Alice Brown',
       status: 'Completed',
       date: '2023-09-21',
-      image: '../../assets/imgs/login-image.jpg',
+      image: '../../assets/imgs/passenger-profile.jpg',
       details: {
         pickUp: '789 Pine St',
         dropOff: '101 Maple St',
@@ -93,7 +93,7 @@ export class TripHistoryComponent implements OnInit {
       name: 'Jane Smith',
       status: 'Rejected',
       date: '2023-09-22',
-      image: '../../assets/imgs/login-image.jpg',
+      image: '../../assets/imgs/passenger-profile.jpg',
       details: {
         pickUp: '456 Oak St',
         dropOff: '789 Cedar St',
@@ -115,7 +115,7 @@ export class TripHistoryComponent implements OnInit {
       name: 'Mark White',
       status: 'Rejected',
       date: '2023-09-23',
-      image: '../../assets/imgs/login-image.jpg',
+      image: '../../assets/imgs/passenger-profile.jpg',
       details: {
         pickUp: '321 Birch St',
         dropOff: '654 Spruce St',
