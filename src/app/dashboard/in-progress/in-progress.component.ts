@@ -33,6 +33,7 @@ import { CommonService } from 'src/app/services/common.service';
 import { FormsModule } from '@angular/forms';
 import { PaymentsTabComponent } from 'src/app/reusable-components/payments-tab/payments-tab.component';
 import { ApiService } from 'src/app/services/api.service';
+import { CustomDateTimePipe } from 'src/app/pipe/customDateTime.pipe';
 
 interface Option {
   value: string;
@@ -75,6 +76,7 @@ interface Option {
     IonSelect,
     IonSelectOption,
     FormsModule,
+    CustomDateTimePipe,
   ],
 })
 export class InProgressComponent implements OnInit {
@@ -93,6 +95,8 @@ export class InProgressComponent implements OnInit {
 
   waitingTimeCost: number = 1;
   totalWaitingCost: number = 0;
+  
+  tripDetails: any;
 
   toggleFinalizeTab() {
     this.finalizeTabOpen = !this.finalizeTabOpen;
@@ -128,16 +132,48 @@ export class InProgressComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
+    this.fetchBooking();
     this.fetchDriverStatus();
   }
 
-  // fetchDriverStatus() {
-  //   this.apiService.driverStatus().subscribe({
-  //     next: (response) => {
-  //       console.log(response);
-  //     }
-  //   })
-  // }
+  fetchBooking() { 
+    this.apiService.inprogress().subscribe({
+      next: (response: any) => {
+        if (!response || !response.data) {
+          console.error('API response is empty or undefined.');
+          return;
+        } 
+        
+        if (response.data.length === 0) {
+          console.error('Trip details are empty.');
+          return;
+        }
+  
+        this.tripDetails = response.data;
+        this.pickupAndDropoffAddresses(this.tripDetails);
+        console.log(this.tripDetails);
+      },
+      error: (error) => {
+        console.error('Error fetching trip details:', error);
+      },
+    });
+  }
+  
+  private pickupAndDropoffAddresses(trip: any) {
+    if (trip && typeof trip === 'object' && Array.isArray(trip.addresses)) {
+      const pickup = trip.addresses.find(
+        (addr: any) => addr.type === 'pickup'
+      );
+      const dropoff = trip.addresses.find((addr: any) => addr.type === 'drop');
+  
+      trip.pickupAddress = pickup?.address ?? 'No Pickup Address';
+      trip.dropoffAddress = dropoff?.address ?? 'No Dropoff Address';
+    } else {
+      console.log('Expected trip to be an object with addresses:', trip);
+    }
+  }
+  
+
   fetchDriverStatus() {
     this.apiService.driverStatus().subscribe({
       next: (response) => {

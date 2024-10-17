@@ -16,12 +16,14 @@ import {
   provideAnalytics,
   getAnalytics,
 } from '@angular/fire/analytics';
+import { DatePipe } from '@angular/common';
 
 // Create an instance of the FirebaseInitializerService
 const firebaseInitializer = new FirebaseInitializerService();
 
 bootstrapApplication(AppComponent, {
   providers: [
+    DatePipe,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideHttpClient(withInterceptors([loaderInterceptor])),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

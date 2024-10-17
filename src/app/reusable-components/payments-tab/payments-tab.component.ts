@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { HeadlineCompComponent } from '../headline-comp.component';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-payments-tab',
@@ -13,6 +14,7 @@ import { HeadlineCompComponent } from '../headline-comp.component';
 })
 export class PaymentsTabComponent implements OnInit {
   @Input() waitingCost: number | undefined;
+  @Input() booking_id: string | undefined;
   remainingPayment: number = 500;
   currencySymbol: string = '$';
   selectedPaymentMethod: string | null = null;
@@ -25,7 +27,10 @@ export class PaymentsTabComponent implements OnInit {
   ];
   submitted: boolean = false;
 
-  constructor(private router: Router) {}
+  private apiService = inject(ApiService);
+  private router = inject(Router);
+
+  constructor() {}
 
   ngOnInit() {
     this.calculateTotalAdditionalPayment();
@@ -38,7 +43,11 @@ export class PaymentsTabComponent implements OnInit {
   }
 
   getTotalRemainingPayment(): number {
-    return this.remainingPayment + this.totalAdditionalPayment + (this.waitingCost || 0);
+    return (
+      this.remainingPayment +
+      this.totalAdditionalPayment +
+      (this.waitingCost || 0)
+    );
   }
 
   finalizePayment() {
@@ -48,6 +57,12 @@ export class PaymentsTabComponent implements OnInit {
       this.paymentStatus = 'Please complete all required fields.';
       return;
     }
+
+    const additionalCostsData = this.additionalCosts.map((cost) => ({
+      name: cost.name,
+      amount: cost.amount,
+    }));
+    console.log('Additional Costs Data:', additionalCostsData);
 
     const totalPaid = this.calculateTotalPaid();
     if (totalPaid === null) {
@@ -116,5 +131,35 @@ export class PaymentsTabComponent implements OnInit {
       !!this.submitted &&
       (!cost.name || cost.amount === null || cost.amount <= 0)
     );
+  }
+  addToPayment() {
+    const rates = this.additionalCosts.map((cost) => ({
+      name: cost.name,
+      fixed_amount: cost.amount,
+    }));
+    console.log('Additional Costs Data:', rates);
+
+    if (!this.booking_id) {
+      this.paymentStatus = 'Please enter a booking ID.';
+      return;
+    }
+
+    this.apiService.submitPayment(this.booking_id, rates).subscribe({
+      next: (response) => {
+        console.log('Payment submitted successfully', response);
+
+        // Calculate the total paid amount
+        const totalPaid = this.calculateTotalPaid();
+        if (totalPaid === null) {
+          this.paymentStatus = 'Please enter the required payment details.';
+          return;
+        }
+      },
+      error: (err) => {
+        console.error('Payment submission failed', err);
+        this.paymentStatus =
+          'There was an error processing your payment. Please try again.';
+      },
+    });
   }
 }

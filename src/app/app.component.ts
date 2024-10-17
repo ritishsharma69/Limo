@@ -8,7 +8,7 @@ import {
   IonMenu,
   IonMenuToggle,
 } from '@ionic/angular/standalone';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { PendingComponent } from './dashboard/pending/pending.component';

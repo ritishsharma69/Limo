@@ -1,8 +1,11 @@
+@if(tripDetails){
 <ion-content>
   <div class="p-3">
     <div class="d-flex justify-content-between p-2 border shadow">
-      <span>{{ selectedReservation.date }}</span>
-      <span>ID: {{ selectedReservation.id }}</span>
+      <span class="pu-date">
+        {{ tripDetails.pu_date | customDateTime : tripDetails.pu_time }}
+      </span>
+      <span>ID: {{ tripDetails.booking_id }}</span>
     </div>
 
     <div class="mb-3 border shadow rounded-bottom-2">
@@ -22,11 +25,11 @@
       <div class="text-black mb-2 text-center fs-4">
         <div class="flex-grow-1 ps-3 ion-align-items-start">
           <p class="mb-2 text-center fs-1 mt-2">
-            {{ selectedReservation.name }}
+            {{ tripDetails.booking_f_name + " " + tripDetails.booking_l_name }}
           </p>
           <div class="d-flex justify-content-center gap-4 mb-3">
             <a
-              href="tel:+1234567890"
+              href="tel:{{ tripDetails.booking_phone }}"
               class="text-decoration-none"
               aria-label="Call Us"
             >
@@ -37,7 +40,7 @@
               </div>
             </a>
             <a
-              href="sms:+123456789"
+              href="sms:{{ tripDetails.booking_phone }}"
               class="text-decoration-none"
               aria-label="Text Us"
             >
@@ -57,8 +60,8 @@
       <app-headline-comp title="Routing Details"></app-headline-comp>
       <div class="p-4 border shadow rounded-bottom-2">
         <app-pick-drop
-          [pickupAddress]="selectedReservation.pickupAddress"
-          [dropoffAddress]="selectedReservation.dropoffAddress"
+          [pickupAddress]="tripDetails.pickupAddress"
+          [dropoffAddress]="tripDetails.dropoffAddress"
         ></app-pick-drop>
 
         <app-navigate-button></app-navigate-button>
@@ -124,8 +127,10 @@
       <app-headline-comp title="PAYMENT STATUS"></app-headline-comp>
       <div class="border p-4">
         <app-payments-tab
-          [waitingCost]="calculateWaitingCost()"
-        ></app-payments-tab>
+  [booking_id]="tripDetails.booking_id"
+  [waitingCost]="calculateWaitingCost()"
+></app-payments-tab>
+
       </div>
     </div>
 
@@ -178,3 +183,4 @@
     </div>
   </div>
 </ion-content>
+}

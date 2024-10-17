@@ -32,6 +32,7 @@ import { CommonService } from 'src/app/services/common.service';
 import { addIcons } from 'ionicons';
 import { chevronDownCircleOutline } from 'ionicons/icons';
 import { ITripType } from 'src/app/model/interface';
+import { AppService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-upcoming',
@@ -84,6 +85,7 @@ export class UpcomingComponent {
   private apiService = inject(ApiService);
   private commonService = inject(CommonService);
   private router = inject(Router);
+  private appService = inject(AppService);
 
   constructor() {}
 
@@ -228,20 +230,33 @@ export class UpcomingComponent {
   }
 
   confirmTrip(reservationId: string) {
-    this.commonService.showToast('Trip is now In Progress', 'success');
-    setTimeout(() => {
-      this.router.navigate(['/dashboard/in-progress']);
-    }, 300);
-    //   next: () => {
-    //     this.showConfirmationModal = false;
-    //   },
-    //   error: (error) => {
-    //     console.log(reservationId);
-    //     console.error('Error starting trip:', error);
-    //     this.router.navigate(['/dashboard/in-progress']);
-    //   },
-    // });
-  }
+    this.apiService.startBooking(reservationId, '5').subscribe({
+        next: (response) => {
+            console.log('Status changed successfully:', response);
+            this.showStatusChangeModal = false;
+            this.commonService.showToast('Trip is now In Progress', 'success');
+            setTimeout(() => {
+                this.router.navigate(['/dashboard/in-progress']);
+            }, 300);
+        },
+        error: (error) => {
+            console.error('Error changing status:', error);
+            this.showStatusChangeModal = false;
+        },
+        // error: (error) => {
+        //   console.error('Error changing status:', error);
+        //   this.showStatusChangeModal = false;
+        //   if (
+        //     error?.message === 'This Driver Already has a Booking in Progress'
+        //   ) {
+        //     alert('This Driver Already has a Booking in Progress'); // Alert the user
+        //   } else {
+        //     this.commonService.showToast('Already have 1 booking', 'warning'); // Show generic toast on other errors
+        //   }
+        // },
+    });
+}
+
 
   onModalClose() {
     this.showConfirmationModal = false;
