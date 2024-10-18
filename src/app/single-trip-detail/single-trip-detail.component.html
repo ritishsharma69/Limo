@@ -3,10 +3,10 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/trip-history"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ trip.name }}</ion-title>
+    <ion-title class="fs-13">{{ trip.name }}</ion-title>
     <p
       slot="end"
-      class="m-3"
+      class="m-3 fs-13"
       [ngClass]="{
         'status-complete': selectedStatus === 'Completed',
         'status-rejected': selectedStatus !== 'Completed'
@@ -17,55 +17,58 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content scrollY="true" *ngIf="trip" class="ion-padding">
-  <div class="border mb-3 shadow rounded">
+<ion-content scrollY="true" *ngIf="trip">
+  <div class="m-1">
+  <div class="border mb-1 shadow rounded">
     <app-headline-comp title="Trip Details"></app-headline-comp>
     <ion-card-content>
       <ion-item lines="full">
-        <ion-label class="fw-semibold">Pick up</ion-label>
-        <div>{{ trip.details.pickUp }}</div>
+        <ion-label class="fw-semibold fs-13">Pick up</ion-label>
+        <div class="fs-13">{{ trip.details.pickUp }}</div>
       </ion-item>
       <ion-item lines="full">
-        <ion-label class="fw-semibold">Drop off</ion-label>
-        <div>{{ trip.details.dropOff }}</div>
+        <ion-label class="fw-semibold fs-13">Drop off</ion-label>
+        <div class="fs-13">{{ trip.details.dropOff }}</div>
       </ion-item>
       <ion-item lines="full">
-        <ion-label class="fw-semibold">Vehicle</ion-label>
-        <div>{{ trip.details.vehicle }}</div>
+        <ion-label class="fw-semibold fs-13">Vehicle</ion-label>
+        <div class="fs-13">{{ trip.details.vehicle }}</div>
       </ion-item>
       <ion-item lines="full">
-        <ion-label class="fw-semibold">Duration</ion-label>
-        <div>{{ trip.details.duration }}</div>
+        <ion-label class="fw-semibold fs-13">Duration</ion-label>
+        <div class="fs-13">{{ trip.details.duration }}</div>
       </ion-item>
       <ion-item lines="full">
-        <ion-label class="fw-semibold">Total Fare</ion-label>
-        <div>{{ trip.details.totalFare }}</div>
+        <ion-label class="fw-semibold fs-13">Total Fare</ion-label>
+        <div class="fs-13">{{ trip.details.totalFare }}</div>
       </ion-item>
       <ion-item lines="full">
-        <ion-label class="fw-semibold">Payment Method</ion-label>
-        <div>{{ trip.details.paymentMethod }}</div>
+        <ion-label class="fw-semibold fs-13">Payment Method</ion-label>
+        <div class="fs-13">{{ trip.details.paymentMethod }}</div>
       </ion-item>
     </ion-card-content>
   </div>
-  <div class="border mb-3 shadow rounded" *ngIf="selectedStatus !== 'Rejected'">
+
+  <div class="border mb-1 shadow rounded" *ngIf="selectedStatus !== 'Rejected'">
     <app-headline-comp title="Payment Type"></app-headline-comp>
     <ion-card-content>
       <ion-item lines="full">
-        <ion-label class="fw-semibold">Payment Type</ion-label>
-        <div>{{ trip.payment.paymentType }}</div>
+        <ion-label class="fw-semibold fs-13">Payment Type</ion-label>
+        <div class="fs-13">{{ trip.payment.paymentType }}</div>
       </ion-item>
       <ion-item lines="full">
-        <ion-label class="fw-semibold">Total</ion-label>
-        <div>{{ trip.payment.total }}</div>
+        <ion-label class="fw-semibold fs-13">Total</ion-label>
+        <div class="fs-13">{{ trip.payment.total }}</div>
       </ion-item>
       <ion-item lines="full">
-        <ion-label class="fw-semibold">Amount Paid</ion-label>
-        <div>{{ trip.payment.amountPaid }}</div>
+        <ion-label class="fw-semibold fs-13">Amount Paid</ion-label>
+        <div class="fs-13">{{ trip.payment.amountPaid }}</div>
       </ion-item>
       <ion-item lines="full">
-        <ion-label class="fw-semibold">Remaining Balance</ion-label>
-        <div>{{ trip.payment.remainingBalance }}</div>
+        <ion-label class="fw-semibold fs-13">Remaining Balance</ion-label>
+        <div class="fs-13">{{ trip.payment.remainingBalance }}</div>
       </ion-item>
     </ion-card-content>
+  </div>
   </div>
 </ion-content>

@@ -38,7 +38,7 @@ i {
   flex: 1;
   border: none;
   border-radius: 0;
-  font-size: 16px;
+  font-size: 14px;
   text-align: center;
   transition: background-color 0.3s ease;
 }
@@ -63,4 +63,12 @@ i {
 
 .reservation {
   font-size: 13px;
+}
+
+.reservation-datetime {
+  font-size: 11px;
+}
+
+.card-id {
+  font-size: 11px;;
 }

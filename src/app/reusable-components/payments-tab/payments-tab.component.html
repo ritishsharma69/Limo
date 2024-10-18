@@ -1,13 +1,13 @@
 <div>
-  <h3 class="mb-4 text-center">
+  <h3 class="mb-2 text-center fs-14">
     Remaining Payment:
     <span class="text-success">
       {{ currencySymbol }} {{ getTotalRemainingPaymentWithoutWaitingTime() }}
     </span>
   </h3>
-  @if(waitingCost) {
 
-  <h3 class="mb-4 text-center">
+  @if (waitingCost) {
+  <h3 class="mb-4 text-center fs-13">
     Waiting Cost:
     <span class="text-success"> {{ currencySymbol }} {{ waitingCost }} </span>
   </h3>
@@ -25,32 +25,66 @@
 
     <div
       *ngFor="let cost of additionalCosts; let i = index"
-      class="d-flex align-items-center mt-3"
+      class="mt-3 d-flex justify-content-between"
     >
-      <div class="input-group me-2 flex-grow-1">
+      <div class="flex-grow-1 d-flex gap-2 flex-column">
         <input
           type="text"
           [(ngModel)]="cost.name"
           placeholder="Cost Name"
-          class="form-control"
+          class="form-control fs-13"
           [ngClass]="{ 'is-invalid': isCostInvalid(cost) }"
         />
         <input
           type="number"
           [(ngModel)]="cost.amount"
           placeholder="Enter Amount"
-          class="form-control"
+          class="form-control fs-13"
           [ngClass]="{ 'is-invalid': isCostInvalid(cost) }"
           (ngModelChange)="calculateTotalAdditionalPayment()"
         />
       </div>
-      <button type="button" class="btn btn-danger" (click)="removeCost(i)">
+
+      <button
+        type="button"
+        class="btn"
+        (click)="removeCost(i)"
+        style="border: none; background: transparent; color: red"
+      >
         <i class="fa-solid fa-trash"></i>
       </button>
     </div>
 
+    <!-- <div *ngFor="let cost of additionalCosts; let i = index" class="mt-3">
+      <div class="input-group me-2 flex-grow-1">
+        <input
+          type="text"
+          [(ngModel)]="cost.name"
+          placeholder="Cost Name"
+          class="form-control fs-13"
+          [ngClass]="{ 'is-invalid': isCostInvalid(cost) }"
+        />
+        <input
+          type="number"
+          [(ngModel)]="cost.amount"
+          placeholder="Enter Amount"
+          class="form-control fs-13"
+          [ngClass]="{ 'is-invalid': isCostInvalid(cost) }"
+          (ngModelChange)="calculateTotalAdditionalPayment()"
+        />
+        <button
+          type="button"
+          class="btn"
+          (click)="removeCost(i)"
+          style="border: none; background: transparent; color: red"
+        >
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+    </div> -->
+
     <div *ngIf="additionalCosts.length > 0" class="mt-2 align-items-end">
-      <button class="btn btn-success" (click)="addToPayment()">
+      <button class="btn btn-success fs-13" (click)="addToPayment()">
         Add to Payment
       </button>
     </div>
@@ -60,7 +94,7 @@
       <app-headline-comp title="Choose a Payment Option"></app-headline-comp>
 
       <div class="form-check my-3">
-        <label class="form-check-label">
+        <label class="form-check-label fs-13">
           <input
             type="radio"
             class="form-check-input"
@@ -70,10 +104,10 @@
           Cash
         </label>
         <div *ngIf="selectedPaymentMethod === 'cash'" class="mt-2">
-          <label class="form-label">Amount Collected:</label>
+          <label class="form-label fs-13">Amount Collected:</label>
           <input
             type="number"
-            class="form-control"
+            class="form-control fs-13"
             [(ngModel)]="collectedAmount"
             placeholder="Enter amount"
           />
@@ -81,7 +115,7 @@
       </div>
 
       <div class="form-check mb-3">
-        <label class="form-check-label">
+        <label class="form-check-label fs-13">
           <input
             type="radio"
             class="form-check-input"
@@ -93,7 +127,7 @@
       </div>
 
       <div class="form-check mb-3">
-        <label class="form-check-label">
+        <label class="form-check-label fs-13">
           <input
             type="radio"
             class="form-check-input"
@@ -104,7 +138,7 @@
         </label>
         <div *ngIf="selectedPaymentMethod === 'other'" class="mt-2">
           <textarea
-            class="form-control"
+            class="form-control fs-13"
             [(ngModel)]="otherPaymentDetails"
             placeholder="Enter payment details"
           ></textarea>
@@ -115,7 +149,7 @@
     <!-- Finalize Payment Button -->
     <div class="text-center my-3">
       <button
-        class="btn btn-lg finalizePayment"
+        class="btn btn-lg finalizePayment fs-13"
         (click)="finalizePayment()"
         [disabled]="!isPaymentAdded && additionalCosts.length > 0"
       >
@@ -125,7 +159,7 @@
 
     <div
       *ngIf="paymentStatus && !isFormValid()"
-      class="alert alert-danger mt-3 text-center"
+      class="alert alert-danger mt-3 text-center fs-13"
     >
       {{ paymentStatus }}
     </div>

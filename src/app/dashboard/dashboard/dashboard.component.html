@@ -2,9 +2,7 @@
   <div class="border-bottom">
     <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-menu-button
-          autoHide="false"
-        ></ion-menu-button>
+        <ion-menu-button autoHide="false"></ion-menu-button>
       </ion-buttons>
 
       <div
@@ -68,21 +66,14 @@
       (ionChange)="segmentChanged($event)"
     >
       <ion-segment-button value="pending" class="relative">
-        Pending
-        <span
-          *ngIf="pendingNotifications > 0"
-          class="notification-badge rounded-circle text-center bg-danger text-white"
-        >
-          {{ pendingNotifications }}
-        </span>
+        Pending @if (pendingNotifications > 0) {
+          ({{ pendingNotifications }})
+        }
       </ion-segment-button>
-      <ion-segment-button value="upcoming"> Upcoming 
-        <span
-          *ngIf="upcomingNotifications > 0"
-          class="notification-badge rounded-circle text-center bg-danger text-white"
-        >
-          {{ upcomingNotifications }}
-        </span>
+      <ion-segment-button value="upcoming">
+        Upcoming @if (upcomingNotifications > 0) {
+          ({{ upcomingNotifications }})
+        }
       </ion-segment-button>
       <ion-segment-button value="in-progress"> In Progress </ion-segment-button>
     </ion-segment>

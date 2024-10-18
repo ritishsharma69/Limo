@@ -56,20 +56,20 @@ throw new Error('Method not implemented.');
 
     switch (type) {
       case 'luggage':
-        this.modalTitle = 'No. Of Luggage';
+        this.modalTitle = 'Luggage Details';
         this.modalContent = this.extraInfo.no_of_luggage
           ? `No. Of Luggage = ${this.extraInfo.no_of_luggage}`
           : 'No luggage information available';
         break;
       case 'passengers':
-        this.modalTitle = 'No. Of Passengers';
+        this.modalTitle = 'Passenger Details';
         this.modalContent = this.extraInfo.no_of_passengers
           ? `No. Of Passengers = ${this.extraInfo.no_of_passengers}`
           : 'No passenger information available';
         break;
       case 'child':
       case 'child_seat':
-        this.modalTitle = 'No. Of Child Seats';
+        this.modalTitle = 'Child Seats Info';
         this.modalContent = this.extraInfo.child_seat_count
           ? `No. Of Child Seats = ${this.extraInfo.child_seat_count}`
           : 'No child seat information available';

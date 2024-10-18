@@ -10,7 +10,7 @@ export class LoaderService {
 
   constructor(private loadingController: LoadingController) {}
 
-  async presentLoading() {
+  async presentLoading(timeout: number = 10000) {
     this.requestCount++;
     if (this.requestCount === 1) {
       this.loading = await this.loadingController.create({
@@ -19,11 +19,20 @@ export class LoaderService {
         backdropDismiss: false,
       });
       await this.loading.present();
+      setTimeout(() => {
+        if (this.loading) {
+          this.dismissLoading();
+        }
+      }, timeout);
     }
   }
+  
 
   async dismissLoading() {
-    this.requestCount = Math.max(0, this.requestCount - 1);
+    if (this.requestCount > 0) {
+      this.requestCount--;
+    }
+    
     if (this.requestCount === 0 && this.loading) {
       await this.loading.dismiss();
       this.loading = null;

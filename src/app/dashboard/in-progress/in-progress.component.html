@@ -1,51 +1,57 @@
 @if(tripDetails){
 <ion-content>
-  <div class="p-3">
-    <div class="d-flex justify-content-between p-2 border shadow">
+  <div class="p-1">
+    <div class="dateTime d-flex justify-content-between p-2 border shadow">
       <span class="pu-date">
         {{ tripDetails.pu_date | customDateTime : tripDetails.pu_time }}
       </span>
       <span>ID: {{ tripDetails.booking_id }}</span>
     </div>
 
-    <div class="mb-3 border shadow rounded-bottom-2">
+    <div class="mb-1 border shadow rounded-bottom-2">
       <app-headline-comp title="REQUIREMENTS"></app-headline-comp>
-      <p class="ion-text-left p-3 mb-0 text-center">
+      <p class="requirements ion-text-left p-3 mb-0 text-center">
         {{ selectedReservation.requirements }}
       </p>
     </div>
 
-    <div class="mb-3 border shadow rounded-bottom-2">
-      <p
-        class="passenger-info border-bottom text-center p-2 ion-text-uppercase mb-0"
-      >
-        PASSENGER INFO
-      </p>
+    <div class="mb-1 border shadow rounded-bottom-2">
+      <app-headline-comp title="PASSENGER INFO"></app-headline-comp>
 
-      <div class="text-black mb-2 text-center fs-4">
-        <div class="flex-grow-1 ps-3 ion-align-items-start">
-          <p class="mb-2 text-center fs-1 mt-2">
+      <div class="d-flex align-items-center border p-1 shadow rounded-bottom-2">
+        <div class="image-container">
+          <img
+            src="../../../assets/imgs/passenger-profile.jpg"
+            alt="Passenger Image"
+            class="img-fluid rounded-circle passenger-image"
+          />
+        </div>
+        <div class="flex-grow-1 ps-3 ion-align-items-start mb-1">
+          <p class="mb-2 text-center fs-3">
             {{ tripDetails.booking_f_name + " " + tripDetails.booking_l_name }}
           </p>
-          <div class="d-flex justify-content-center gap-4 mb-3">
+          <div class="d-flex justify-content-center gap-4">
+            <!-- Phone link -->
             <a
               href="tel:{{ tripDetails.booking_phone }}"
               class="text-decoration-none"
               aria-label="Call Us"
             >
               <div
-                class="border rounded-circle p-3 shadow-lg d-flex align-items-center justify-content-center"
+                class="icon-container border rounded-circle p-3 shadow-lg d-flex align-items-center justify-content-center"
               >
                 <i class="icon fa-solid fa-phone"></i>
               </div>
             </a>
+
+            <!-- SMS link -->
             <a
               href="sms:{{ tripDetails.booking_phone }}"
               class="text-decoration-none"
               aria-label="Text Us"
             >
               <div
-                class="border rounded-circle p-3 shadow-lg d-flex align-items-center justify-content-center"
+                class="icon-container border rounded-circle p-3 shadow-lg d-flex align-items-center justify-content-center"
               >
                 <i class="icon fa-regular fa-envelope"></i>
               </div>
@@ -56,9 +62,9 @@
     </div>
 
     <!-- Routing info-->
-    <div class="mb-3">
+    <div class="mb-1">
       <app-headline-comp title="Routing Details"></app-headline-comp>
-      <div class="p-4 border shadow rounded-bottom-2">
+      <div class="border shadow rounded-bottom-2" style="font-size: 13px">
         <app-pick-drop
           [pickupAddress]="tripDetails.pickupAddress"
           [dropoffAddress]="tripDetails.dropoffAddress"
@@ -68,7 +74,7 @@
       </div>
     </div>
 
-    <div class="mb-3 border shadow rounded-bottom-2">
+    <div class="mb-1 border shadow rounded-bottom-2" style="font-size: 13px">
       <div
         class="toggleFinalizeTab d-flex justify-content-center align-items-center gap-2 text-white"
         (click)="toggleFinalizeTab()"
@@ -125,22 +131,21 @@
 
     <div class="border shadow rounded-bottom-2">
       <app-headline-comp title="PAYMENT STATUS"></app-headline-comp>
-      <div class="border p-4">
+      <div class="border p-2">
         <app-payments-tab
-  [booking_id]="tripDetails.booking_id"
-  [waitingCost]="calculateWaitingCost()"
-></app-payments-tab>
-
+          [booking_id]="tripDetails.booking_id"
+          [waitingCost]="calculateWaitingCost()"
+        ></app-payments-tab>
       </div>
     </div>
 
-    <div class="fixed-bottom sticky-bottom mb-3 bg-white">
-      <div class="mb-3 p-2 border">
-        <div class="d-flex justify-content-between align-items-center">
-          <!-- Status Section -->
-          <div class="status-section">
+    <div class="fixed-bottom sticky-bottom bottom-tab">
+      <div class="px-2 border">
+        <div class="d-flex justify-content-between gap-2 align-items-center">
+          <div class="status-section d-flex flex-column gap-2">
             <strong>Current Status</strong>
             <ion-select
+              style="min-height: 0 !important"
               class="currentStatus"
               [(ngModel)]="currentStatus"
               interface="popover"
@@ -150,16 +155,11 @@
               <ion-select-option
                 *ngFor="let option of options"
                 [value]="option.value"
+                >{{ option.label }}</ion-select-option
               >
-                {{ option.label }}
-              </ion-select-option>
             </ion-select>
           </div>
-
-          <!-- Vertical Divider -->
           <div class="vertical-divider"></div>
-
-          <!-- Waiting Time Section -->
           <div class="d-flex flex-column justify-content-between gap-2">
             <strong>Waiting Time</strong>
             <div
@@ -172,10 +172,11 @@
                   currentStatus !== 'arrived' ? 'none' : 'auto'
                 "
                 [style.opacity]="currentStatus !== 'arrived' ? '0.5' : '1'"
+                class="mb-0"
               >
                 {{ waitingButtonLabel }} :
               </p>
-              <p class="mx-4">{{ formatTime(waitingTime) }}</p>
+              <p class="mx-4 mb-0">{{ formatTime(waitingTime) }}</p>
             </div>
           </div>
         </div>

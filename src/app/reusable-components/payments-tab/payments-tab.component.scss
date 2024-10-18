@@ -1,7 +1,17 @@
+/* Font size 13px */
+.fs-13 {
+  font-size: 13px;
+}
+
+.fs-14 {
+  font-size: 16px;
+}
+
 .additionalCosts {
   background: var(--bg-primary-100);
   color: var(--bg-neutral-100);
 }
+
 .icon {
   height: 40px;
   width: 40px;
@@ -9,8 +19,7 @@
   transform: translateY(-50%);
 }
 
-.finalizePayment,
-.icon {
+.finalizePayment {
   background: var(--bg-blue-100);
   color: var(--bg-neutral-100);
 }

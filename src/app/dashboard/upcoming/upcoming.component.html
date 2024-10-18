@@ -7,10 +7,10 @@
     />
   </ion-refresher>
   
-  <div class="d-flex flex-column">
+  <div class="d-flex flex-column" style="font-size: 13px;">
     @for(trip of tripDetails; track $index) {
       <div class="shadow-lg trip-card">
-        <div class="text-center px-1 m-3 reservation">
+        <div class="text-center px-1 m-1 reservation">
           <p
             (click)="toggleDetails($index)"
             class="clickable-text d-flex align-items-center justify-content-center p-2 mb-0"
@@ -22,7 +22,7 @@
           ></i>
           </p>
           <div class="border border-white mb-1"></div>
-          <div class="d-flex justify-content-between mb-0 p-1">
+          <div class=" d-flex justify-content-between mb-0 p-1">
             <span>{{ trip.booking_f_name }} {{ trip.booking_l_name }}</span>
             <span class="pu-date">
               {{
@@ -34,11 +34,11 @@
         </div>
 
         <!-- Expanded Passenger Details Section -->
-        <div *ngIf="trip.showDetails" class="details m-3 fade-in">
+        <div *ngIf="trip.showDetails" class="details m-1 fade-in">
           <app-headline-comp title="Passenger Details"></app-headline-comp>
 
           <!-- Passenger Information -->
-          <div class="d-flex align-items-center border p-3 mb-3 shadow rounded-bottom-2">
+          <div class="d-flex align-items-center border p-1 mb-1 shadow rounded-bottom-2">
             <div class="image-container">
               <img
                 src="../../../assets/imgs/passenger-profile.jpg"
@@ -46,7 +46,7 @@
                 class="img-fluid rounded-circle passenger-image"
               />
             </div>
-            <div class="flex-grow-1 ps-3 ion-align-items-start mb-4">
+            <div class="flex-grow-1 ps-3 ion-align-items-start mb-1">
               <p class="mb-2 text-center fs-3">
                 {{ trip.booking_f_name + " " + trip.booking_l_name }}
               </p>
@@ -80,9 +80,9 @@
             </div>
           </div>
 
-          <div class="mb-3">
+          <div class="mb-1">
             <app-headline-comp title="Routing Details"></app-headline-comp>
-            <div class="border p-4 shadow rounded-bottom-2">
+            <div class="border shadow rounded-bottom-2">
               <app-pick-drop
                 [pickupAddress]="trip.pickupAddress"
                 [dropoffAddress]="trip.dropoffAddress"
@@ -95,9 +95,9 @@
             </div>
           </div>
 
-          <div class="mb-3">
+          <div class="mb-1">
             <app-headline-comp title="Additional Details"></app-headline-comp>
-            <div class="border p-4 shadow rounded-bottom-2">
+            <div class="border pt-3 shadow rounded-bottom-2">
               <app-extra-items
                 [extraInfo]="trip.extraInfo"
                 [showButton]="false"
@@ -105,29 +105,29 @@
             </div>
           </div>
 
-          <div class="mb-3">
+          <div class="mb-1">
             <app-headline-comp title="Notes From ADMIN"></app-headline-comp>
-            <p class="ion-text-center p-4 mb-0 shadow rounded-bottom-2">
+            <p class="ion-text-center p-3 mb-0 shadow rounded-bottom-2">
               Example: Help Passenger with their luggage.
             </p>
           </div>
 
-          <div class="mb-3">
+          <div class="mb-1">
             <app-headline-comp title="PAYMENT STATUS"></app-headline-comp>
-            <div class="border p-4 shadow rounded-bottom-2">
-              <h4 class="text-center mb-0">
+            <div class="border shadow rounded-bottom-2">
+              <p class="ion-text-center p-3 mb-0">
                 Remaining Payment:
                 <span class="text-success"
                   >{{ trip.company.currency.symbol
                   }}{{ trip.grand_total || 100 }}</span
                 >
-              </h4>
+              </p>
             </div>
           </div>
 
           <div class="border">
             <app-headline-comp title="Assigned Vehicle"></app-headline-comp>
-            <div class="p-4 shadow rounded-bottom-2">
+            <div class="p-1 shadow rounded-bottom-2">
               <div class="d-flex justify-content-between align-items-start">
                 <div class="text-left">
                   <p>{{ trip.fleet.name }}{{ trip.fleet.model }}</p>
@@ -145,7 +145,7 @@
             </div>
           </div>
 
-          <div class="fixed-bottom sticky-bottom bg-white mb-3">
+          <div class="fixed-bottom sticky-bottom bg-white mb-1">
             <div class="button-container">
               <button
                 class="change-status btn-flex btn border border-secondary text-uppercase"
@@ -181,10 +181,11 @@
     class="ion-padding"
   >
     <ng-template>
-      <div class="modal-content text-center p-4">
+      <div class="modal-content text-center p-2">
         <h4>Change Status</h4>
         <p>Are you sure you want to change the status?</p>
-        <div class="d-flex justify-content-around mt-4">
+        <div class="d-flex justify-content-around mt-4
+        ">
           <button
             class="btn statusReject"
             (click)="confirmStatusChange('rejected')"

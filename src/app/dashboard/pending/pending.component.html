@@ -9,13 +9,11 @@
   <div class="d-flex flex-column">
     @for(trip of tripDetails; track $index) {
     <div [id]="'trip-' + trip.id" class="shadow-lg trip-card">
-      <div class="text-white m-3 passenger-details px-1">
+      <div class="text-white m-1 passenger-details px-1">
         <div class="text-white">
-          <div
-            class="reservation d-flex justify-content-between text-white p-2"
-          >
+          <div class="reservation d-flex justify-content-between text-white p-2">
             <span class="card-id">{{ trip.booking_id }} (Reservation ID)</span>
-            <span>
+            <span class="reservation-datetime">
               {{
                 formatDateTime(trip.pu_date, trip.pu_time)
                   | date : "dd MMM, h:mm a"
@@ -24,6 +22,7 @@
           </div>
           <div class="border"></div>
         </div>
+        
         <div
           class="d-flex justify-content-center align-items-center gap-2"
           (click)="toggleDetails($index)"
@@ -38,7 +37,7 @@
         </div>
       </div>
 
-      <div *ngIf="trip.showDetails" class="details m-3 border shadow fade-in">
+      <div *ngIf="trip.showDetails" class="details m-1 border shadow fade-in" style="font-size: 13px;">
         <app-headline-comp title="TRIP DETAILS"></app-headline-comp>
 
         <div class="m-4">
@@ -50,7 +49,7 @@
             <app-extra-items [extraInfo]="trip.extraInfo"></app-extra-items>
           </div>
         </div>
-        <div class="button-container mt-2">
+        <div class="button-container mt-1">
           <button
             class="reject btn-flex btn border border-secondary p-3 text-uppercase"
             (click)="onReject()"
