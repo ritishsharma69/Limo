@@ -26,6 +26,7 @@ export class PaymentsTabComponent implements OnInit {
     { name: '', amount: null },
   ];
   submitted: boolean = false;
+  isPaymentAdded: boolean = false;
 
   private apiService = inject(ApiService);
   private router = inject(Router);
@@ -49,20 +50,25 @@ export class PaymentsTabComponent implements OnInit {
       (this.waitingCost || 0)
     );
   }
+  getTotalRemainingPaymentWithoutWaitingTime(): number {
+    return this.remainingPayment + this.totalAdditionalPayment;
+  }
 
   finalizePayment() {
     this.submitted = true;
 
+    // Check if the payment has been added before proceeding
+    if (!this.isPaymentAdded) {
+      this.paymentStatus =
+        'Please add costs and press "Add to Payment" before finalizing.';
+      return;
+    }
+
+    // Validate the payment form
     if (!this.isFormValid()) {
       this.paymentStatus = 'Please complete all required fields.';
       return;
     }
-
-    const additionalCostsData = this.additionalCosts.map((cost) => ({
-      name: cost.name,
-      amount: cost.amount,
-    }));
-    console.log('Additional Costs Data:', additionalCostsData);
 
     const totalPaid = this.calculateTotalPaid();
     if (totalPaid === null) {
@@ -70,6 +76,7 @@ export class PaymentsTabComponent implements OnInit {
       return;
     }
 
+    // Navigate to the payment status page with payment data
     this.router.navigate(['/payment-status'], {
       state: {
         remainingPayment: totalPaid,
@@ -96,11 +103,20 @@ export class PaymentsTabComponent implements OnInit {
   addCost() {
     this.additionalCosts.push({ name: '', amount: null });
     this.calculateTotalAdditionalPayment();
+
+    if (this.additionalCosts.length > 0) {
+      this.isPaymentAdded = false;
+    }
   }
 
   removeCost(index: number) {
     this.additionalCosts.splice(index, 1);
+
     this.calculateTotalAdditionalPayment();
+
+    if (this.additionalCosts.length === 0) {
+      this.isPaymentAdded = true;
+    }
   }
 
   calculateTotalAdditionalPayment() {
@@ -122,41 +138,43 @@ export class PaymentsTabComponent implements OnInit {
         ? !!this.otherPaymentDetails && this.otherPaymentDetails.trim() !== ''
         : this.selectedPaymentMethod !== null;
 
-    return allCostsValid || paymentMethodValid;
+    return allCostsValid && paymentMethodValid;
   }
 
-  // Helper method to determine if a specific cost is invalid
   isCostInvalid(cost: { name: string; amount: number | null }): boolean {
     return (
       !!this.submitted &&
       (!cost.name || cost.amount === null || cost.amount <= 0)
     );
   }
+
   addToPayment() {
+
+    const allCostsValid = this.additionalCosts.every(
+      (cost) => !!cost.name && cost.amount !== null && cost.amount > 0
+    );
+  
+    if (!allCostsValid) {
+      this.paymentStatus = 'Please fill out all cost names and valid amounts.';
+      return;
+    }
+    
     const rates = this.additionalCosts.map((cost) => ({
       name: cost.name,
       fixed_amount: cost.amount,
     }));
-    console.log('Additional Costs Data:', rates);
 
     if (!this.booking_id) {
       this.paymentStatus = 'Please enter a booking ID.';
       return;
     }
 
-    this.apiService.submitPayment(this.booking_id, rates).subscribe({
-      next: (response) => {
-        console.log('Payment submitted successfully', response);
-
-        // Calculate the total paid amount
-        const totalPaid = this.calculateTotalPaid();
-        if (totalPaid === null) {
-          this.paymentStatus = 'Please enter the required payment details.';
-          return;
-        }
+    this.apiService.addAdditionalCost(this.booking_id, rates).subscribe({
+      next: () => {
+        this.isPaymentAdded = true;
+        console.log('Payment submitted successfully');
       },
-      error: (err) => {
-        console.error('Payment submission failed', err);
+      error: () => {
         this.paymentStatus =
           'There was an error processing your payment. Please try again.';
       },

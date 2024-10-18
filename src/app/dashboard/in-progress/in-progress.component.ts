@@ -137,7 +137,7 @@ export class InProgressComponent implements OnInit {
   }
 
   fetchBooking() { 
-    this.apiService.inprogress().subscribe({
+    this.apiService.inProgress().subscribe({
       next: (response: any) => {
         if (!response || !response.data) {
           console.error('API response is empty or undefined.');

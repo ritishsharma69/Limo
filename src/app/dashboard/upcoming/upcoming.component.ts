@@ -239,21 +239,21 @@ export class UpcomingComponent {
                 this.router.navigate(['/dashboard/in-progress']);
             }, 300);
         },
-        error: (error) => {
-            console.error('Error changing status:', error);
-            this.showStatusChangeModal = false;
-        },
         // error: (error) => {
-        //   console.error('Error changing status:', error);
-        //   this.showStatusChangeModal = false;
-        //   if (
-        //     error?.message === 'This Driver Already has a Booking in Progress'
-        //   ) {
-        //     alert('This Driver Already has a Booking in Progress'); // Alert the user
-        //   } else {
-        //     this.commonService.showToast('Already have 1 booking', 'warning'); // Show generic toast on other errors
-        //   }
+        //     console.error('Error changing status:', error);
+        //     this.showStatusChangeModal = false;
         // },
+        error: (error) => {
+          console.error('Error changing status:', error);
+          this.showStatusChangeModal = false;
+          if (
+            error?.message === 'This Driver Already has a Booking in Progress'
+          ) {
+            alert('This Driver Already has a Booking in Progress');
+          } else {
+            this.commonService.showToast('Already have 1 booking in In-Progress', 'error');
+          }
+        },
     });
 }
 

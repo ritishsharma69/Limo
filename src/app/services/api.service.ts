@@ -64,14 +64,14 @@ export class ApiService {
     return this.http.get(`${environment.API_ENDPOINT}/api/driver-status`);
   }
 
-  inprogress(): Observable<any> {
+  inProgress(): Observable<any> {
     return this.http.get(
       `${environment.API_ENDPOINT}/api/drivers/booking-in-progress`,
       this.appService.setHeaders()
     );
   }
 
-  submitPayment(
+  addAdditionalCost(
     booking_id: string,
     rates: { name: string; fixed_amount: number | null }[]
   ): Observable<any> {

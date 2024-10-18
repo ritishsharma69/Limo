@@ -1,10 +1,17 @@
 <div>
   <h3 class="mb-4 text-center">
     Remaining Payment:
-    <span class="text-success"
-      >{{ currencySymbol }} {{ getTotalRemainingPayment() }}</span
-    >
+    <span class="text-success">
+      {{ currencySymbol }} {{ getTotalRemainingPaymentWithoutWaitingTime() }}
+    </span>
   </h3>
+  @if(waitingCost) {
+
+  <h3 class="mb-4 text-center">
+    Waiting Cost:
+    <span class="text-success"> {{ currencySymbol }} {{ waitingCost }} </span>
+  </h3>
+  }
 
   <!-- Additional Costs Section -->
   <div class="mb-3">
@@ -41,7 +48,8 @@
         <i class="fa-solid fa-trash"></i>
       </button>
     </div>
-    <div class="mt-2 align-items-end">
+
+    <div *ngIf="additionalCosts.length > 0" class="mt-2 align-items-end">
       <button class="btn btn-success" (click)="addToPayment()">
         Add to Payment
       </button>
@@ -50,6 +58,7 @@
     <!-- Payment Options Section -->
     <div class="my-3">
       <app-headline-comp title="Choose a Payment Option"></app-headline-comp>
+
       <div class="form-check my-3">
         <label class="form-check-label">
           <input
@@ -105,20 +114,19 @@
 
     <!-- Finalize Payment Button -->
     <div class="text-center my-3">
-      <button class="btn btn-lg finalizePayment" (click)="finalizePayment()">
+      <button
+        class="btn btn-lg finalizePayment"
+        (click)="finalizePayment()"
+        [disabled]="!isPaymentAdded && additionalCosts.length > 0"
+      >
         Finalize Payment
       </button>
     </div>
 
     <div
-      *ngIf="!isFormValid() && submitted"
-      class="alert alert-danger mt-2 text-center"
+      *ngIf="paymentStatus && !isFormValid()"
+      class="alert alert-danger mt-3 text-center"
     >
-      Please enter a valid additional cost before finalizing the payment.
-    </div>
-
-    <!-- Payment Status -->
-    <div *ngIf="paymentStatus" class="alert alert-success mt-3 text-center">
       {{ paymentStatus }}
     </div>
   </div>
