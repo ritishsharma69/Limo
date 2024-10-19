@@ -10,40 +10,39 @@ export class LoaderService {
 
   constructor(private loadingController: LoadingController) {}
 
-  async presentLoading(timeout: number = 10000): Promise<void> {
+  async presentLoading() {
     this.requestCount++;
     if (this.requestCount === 1) {
-      this.loading = await this.loadingController.create({
-        spinner: 'bubbles',
-        cssClass: 'transparent-loader',
-        backdropDismiss: false,
-        message: 'Loading...',
-      });
- 
-      await this.loading.present();
- 
-      setTimeout(() => {
-        this.forceDismissLoader();
-      }, timeout);
-    }
-  }
- 
-  async dismissLoading(): Promise<void> {
-    if (this.requestCount > 0) {
-      this.requestCount--;
-    }
- 
-    if (this.requestCount === 0 && this.loading) {
+      // Only create and present the loader when the first request comes in
       try {
-        await this.loading.dismiss();
-        this.loading = null; 
+        this.loading = await this.loadingController.create({
+          spinner: 'bubbles',
+          cssClass: 'transparent-loader',
+          backdropDismiss: false,
+          message: 'Loading...',
+        });
+        await this.loading.present();
       } catch (error) {
-        console.warn('Dismiss Loader Error:', error);
+        console.error('Error presenting loader:', error);
       }
     }
   }
- 
-  private async forceDismissLoader() {
+
+  async dismissLoading() {
+    if (this.requestCount > 0) this.requestCount--;
+
+    if (this.requestCount === 0 && this.loading) {
+      try {
+        await this.loading.dismiss();
+      } catch (error) {
+        console.warn('Dismiss Loader Error:', error);
+      } finally {
+        this.loading = null; // Reset loader after dismiss
+      }
+    }
+  }
+
+  async forceDismissLoader(): Promise<void> {
     if (this.loading) {
       try {
         await this.loading.dismiss();
@@ -51,7 +50,7 @@ export class LoaderService {
         console.warn('Force Dismiss Error:', error);
       } finally {
         this.loading = null;
-        this.requestCount = 0;
+        this.requestCount = 0; // Reset counter
       }
     }
   }

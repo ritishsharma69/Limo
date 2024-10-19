@@ -5,20 +5,14 @@ import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalo
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { loaderInterceptor } from './app/interceptors/loading.interceptor';
+import { loaderInterceptor } from './app/interceptors/loading.interceptor'; 
 
 import { FirebaseInitializerService } from './app/services/analytics/firebase-initializer.service';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { environment } from './environments/environment';
-import {
-  ScreenTrackingService,
-  UserTrackingService,
-  provideAnalytics,
-  getAnalytics,
-} from '@angular/fire/analytics';
+import { ScreenTrackingService, UserTrackingService, provideAnalytics, getAnalytics } from '@angular/fire/analytics';
 import { DatePipe } from '@angular/common';
 
-// Create an instance of the FirebaseInitializerService
 const firebaseInitializer = new FirebaseInitializerService();
 
 bootstrapApplication(AppComponent, {
@@ -34,7 +28,9 @@ bootstrapApplication(AppComponent, {
     ScreenTrackingService,
     UserTrackingService,
   ],
-}).then(async (appRef) => {
-  const injector = appRef.injector.get(FirebaseInitializerService);
-  await injector.initialize();
-}).catch((err) => console.error(err));
+})
+  .then(async (appRef) => {
+    const injector = appRef.injector.get(FirebaseInitializerService);
+    await injector.initialize();
+  })
+  .catch((err) => console.error('Error bootstrapping application:', err));
