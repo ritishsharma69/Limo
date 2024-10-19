@@ -113,7 +113,6 @@ export class PendingComponent {
   }
 
   fetchBooking() {
-
     this.apiService
       .fetchBookingDetails({
         fetchAddresses: true,
@@ -121,7 +120,6 @@ export class PendingComponent {
       })
       .subscribe({
         next: (response) => {
-
           if (!response) {
             console.error('API response is empty or undefined.');
             return;
@@ -145,7 +143,6 @@ export class PendingComponent {
         },
         error: (error) => {
           console.error('Error occurred while fetching the bookings:', error);
-
         },
       });
   }

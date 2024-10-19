@@ -10,8 +10,7 @@ import {
   IonContent,
   IonItem,
   IonLabel,
-  IonButton
-} from '@ionic/angular/standalone';
+  IonButton, IonInput } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
@@ -21,7 +20,7 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
   standalone: true,
   templateUrl: './edit-driver-profile.component.html',
   styleUrls: ['./edit-driver-profile.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule, IonHeader, IonToolbar, IonBackButton, IonButtons, IonTitle, IonContent, IonItem, IonLabel,IonButton],
+  imports: [IonInput, CommonModule, ReactiveFormsModule, IonHeader, IonToolbar, IonBackButton, IonButtons, IonTitle, IonContent, IonItem, IonLabel,IonButton],
 })
 export class EditDriverProfileComponent implements OnInit {
   private fb = inject(FormBuilder);
@@ -48,10 +47,10 @@ export class EditDriverProfileComponent implements OnInit {
 
   loadDriverProfileData() {
     const driverProfile = {
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john.doe@example.com',
-      phone: '1234567890',
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
     };
     this.editProfileForm.patchValue(driverProfile);
   }
@@ -98,12 +97,16 @@ export class EditDriverProfileComponent implements OnInit {
       console.log(`${key}:`, value instanceof File ? value.name : value);
     });
     console.log(formData);
-    
+    // try {
+      
+    //   this.router.navigate(['/driver-profile']);
+    // } catch {
+    //   console.error("Error submitting form");
+    // }
 
     // try {
     //   await this.apiService.updateDriverProfile(formData);
     //   this.showToast('Profile updated successfully!');
-    //   this.router.navigate(['/driver-profile']);
     // } catch (error) {
     //   console.error('Error updating profile:', error);
     //   this.showToast('Error updating profile. Please try again.');

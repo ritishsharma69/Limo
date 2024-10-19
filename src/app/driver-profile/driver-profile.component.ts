@@ -27,6 +27,8 @@ import { RouterLink } from '@angular/router';
 import { CommonService } from 'src/app/services/common.service';
 import { ApiService } from '../services/api.service';
 import { HeadlineCompComponent } from '../reusable-components/headline-comp.component';
+import { addIcons } from 'ionicons';
+import { chevronDownCircleOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-driver-profile',
@@ -70,6 +72,13 @@ export class DriverProfileComponent implements OnInit {
 
   ngOnInit() {
     this.fetchBooking();
+    this.registerIcons();
+  }
+
+  private registerIcons(): void {
+    addIcons({
+      'chevron-down-circle-outline': chevronDownCircleOutline,
+    });
   }
 
   handleRefresh(event: any) {

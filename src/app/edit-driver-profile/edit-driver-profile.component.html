@@ -60,25 +60,47 @@
 
       <ion-item lines="full">
         <ion-label position="stacked">First Name</ion-label>
-        <ion-input formControlName="firstName" type="text"></ion-input>
+        <ion-input
+          type="text"
+          formControlName="firstName"
+          placeholder="Enter your first name"
+          aria-label="First Name"
+        ></ion-input>
       </ion-item>
 
       <ion-item lines="full">
         <ion-label position="stacked">Last Name</ion-label>
-        <ion-input formControlName="lastName" type="text"></ion-input>
+        <ion-input
+          type="text"
+          formControlName="lastName"
+          placeholder="Enter your last name"
+          aria-label="Last Name"
+        ></ion-input>
       </ion-item>
 
       <ion-item lines="full">
         <ion-label position="stacked">Email</ion-label>
-        <ion-input formControlName="email" type="email"></ion-input>
+        <ion-input
+          type="email"
+          formControlName="email"
+          placeholder="Enter your email address"
+          aria-label="Email"
+        ></ion-input>
       </ion-item>
 
       <ion-item lines="full">
         <ion-label position="stacked">Phone</ion-label>
-        <ion-input formControlName="phone" type="tel"></ion-input>
+        <ion-input
+          type="tel"
+          formControlName="phone"
+          placeholder="Enter your phone number"
+          aria-label="Phone"
+        ></ion-input>
       </ion-item>
 
-      <ion-button expand="block" type="submit" class="ion-margin-top">Save Changes</ion-button>
+      <ion-button expand="block" type="submit" class="ion-margin-top"
+        >Save Changes</ion-button
+      >
     </form>
   </div>
 </ion-content>

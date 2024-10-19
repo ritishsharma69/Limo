@@ -10,32 +10,49 @@ export class LoaderService {
 
   constructor(private loadingController: LoadingController) {}
 
-  async presentLoading(timeout: number = 10000) {
+  async presentLoading(timeout: number = 10000): Promise<void> {
     this.requestCount++;
     if (this.requestCount === 1) {
       this.loading = await this.loadingController.create({
-        spinner: 'circles',
+        spinner: 'bubbles',
         cssClass: 'transparent-loader',
         backdropDismiss: false,
+        message: 'Loading...',
       });
+ 
       await this.loading.present();
+ 
       setTimeout(() => {
-        if (this.loading) {
-          this.dismissLoading();
-        }
+        this.forceDismissLoader();
       }, timeout);
     }
   }
-  
-
-  async dismissLoading() {
+ 
+  async dismissLoading(): Promise<void> {
     if (this.requestCount > 0) {
       this.requestCount--;
     }
-    
+ 
     if (this.requestCount === 0 && this.loading) {
-      await this.loading.dismiss();
-      this.loading = null;
+      try {
+        await this.loading.dismiss();
+        this.loading = null; 
+      } catch (error) {
+        console.warn('Dismiss Loader Error:', error);
+      }
+    }
+  }
+ 
+  private async forceDismissLoader() {
+    if (this.loading) {
+      try {
+        await this.loading.dismiss();
+      } catch (error) {
+        console.warn('Force Dismiss Error:', error);
+      } finally {
+        this.loading = null;
+        this.requestCount = 0;
+      }
     }
   }
 }
