@@ -51,6 +51,8 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We require location permission to detect users permission for submitted user reports for issue with public utilities or roads. The app is to used by users to submit their reports for garbage, roads, trees etc.</string>
 
-
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs camera access to allow you to take photos.</string>	
+	
 </dict>
 </plist>

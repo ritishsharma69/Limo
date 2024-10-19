@@ -30,6 +30,7 @@ import { addIcons } from 'ionicons';
 import { chevronDownCircleOutline } from 'ionicons/icons';
 import { RouterLink } from '@angular/router';
 import { ITripType } from 'src/app/model/interface';
+import { CustomDateTimePipe } from 'src/app/pipe/customDateTime.pipe';
 
 @Component({
   selector: 'app-pending',
@@ -60,6 +61,7 @@ import { ITripType } from 'src/app/model/interface';
     CommonConfirmationModalComponent,
     CommonModule,
     RouterLink,
+    CustomDateTimePipe,
   ],
 })
 export class PendingComponent {

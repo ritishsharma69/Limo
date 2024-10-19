@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/driver-profile"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit Your Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="flex flex-col items-center mt-2">
+    <form
+      [formGroup]="editProfileForm"
+      (ngSubmit)="onSubmit()"
+      class="w-full mt-6"
+    >
+      <div
+        class="col-md-6 d-flex flex-column justify-content-center align-items-center"
+      >
+        <div
+          class="capture-image"
+          (click)="handleTakePicture()"
+          style="cursor: pointer"
+        >
+          <img
+            *ngIf="imgData; else openCamera"
+            [src]="imgData"
+            class="rounded-circle"
+            alt="Captured Image"
+            loading="lazy"
+            style="
+              width: 100px;
+              height: 100px;
+              border: 2px solid #007bff;
+              object-fit: cover;
+            "
+          />
+          <ng-template #openCamera>
+            <img
+              src="../../assets/imgs/login-image.jpg"
+              class="rounded-circle"
+              alt="Dummy Photo"
+              loading="lazy"
+              style="
+                width: 100px;
+                height: 100px;
+                border: 2px solid #ccc;
+                object-fit: cover;
+              "
+            />
+          </ng-template>
+        </div>
+        <h5
+          (click)="handleTakePicture()"
+          class="text-center mt-3 font-weight-bold text-primary"
+        >
+          Upload Photo
+        </h5>
+      </div>
+
+      <ion-item lines="full">
+        <ion-label position="stacked">First Name</ion-label>
+        <ion-input formControlName="firstName" type="text"></ion-input>
+      </ion-item>
+
+      <ion-item lines="full">
+        <ion-label position="stacked">Last Name</ion-label>
+        <ion-input formControlName="lastName" type="text"></ion-input>
+      </ion-item>
+
+      <ion-item lines="full">
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input formControlName="email" type="email"></ion-input>
+      </ion-item>
+
+      <ion-item lines="full">
+        <ion-label position="stacked">Phone</ion-label>
+        <ion-input formControlName="phone" type="tel"></ion-input>
+      </ion-item>
+
+      <ion-button expand="block" type="submit" class="ion-margin-top">Save Changes</ion-button>
+    </form>
+  </div>
+</ion-content>

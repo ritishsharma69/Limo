@@ -33,6 +33,7 @@ import { addIcons } from 'ionicons';
 import { chevronDownCircleOutline } from 'ionicons/icons';
 import { ITripType } from 'src/app/model/interface';
 import { AppService } from 'src/app/services/auth.service';
+import { CustomDateTimePipe } from 'src/app/pipe/customDateTime.pipe';
 
 @Component({
   selector: 'app-upcoming',
@@ -67,6 +68,7 @@ import { AppService } from 'src/app/services/auth.service';
     HeadlineCompComponent,
     CommonConfirmationModalComponent,
     NavigateButtonComponent,
+    CustomDateTimePipe,
   ],
 })
 export class UpcomingComponent {

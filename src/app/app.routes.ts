@@ -60,6 +60,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'edit-driver-details',
+    loadComponent: () =>
+      import('./edit-driver-profile/edit-driver-profile.component').then(
+        (m) => m.EditDriverProfileComponent
+      ),
+  },
+  {
     path: 'payment-status',
     loadComponent: () =>
       import(

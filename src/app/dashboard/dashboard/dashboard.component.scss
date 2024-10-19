@@ -35,13 +35,17 @@ ion-segment-button.active {
 }
 
 ion-menu-button {
-  pointer-events: auto; /* Ensure it can be clicked */
+  pointer-events: auto;
 }
 
-.notification-badge {
-  position: absolute;
-  top: 5px;
-  right: -15px;
-  padding: 2px;
-  min-width: 20px;
+ion-segment-button {
+  font-size: 13px;
+}
+
+.toggle {
+  transform: scale(0.75);
+  // --handle-height: 18px;
+  // --handle-width: 18px;
+  // --width: 40px;
+  // --height: 22px;
 }

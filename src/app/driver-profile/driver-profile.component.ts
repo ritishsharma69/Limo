@@ -19,12 +19,14 @@ import {
   IonCol,
   IonRow,
   IonMenuButton,
+  IonRefresher,
+  IonRefresherContent,
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CommonService } from 'src/app/services/common.service';
 import { ApiService } from '../services/api.service';
-import { HeadlineCompComponent } from "../reusable-components/headline-comp.component";
+import { HeadlineCompComponent } from '../reusable-components/headline-comp.component';
 
 @Component({
   selector: 'app-driver-profile',
@@ -32,6 +34,8 @@ import { HeadlineCompComponent } from "../reusable-components/headline-comp.comp
   styleUrls: ['./driver-profile.component.scss'],
   standalone: true,
   imports: [
+    IonRefresherContent,
+    IonRefresher,
     IonRow,
     IonCol,
     IonGrid,
@@ -54,7 +58,7 @@ import { HeadlineCompComponent } from "../reusable-components/headline-comp.comp
     RouterLink,
     HeadlineCompComponent,
     IonMenuButton,
-],
+  ],
 })
 export class DriverProfileComponent implements OnInit {
   private apiService = inject(ApiService);
@@ -66,6 +70,13 @@ export class DriverProfileComponent implements OnInit {
 
   ngOnInit() {
     this.fetchBooking();
+  }
+
+  handleRefresh(event: any) {
+    setTimeout(() => {
+      this.fetchBooking();
+      event.target.complete();
+    }, 1000);
   }
 
   fetchBooking() {

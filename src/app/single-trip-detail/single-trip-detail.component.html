@@ -19,9 +19,9 @@
 
 <ion-content scrollY="true" *ngIf="trip">
   <div class="m-1">
-  <div class="border mb-1 shadow rounded">
+  <div class="mb-1 shadow rounded">
     <app-headline-comp title="Trip Details"></app-headline-comp>
-    <ion-card-content>
+    <div>
       <ion-item lines="full">
         <ion-label class="fw-semibold fs-13">Pick up</ion-label>
         <div class="fs-13">{{ trip.details.pickUp }}</div>
@@ -46,12 +46,12 @@
         <ion-label class="fw-semibold fs-13">Payment Method</ion-label>
         <div class="fs-13">{{ trip.details.paymentMethod }}</div>
       </ion-item>
-    </ion-card-content>
+    </div>
   </div>
 
-  <div class="border mb-1 shadow rounded" *ngIf="selectedStatus !== 'Rejected'">
+  <div class="mb-1 shadow rounded" *ngIf="selectedStatus !== 'Rejected'">
     <app-headline-comp title="Payment Type"></app-headline-comp>
-    <ion-card-content>
+    <div>
       <ion-item lines="full">
         <ion-label class="fw-semibold fs-13">Payment Type</ion-label>
         <div class="fs-13">{{ trip.payment.paymentType }}</div>
@@ -68,7 +68,7 @@
         <ion-label class="fw-semibold fs-13">Remaining Balance</ion-label>
         <div class="fs-13">{{ trip.payment.remainingBalance }}</div>
       </ion-item>
-    </ion-card-content>
+    </div>
   </div>
   </div>
 </ion-content>

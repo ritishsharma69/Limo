@@ -9,7 +9,7 @@
 
 <ion-content scrollY="true">
   <div class="m-1">
-    <p class="radio-container p-2 m-2 rounded">
+    <p class="radio-container p-2 rounded my-2 ">
       <ion-radio-group
         value="{{ selectedStatus }}"
         (ionChange)="onStatusChange($event)"
@@ -30,6 +30,7 @@
       </ion-radio-group>
     </p>
 
+    <div class="d-flex gap-1 flex-column">
     <div
       *ngFor="
         let trip of selectedStatus === 'Completed'
@@ -62,7 +63,7 @@
         </ion-item>
       </ion-card>
     </div>
-
+  </div>
     <div
       *ngIf="
         (selectedStatus === 'Completed' && completedTrips.length === 0) ||

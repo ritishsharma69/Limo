@@ -9,13 +9,12 @@
         class="d-flex justify-content-start align-items-center w-100 overflow-scroll"
       >
         <img
+        class="mx-2 rounded-circle"
           src="../../assets/imgs/driver-image.jpg"
           alt="Driver Profile"
           style="
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            margin-right: 10px;
+            width: 40px;
+            height: 40px;
           "
         />
         <div
@@ -37,14 +36,14 @@
 
       <!-- End: Toggle OnDuty/OffDuty -->
       <ion-buttons slot="end" class="d-flex align-items-center">
-        <div class="text-center border-primary mx-2">
+        <div class="text-center border-primary ms-2">
           <div class="card-body">
-            <h6
+            <span
               class="card-title m-0"
               [ngClass]="{ 'text-success': isOnDuty, 'text-danger': !isOnDuty }"
             >
-              {{ isOnDuty ? "On Duty" : "Off Duty" }}
-            </h6>
+            {{ isOnDuty ? "On" : "Off" }} Duty
+            </span>
           </div>
         </div>
 
@@ -55,6 +54,7 @@
           mode="ios"
           [checked]="isOnDuty"
           (ionChange)="onToggleChange($event)"
+          class="toggle"
         ></ion-toggle>
       </ion-buttons>
     </ion-toolbar>
@@ -66,13 +66,10 @@
       (ionChange)="segmentChanged($event)"
     >
       <ion-segment-button value="pending" class="relative">
-        Pending @if (pendingNotifications > 0) {
-          ({{ pendingNotifications }})
-        }
+        Pending @if (pendingNotifications > 0) { ({{ pendingNotifications }}) }
       </ion-segment-button>
       <ion-segment-button value="upcoming">
-        Upcoming @if (upcomingNotifications > 0) {
-          ({{ upcomingNotifications }})
+        Upcoming @if (upcomingNotifications > 0) { ({{ upcomingNotifications }})
         }
       </ion-segment-button>
       <ion-segment-button value="in-progress"> In Progress </ion-segment-button>

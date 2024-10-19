@@ -3,10 +3,6 @@
   font-size: 13px;
 }
 
-.fs-14 {
-  font-size: 25px;
-}
-
 .image {
   aspect-ratio: 1 / 1;
   width: 70%;
@@ -15,14 +11,14 @@
   margin: 0 auto;
 }
 
-.header {
-  background-color: var(--bg-primary-100);
-  color: var(--bg-neutral-100);
-}
-
-
 .stare {
   color: yellow;
   margin-right: 5px;
 }
   
+.rating {
+  background-color: var(--bg-primary-300);
+  border-radius: 20px;
+  color: var(--bg-neutral-100);
+  font-size: 13px;
+}
