@@ -5,7 +5,7 @@ import { LoadingController } from '@ionic/angular';
   providedIn: 'root',
 })
 export class LoaderService {
-  private loading: HTMLIonLoadingElement | null = null;
+  private loadingInstances: HTMLIonLoadingElement[] = [];
   private requestCount = 0;
 
   constructor(private loadingController: LoadingController) {}
@@ -13,45 +13,33 @@ export class LoaderService {
   async presentLoading() {
     this.requestCount++;
     if (this.requestCount === 1) {
-      // Only create and present the loader when the first request comes in
-      try {
-        this.loading = await this.loadingController.create({
-          spinner: 'bubbles',
-          cssClass: 'transparent-loader',
-          backdropDismiss: false,
-          message: 'Loading...',
-        });
-        await this.loading.present();
-      } catch (error) {
-        console.error('Error presenting loader:', error);
-      }
+      const loading = await this.loadingController.create({
+        spinner: 'bubbles',
+        backdropDismiss: false,
+      });
+      this.loadingInstances.push(loading);
+      await loading.present();
     }
   }
 
   async dismissLoading() {
     if (this.requestCount > 0) this.requestCount--;
 
-    if (this.requestCount === 0 && this.loading) {
-      try {
-        await this.loading.dismiss();
-      } catch (error) {
-        console.warn('Dismiss Loader Error:', error);
-      } finally {
-        this.loading = null; // Reset loader after dismiss
+    if (this.requestCount === 0 && this.loadingInstances.length > 0) {
+      const loading = this.loadingInstances.pop();
+      if (loading) {
+        await loading.dismiss();
       }
     }
   }
 
   async forceDismissLoader(): Promise<void> {
-    if (this.loading) {
-      try {
-        await this.loading.dismiss();
-      } catch (error) {
-        console.warn('Force Dismiss Error:', error);
-      } finally {
-        this.loading = null;
-        this.requestCount = 0; // Reset counter
+    while (this.loadingInstances.length > 0) {
+      const loading = this.loadingInstances.pop();
+      if (loading) {
+        await loading.dismiss();
       }
     }
+    this.requestCount = 0; // Reset counter
   }
 }

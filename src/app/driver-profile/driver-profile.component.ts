@@ -89,7 +89,7 @@ export class DriverProfileComponent implements OnInit {
   }
 
   fetchBooking() {
-    this.commonService.showSimpleLoader();
+    // this.commonService.showSimpleLoader();
 
     this.apiService
       .fetchBookingDetails({
@@ -97,7 +97,7 @@ export class DriverProfileComponent implements OnInit {
       })
       .subscribe({
         next: (response) => {
-          this.commonService.hideSimpleLoader();
+          // this.commonService.hideSimpleLoader();
 
           console.log('API Response:', response);
 
@@ -120,7 +120,7 @@ export class DriverProfileComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error occurred while fetching the bookings:', error);
-          this.commonService.hideSimpleLoader();
+          // this.commonService.hideSimpleLoader();
         },
       });
   }
