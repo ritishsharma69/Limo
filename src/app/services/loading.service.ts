@@ -24,11 +24,11 @@ export class LoaderService {
       if (this.requestCount > 0 && !this.loading) {
         try {
           this.loading = await this.loadingController.create({
-            spinner: 'lines',
-            cssClass: 'custom-transparent-loader', // Updated CSS class name
+            spinner: 'bubbles',
+            cssClass: 'transparent-loader',
             backdropDismiss: false,
             message: 'Loading...',
-          });          
+          });
           await this.loading.present();
 
           // Timeout to auto-dismiss loader if stuck
