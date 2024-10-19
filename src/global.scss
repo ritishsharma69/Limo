@@ -39,24 +39,4 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 // @import '@ionic/angular/css/palettes/dark.system.css';
 
-.transparent-loader {
-    --background: transparent;
-    --spinner-color: var(--ion-color-primary);
-    --message-color: var(--ion-color-primary);
-  
-    .loading-spinner {
-      height: 50px;
-      width: 50px;
-    }
-  
-    .loading-wrapper {
-      border-radius: 12px;
-      box-shadow: none;
-    }
-  
-    .loading-content {
-      font-size: 1rem;
-      font-weight: 400;
-    }
-  }
-  
+

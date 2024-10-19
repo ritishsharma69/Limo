@@ -2,6 +2,7 @@
   class="extra-items d-flex justify-content-around align-items-center text-center"
 >
   <div
+    (click)="openPopup('luggage')"
     [ngClass]="{
       'icon-active': extraInfo.no_of_luggage,
       'icon-inactive': !extraInfo.no_of_luggage
@@ -12,13 +13,11 @@
     <div class="iconCount">{{ extraInfo.no_of_luggage }}</div>
     <div class="luggageType">{{ extraInfo.luggage_type }}</div>
     }
-    <i
-      class="icon fa-solid fa-suitcase-rolling"
-      (click)="openPopup('luggage')"
-    ></i>
+    <i class="icon fa-solid fa-suitcase-rolling"></i>
   </div>
 
   <div
+    (click)="openPopup('passengers')"
     [ngClass]="{
       'icon-active': extraInfo.no_of_passengers,
       'icon-inactive': !extraInfo.no_of_passengers
@@ -28,10 +27,11 @@
     @if(extraInfo.no_of_passengers) {
     <div class="iconCount">{{ extraInfo.no_of_passengers }}</div>
     }
-    <i class="icon fa-solid fa-person" (click)="openPopup('passengers')"></i>
+    <i class="icon fa-solid fa-person"></i>
   </div>
 
   <div
+    (click)="openPopup('child_seat')"
     [ngClass]="{
       'icon-active': extraInfo.child_seat_count,
       'icon-inactive': !extraInfo.child_seat_count
@@ -42,7 +42,7 @@
     <div class="iconCount">{{ extraInfo.child_seat_count }}</div>
     <div class="childSeatType">{{ extraInfo.child_seat }}</div>
     }
-    <i class="icon fa-solid fa-baby" (click)="openPopup('child_seat')"></i>
+    <i class="icon fa-solid fa-baby"></i>
   </div>
 </div>
 
