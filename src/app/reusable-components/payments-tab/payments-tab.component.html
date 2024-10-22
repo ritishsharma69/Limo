@@ -1,8 +1,8 @@
 <div>
-  <p class="mb-2 text-center fs-5">
+  <p class="mb-2 text-center" style="font-size: 1.12rem">
     Remaining Payment:
     <span class="text-success">
-      {{ currencySymbol }} {{ getTotalRemainingPaymentWithoutWaitingTime() }}
+      {{ currencySymbol }}{{ getTotalRemainingPaymentWithoutWaitingTime() }}
     </span>
   </p>
 
@@ -17,10 +17,6 @@
   <div class="mb-3">
     <div class="additionalCosts position-relative">
       <app-headline-comp title="Additional Costs"></app-headline-comp>
-      <i
-        class="fa-solid fa-plus position-absolute top-50 end-0 icon d-flex justify-content-center align-items-center"
-        (click)="addCost()"
-      ></i>
     </div>
 
     <div
@@ -51,46 +47,31 @@
         (click)="removeCost(i)"
         style="border: none; background: transparent; color: red"
       >
-        <i class="fa-solid fa-trash"></i>
+        <i class="btn-outline-success fa-solid fa-trash"></i>
       </button>
     </div>
 
-    <!-- <div *ngFor="let cost of additionalCosts; let i = index" class="mt-3">
-      <div class="input-group me-2 flex-grow-1">
-        <input
-          type="text"
-          [(ngModel)]="cost.name"
-          placeholder="Cost Name"
-          class="form-control fs-13"
-          [ngClass]="{ 'is-invalid': isCostInvalid(cost) }"
-        />
-        <input
-          type="number"
-          [(ngModel)]="cost.amount"
-          placeholder="Enter Amount"
-          class="form-control fs-13"
-          [ngClass]="{ 'is-invalid': isCostInvalid(cost) }"
-          (ngModelChange)="calculateTotalAdditionalPayment()"
-        />
-        <button
-          type="button"
-          class="btn"
-          (click)="removeCost(i)"
-          style="border: none; background: transparent; color: red"
-        >
-          <i class="fa-solid fa-trash"></i>
-        </button>
-      </div>
-    </div> -->
-
-    <div *ngIf="additionalCosts.length > 0" class="mt-2 align-items-end">
-      <button class="btn btn-success fs-13" (click)="addToPayment()">
+    <div class="d-flex justify-content-between align-items-center mt-2">
+      <button
+        class="btn btn-outline-success d-flex align-items-center justify-content-center"
+        (click)="addCost()"
+        style="width: 40px; height: 40px; border-radius: 50%; padding: 0"
+      >
+        <i class="fa-solid fa-plus"></i>
+      </button>
+    
+      <button
+        *ngIf="additionalCosts.length > 0"
+        class="btn btn-success fs-13"
+        (click)="addToPayment()"
+      >
         Add to Payment
       </button>
     </div>
+    
 
     <!-- Payment Options Section -->
-    <div class="my-3">
+    <div class="my-2">
       <app-headline-comp title="Choose a Payment Option"></app-headline-comp>
 
       <div class="form-check my-3">
@@ -124,7 +105,16 @@
           />
           Charged the card on machine
         </label>
-      </div>
+        <div *ngIf="selectedPaymentMethod === 'card'" class="mt-2">
+          <label class="form-label fs-13">Amount Charged:</label>
+          <input
+            type="number"
+            class="form-control fs-13"
+            [(ngModel)]="collectedAmount"
+            placeholder="Enter amount charged"
+          />
+        </div>
+      </div>      
 
       <div class="form-check mb-3">
         <label class="form-check-label fs-13">

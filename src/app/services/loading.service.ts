@@ -24,7 +24,7 @@ export class LoaderService {
       if (this.requestCount > 0 && !this.loading) {
         try {
           this.loading = await this.loadingController.create({
-            spinner: 'bubbles',
+            spinner: 'lines',
             cssClass: 'transparent-loader',
             backdropDismiss: false,
             message: 'Loading...',

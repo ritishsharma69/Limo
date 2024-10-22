@@ -44,8 +44,8 @@ i {
 }
 
 .reject {
-  background-color: var(--bg-neutral-100);
-  color: var(--bg-black-100);
+  background-color: var(--bg-red-100);
+  color: var(--bg-neutral-100);
 }
 
 .accept {
@@ -66,7 +66,7 @@ i {
 }
 
 .reservation-datetime {
-  font-size: 11px;
+  font-size: 14px;
 }
 
 .card-id {

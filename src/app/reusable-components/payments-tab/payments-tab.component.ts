@@ -27,11 +27,14 @@ export class PaymentsTabComponent implements OnInit {
   ];
   submitted: boolean = false;
   isPaymentAdded: boolean = false;
+  showAddToPaymentPrompt: boolean = false;
 
   private apiService = inject(ApiService);
   private router = inject(Router);
 
   constructor() {}
+
+  
 
   ngOnInit() {
     this.calculateTotalAdditionalPayment();
@@ -50,6 +53,7 @@ export class PaymentsTabComponent implements OnInit {
       (this.waitingCost || 0)
     );
   }
+
   getTotalRemainingPaymentWithoutWaitingTime(): number {
     return this.remainingPayment + this.totalAdditionalPayment;
   }
@@ -103,6 +107,7 @@ export class PaymentsTabComponent implements OnInit {
   addCost() {
     this.additionalCosts.push({ name: '', amount: null });
     this.calculateTotalAdditionalPayment();
+    this.checkForAddToPaymentPrompt(); // Check for prompt after adding a cost
 
     if (this.additionalCosts.length > 0) {
       this.isPaymentAdded = false;
@@ -111,8 +116,8 @@ export class PaymentsTabComponent implements OnInit {
 
   removeCost(index: number) {
     this.additionalCosts.splice(index, 1);
-
     this.calculateTotalAdditionalPayment();
+    this.checkForAddToPaymentPrompt(); // Check for prompt after removing a cost
 
     if (this.additionalCosts.length === 0) {
       this.isPaymentAdded = true;
@@ -149,16 +154,15 @@ export class PaymentsTabComponent implements OnInit {
   }
 
   addToPayment() {
-
     const allCostsValid = this.additionalCosts.every(
       (cost) => !!cost.name && cost.amount !== null && cost.amount > 0
     );
-  
+
     if (!allCostsValid) {
       this.paymentStatus = 'Please fill out all cost names and valid amounts.';
       return;
     }
-    
+
     const rates = this.additionalCosts.map((cost) => ({
       name: cost.name,
       fixed_amount: cost.amount,
@@ -172,6 +176,7 @@ export class PaymentsTabComponent implements OnInit {
     this.apiService.addAdditionalCost(this.booking_id, rates).subscribe({
       next: () => {
         this.isPaymentAdded = true;
+        this.showAddToPaymentPrompt = false; 
         console.log('Payment submitted successfully');
       },
       error: () => {
@@ -180,4 +185,11 @@ export class PaymentsTabComponent implements OnInit {
       },
     });
   }
+
+  checkForAddToPaymentPrompt() {
+    this.showAddToPaymentPrompt = this.additionalCosts.some(cost =>
+      cost.name && cost.amount !== null && cost.amount > 0
+    );
+  }
 }
+
