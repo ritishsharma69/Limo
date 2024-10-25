@@ -34,6 +34,7 @@ import { chevronDownCircleOutline } from 'ionicons/icons';
 import { ITripType } from 'src/app/model/interface';
 import { AppService } from 'src/app/services/auth.service';
 import { CustomDateTimePipe } from 'src/app/pipe/customDateTime.pipe';
+import { TripCountService } from 'src/app/services/tripCount.service';
 
 @Component({
   selector: 'app-upcoming',
@@ -88,6 +89,7 @@ export class UpcomingComponent {
   private commonService = inject(CommonService);
   private router = inject(Router);
   private appService = inject(AppService);
+  private tripCountService = inject(TripCountService);
 
   constructor() {}
 
@@ -109,11 +111,6 @@ export class UpcomingComponent {
     }, 1000);
   }
 
-  formatDateTime(pu_date: string, pu_time: string): string {
-    const dateTime = new Date(`${pu_date}T${pu_time}`);
-    return dateTime.toISOString();
-  }
-
   fetchBooking() {
     this.apiService
       .fetchBookingDetails({
@@ -123,6 +120,7 @@ export class UpcomingComponent {
         currency: true,
         driver: true,
         bookingStatus:true,
+        // driver_status_id: 2,
       })
       .subscribe({
         next: (response) => {
@@ -141,14 +139,14 @@ export class UpcomingComponent {
               return aDateTime - bDateTime;
             });
 
+            this.updateTripCounts();
+
             this.addExtraInfoToTrips(this.tripDetails);
             this.pickupAndDropoffAddresses(this.tripDetails);
             console.log(
               'Regular Bookings with Fleet Details:',
               this.tripDetails
             );
-          } else {
-            console.error('Trip details are empty.');
           }
         },
         error: (error) => {
@@ -156,6 +154,12 @@ export class UpcomingComponent {
         },
       });
   }
+
+  private updateTripCounts() {
+    const upcomingCount = this.tripDetails.length;
+    console.log('Upcoming Count:', upcomingCount);
+    this.tripCountService.updateUpcomingCount(upcomingCount);
+  }  
 
   private addExtraInfoToTrips(trips: ITripType[]) {
     this.tripDetails = trips.map((trip: ITripType) => {

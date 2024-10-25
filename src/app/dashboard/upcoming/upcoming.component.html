@@ -6,7 +6,8 @@
       refreshingSpinner="circles"
     />
   </ion-refresher>
-
+  
+  @if(tripDetails?.length != 0) {
   <div class="d-flex flex-column" style="font-size: 13px">
     @for(trip of tripDetails; track $index) {
     <div class="shadow-lg trip-card">
@@ -25,10 +26,7 @@
         <div class="d-flex justify-content-between mb-0 p-1">
           <span>{{ trip.booking_f_name }} {{ trip.booking_l_name }}</span>
           <span class="pu-date">
-            {{
-              formatDateTime(trip.pu_date, trip.pu_time)
-                | date : "dd MMM, h:mm a"
-            }}
+            {{ trip.pu_date | customDateTime : trip.pu_time }}
           </span>
         </div>
       </div>
@@ -49,9 +47,9 @@
             />
           </div>
           <div class="flex-grow-1 ps-3 ion-align-items-start mb-1">
-            <p class="mb-2 text-center" style="font-size: 1.4rem;">
+            <p class="mb-2 text-center" style="font-size: 1.3rem">
               {{ trip.booking_f_name + " " + trip.booking_l_name }}
-            </p>            
+            </p>
             <div class="d-flex justify-content-center gap-4">
               <!-- Phone link -->
               <a
@@ -109,7 +107,10 @@
 
         <div class="mb-1">
           <app-headline-comp title="Notes From ADMIN"></app-headline-comp>
-          <p class="ion-text-center p-2 mb-0 shadow rounded-bottom-2" style="font-size: 0.9rem">
+          <p
+            class="ion-text-center p-2 mb-0 shadow rounded-bottom-2"
+            style="font-size: 0.9rem"
+          >
             Example: Help Passenger with their luggage.
           </p>
         </div>
@@ -170,7 +171,11 @@
     </div>
     }
   </div>
-
+  } @else {
+  <div class="text-center p-3">
+    <p>No trips available.</p>
+  </div>
+  }
   <app-common-confirmation-modal
     [isOpen]="showConfirmationModal"
     [actionTitle]="actionTitle"

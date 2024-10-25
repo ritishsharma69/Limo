@@ -61,6 +61,7 @@ export interface ResponseModel {
     driver?: boolean;
     time?: string;
     fleet?:boolean;
+    driver_status_id?: number;
   }
 
   interface Passenger {

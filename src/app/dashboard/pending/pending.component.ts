@@ -31,6 +31,7 @@ import { chevronDownCircleOutline } from 'ionicons/icons';
 import { RouterLink } from '@angular/router';
 import { ITripType } from 'src/app/model/interface';
 import { CustomDateTimePipe } from 'src/app/pipe/customDateTime.pipe';
+import { TripCountService } from 'src/app/services/tripCount.service';
 
 @Component({
   selector: 'app-pending',
@@ -69,6 +70,7 @@ export class PendingComponent {
   private apiService = inject(ApiService);
   private commonService = inject(CommonService);
   private route = inject(ActivatedRoute);
+  private tripCountService = inject(TripCountService);
 
   tripDetails: any;
   extraInfo: any;
@@ -107,17 +109,9 @@ export class PendingComponent {
     }, 1000);
   }
 
-  formatDateTime(pu_date: string, pu_time: string): string {
-    const dateTime = new Date(`${pu_date}T${pu_time}`);
-    return dateTime.toISOString();
-  }
-
   fetchBooking() {
     this.apiService
-      .fetchBookingDetails({
-        fetchAddresses: true,
-        passengers: true,
-      })
+      .fetchBookingDetails({ fetchAddresses: true, passengers: true })
       .subscribe({
         next: (response) => {
           if (!response) {
@@ -126,12 +120,13 @@ export class PendingComponent {
           }
 
           this.tripDetails = response.data || [];
-
           this.tripDetails.sort((a: any, b: any) => {
             const dateA = new Date(a.created_at).getTime();
             const dateB = new Date(b.created_at).getTime();
             return dateB - dateA;
           });
+
+          this.updateTripCounts();
 
           if (this.tripDetails.length > 0) {
             this.addExtraInfoToTrips(this.tripDetails);
@@ -145,6 +140,12 @@ export class PendingComponent {
           console.error('Error occurred while fetching the bookings:', error);
         },
       });
+  }
+
+  private updateTripCounts() {
+    const pendingCount = this.tripDetails.length;
+    console.log('Pending Count:', pendingCount);
+    this.tripCountService.updatePendingCount(pendingCount);
   }
 
   private addExtraInfoToTrips(trips: ITripType[]) {
