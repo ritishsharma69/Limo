@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import {
   IonItem,
@@ -19,6 +20,8 @@ import { Analytics, getAnalytics, logEvent } from '@angular/fire/analytics';
 import { FirebaseInitializerService } from '../services/analytics/firebase-initializer.service';
 import { NotificationService } from '../services/notification/notification.service';
 import { PermissionService } from '../services/permission.service';
+import { Browser } from '@capacitor/browser';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -32,6 +35,7 @@ import { PermissionService } from '../services/permission.service';
     IonButton,
     FormsModule,
     RouterLink,
+    CommonModule,
   ],
 })
 export class LoginComponent implements OnInit {
@@ -47,19 +51,41 @@ export class LoginComponent implements OnInit {
   permissionService = inject(PermissionService);
 
   showPassword: boolean = false;
+  dropdownOpen: boolean = false;
+  isPassenger: boolean = false; // Default to Driver
 
   userData = {
-    email: 'padberg.sheldon@example.net',
-    password: 'Pass@123',
+    email: '',
+    password: '',
   };
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.userData.email = 'padberg.sheldon@example.net';
+    this.userData.password = 'Pass@123';
+  }
 
   toggleShow() {
     this.showPassword = !this.showPassword;
   }
+
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  selectUserType(type: string) {
+    if (type === 'Passenger') {
+      this.openWeb(); // Open URL for Passenger
+    } else {
+      this.isPassenger = false; // Set to Driver
+    }
+    this.dropdownOpen = false; // Close dropdown after selection
+  }
+
+  openWeb = async () => {
+    await Browser.open({ url: 'https://limostaging.netgen.work/auth/login' });
+  };
 
   async handleLogin() {
     const { email, password } = this.userData;
@@ -72,32 +98,20 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    // await this.commonService.showLoader();
-
     const postData = { email, password };
 
     this.http
       .post<LoginResponse>(`${environment.API_ENDPOINT}/api/login`, postData)
       .subscribe({
         next: async (data) => {
-          // this.commonService.hideLoader();
-
           if (data.success && data.data) {
             const { token, user } = data.data;
 
             if (user?.role_id !== undefined) {
-              console.log(user.role_id);
               localStorage.setItem('userData', JSON.stringify(user));
               localStorage.setItem('token', token);
               localStorage.setItem('role', user.role_id.toString());
 
-              // Log login success event in Firebase Analytics
-              // logEvent(this.analytics, 'login_success', {
-              //   email: email,
-              //   role_id: user.role_id,
-              // });
-
-              // Different way to track ?.
               const analytics = getAnalytics();
               logEvent(analytics, 'login', {
                 method: 'Email',
@@ -105,33 +119,22 @@ export class LoginComponent implements OnInit {
                 role_id: user.role_id,
               });
 
-              // Log login success event in Firebase Analytics
-              this.firebaseInitializer.logLoginEvent('Email'); // Log login event
-
               this.router.navigate(['/dashboard/pending']);
               await this.handlePermissions();
             }
           }
         },
         error: (error) => {
-          // this.commonService.hideLoader();
-          console.error('Login error:', error);
-
           const errorMessage =
             error.error?.success === false
               ? error.error.message || 'No user data received.'
               : 'Something went wrong, please try again.';
 
           this.commonService.showAlert('Login Failed', errorMessage);
-
-          // Different way to track ?.
-          // Log login failure event in Firebase Analytics
           logEvent(this.analyticss, 'login_failed', {
             email: email,
             error_message: errorMessage,
           });
-
-          this.firebaseInitializer.logLoginEvent('Email'); // Log failed login attempt
         },
       });
   }
@@ -139,10 +142,7 @@ export class LoginComponent implements OnInit {
   private async handlePermissions() {
     try {
       await this.notificationService.initPushNotifications();
-      console.log('Notification permission requested');
-
       await this.permissionService.getCurrentLocation();
-      console.log('Location permission granted');
     } catch (error) {
       console.error(
         'Error while requesting permissions or notifications:',
