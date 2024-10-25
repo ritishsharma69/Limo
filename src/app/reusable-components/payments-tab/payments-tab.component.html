@@ -6,12 +6,10 @@
     </span>
   </p>
 
-  @if (waitingCost) {
-  <h3 class="mb-4 text-center fs-13">
+  <h3 *ngIf="waitingCost" class="mb-4 text-center fs-13">
     Waiting Cost:
     <span class="text-success"> {{ currencySymbol }} {{ waitingCost }} </span>
   </h3>
-  }
 
   <!-- Additional Costs Section -->
   <div class="mb-3">
@@ -24,12 +22,25 @@
       class="mt-3 d-flex justify-content-between"
     >
       <div class="flex-grow-1 d-flex gap-2 flex-column">
+        <div class="d-flex justify-content-between align-item-center ms-2">
+          <div class="my-auto" style="font-size: 14px">Cost {{ i + 1 }}:</div>
+          <button
+            type="button"
+            class="btn"
+            (click)="removeCost(i)"
+            [disabled]="cost.addedToPayment"
+            style="border: none; background: transparent; color: red"
+          >
+            <i class="btn-outline-success fa-solid fa-trash"></i>
+          </button>
+        </div>
         <input
           type="text"
           [(ngModel)]="cost.name"
           placeholder="Cost Name"
           class="form-control fs-13"
           [ngClass]="{ 'is-invalid': isCostInvalid(cost) }"
+          [readonly]="cost.addedToPayment"
         />
         <input
           type="number"
@@ -38,17 +49,17 @@
           class="form-control fs-13"
           [ngClass]="{ 'is-invalid': isCostInvalid(cost) }"
           (ngModelChange)="calculateTotalAdditionalPayment()"
+          [readonly]="cost.addedToPayment"
         />
-      </div>
 
-      <button
-        type="button"
-        class="btn"
-        (click)="removeCost(i)"
-        style="border: none; background: transparent; color: red"
-      >
-        <i class="btn-outline-success fa-solid fa-trash"></i>
-      </button>
+        <button
+          class="btn btn-success fs-13 mt-2"
+          (click)="addCostToPayment(cost)"
+          [disabled]="!isCostValid(cost) || cost.addedToPayment"
+        >
+          Add to Payment
+        </button>
+      </div>
     </div>
 
     <div class="d-flex justify-content-between align-items-center mt-2">
@@ -59,16 +70,44 @@
       >
         <i class="fa-solid fa-plus"></i>
       </button>
-    
-      <button
-        *ngIf="additionalCosts.length > 0"
-        class="btn btn-success fs-13"
-        (click)="addToPayment()"
-      >
-        Add to Payment
-      </button>
     </div>
-    
+    <!-- Cost Breakdown Section -->
+    <div class="mb-4">
+      <span class="text-center d-block" style="font-size: 15px">
+        Cost Breakdown
+      </span>
+      <ul class="list-group">
+        <li
+          class="list-group-item d-flex justify-content-between"
+          style="font-size: 13.3px"
+        >
+          <strong>Remaining Payment:</strong>
+          <span class="text-success">{{ currencySymbol }}500</span>
+          <!-- Fixed value -->
+        </li>
+
+        <li
+          *ngFor="let cost of successfulCosts; let i = index"
+          class="list-group-item d-flex justify-content-between"
+          style="font-size: 13.3px"
+        >
+          <strong>Cost {{ i + 1 }}:</strong>
+          <span class="text-success"
+            >{{ currencySymbol }}{{ cost.amount }}</span
+          >
+        </li>
+
+        <li
+          class="list-group-item d-flex justify-content-between"
+          style="font-size: 13.3px"
+        >
+          <strong>Total Remaining Cost:</strong>
+          <strong class="text-success"
+            >{{ currencySymbol }}{{ getTotalRemainingCost() }}</strong
+          >
+        </li>
+      </ul>
+    </div>
 
     <!-- Payment Options Section -->
     <div class="my-2">
@@ -80,7 +119,7 @@
             type="radio"
             class="form-check-input"
             name="paymentMethod"
-            (click)="setPaymentMethod('cash')"
+            (click)="selectPaymentMethod('cash')"
           />
           Cash
         </label>
@@ -101,7 +140,7 @@
             type="radio"
             class="form-check-input"
             name="paymentMethod"
-            (click)="setPaymentMethod('card')"
+            (click)="selectPaymentMethod('card')"
           />
           Charged the card on machine
         </label>
@@ -114,7 +153,7 @@
             placeholder="Enter amount charged"
           />
         </div>
-      </div>      
+      </div>
 
       <div class="form-check mb-3">
         <label class="form-check-label fs-13">
@@ -122,7 +161,7 @@
             type="radio"
             class="form-check-input"
             name="paymentMethod"
-            (click)="setPaymentMethod('other')"
+            (click)="selectPaymentMethod('other')"
           />
           Other Payment Option
         </label>
@@ -152,6 +191,20 @@
       class="alert alert-danger mt-3 text-center fs-13"
     >
       {{ paymentStatus }}
+    </div>
+
+    <!-- Error Popup -->
+    <div *ngIf="showErrorPopup" class="alert alert-danger text-center fs-13">
+      Before selecting payment option, please enter cost name, amount, and add
+      to payment first.
+    </div>
+
+    <!-- Success Message -->
+    <div
+      *ngIf="showSuccessMessage"
+      class="alert alert-success text-center fs-13"
+    >
+      Costs added successfully! Now you can choose a payment option.
     </div>
   </div>
 </div>
