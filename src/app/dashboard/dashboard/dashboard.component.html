@@ -9,13 +9,10 @@
         class="d-flex justify-content-start align-items-center w-100 overflow-scroll"
       >
         <img
-        class="mx-2 rounded-circle"
+          class="mx-2 rounded-circle"
           src="../../assets/imgs/driver-image.jpg"
           alt="Driver Profile"
-          style="
-            width: 40px;
-            height: 40px;
-          "
+          style="width: 40px; height: 40px"
         />
         <div
           class="overflow-scroll d-flex align-items-center full-name-animation"
@@ -42,7 +39,7 @@
               class="card-title m-0"
               [ngClass]="{ 'text-success': isOnDuty, 'text-danger': !isOnDuty }"
             >
-            {{ isOnDuty ? "On" : "Off" }} Duty
+              {{ isOnDuty ? "On" : "Off" }} Duty
             </span>
           </div>
         </div>
@@ -66,11 +63,14 @@
       (ionChange)="segmentChanged($event)"
     >
       <ion-segment-button value="pending" class="relative">
-        Pending @if (pendingNotifications > 0) { ({{ pendingNotifications }}) }
+        Pending @if (pendingNotifications$) { ({{
+          pendingNotifications$ | async
+        }}) }
       </ion-segment-button>
       <ion-segment-button value="upcoming">
-        Upcoming @if (upcomingNotifications > 0) { ({{ upcomingNotifications }})
-        }
+        Upcoming @if (upcomingNotifications$) { ({{
+          upcomingNotifications$ | async
+        }}) }
       </ion-segment-button>
       <ion-segment-button value="in-progress"> In Progress </ion-segment-button>
     </ion-segment>

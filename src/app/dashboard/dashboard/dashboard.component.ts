@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { FirebaseInitializerService } from 'src/app/services/analytics/firebase-initializer.service';
+import { Observable } from 'rxjs';
+import { TripCountService } from 'src/app/services/tripCount.service';
 import {
   IonSegment,
   IonSegmentButton,
@@ -13,7 +15,6 @@ import {
   IonButtons,
   IonToggle,
   IonMenuButton,
-  MenuController,
   IonApp,
 } from '@ionic/angular/standalone';
 import { IUser } from 'src/app/model/interface';
@@ -40,10 +41,10 @@ import { IUser } from 'src/app/model/interface';
   ],
 })
 export class DashboardComponent implements OnInit {
-profileImage: any;
-openProfileImageModal() {
-throw new Error('Method not implemented.');
-}
+  pendingNotifications$: Observable<number>;
+  upcomingNotifications$: Observable<number>;
+
+  profileImage: any;
   userData: IUser = {};
   firstName: string | undefined;
   lastName: string | undefined;
@@ -51,18 +52,21 @@ throw new Error('Method not implemented.');
   isOnDuty: boolean = false;
   selectedSegment: string = 'pending';
   route = inject(Router);
-  pendingNotifications: number = 5;
-  upcomingNotifications: number = 5;
-  inProgressNotifications: number = 0;
 
   constructor(
     private router: Router,
     private renderer: Renderer2, // Renderer for DOM manipulation
-    private firebaseInitializer: FirebaseInitializerService
-  ) {}
+    private firebaseInitializer: FirebaseInitializerService,
+    private tripCountService: TripCountService,
+  ) {
+    this.pendingNotifications$ = this.tripCountService.pendingNotifications$;
+    this.upcomingNotifications$ = this.tripCountService.upcomingNotifications$;
+  }
 
   ngOnInit() {
     this.loadUserData();
+    console.log("p", this.pendingNotifications$);
+    console.log("u",this.upcomingNotifications$);
 
     // Trigger full-name animation when the component loads
     const nameElement = document.querySelector('.full-name-animation');

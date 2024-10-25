@@ -54,7 +54,8 @@ export class ApiService {
     if (options.driver) params.append('withDriver', String(options.driver));
     if (options.time) params.append('time', options.time);
     if (options.fleet) params.append('withFleet', String(options.fleet));
-
+    if (options.driver_status_id) params.append('driver_status_id', String(options.driver_status_id));
+    
     const url = `${environment.API_ENDPOINT}/api/bookings?${params.toString()}`;
 
     return this.http.get<ResponseModel>(url, this.appService.setHeaders());

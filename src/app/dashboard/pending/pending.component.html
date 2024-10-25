@@ -14,10 +14,11 @@
           <div class="reservation d-flex justify-content-between text-white p-2">
             <span class="card-id">{{ trip.booking_id }} (Reservation ID)</span>
             <span class="reservation-datetime">
-              {{
+              <!-- {{
                 formatDateTime(trip.pu_date, trip.pu_time)
                   | date : "dd MMM, h:mm a"
-              }}
+              }} -->
+              {{ trip.pu_date | customDateTime : trip.pu_time }}
             </span>
           </div>
           <div class="border"></div>
