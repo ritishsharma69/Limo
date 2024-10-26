@@ -63,35 +63,34 @@ export class PaymentsTabComponent implements OnInit {
 
   getTotalRemainingPayment(): number {
     return (
-      this.remainingPayment -
-      this.totalAdditionalPayment +
-      (this.waitingCost || 0)
+      this.remainingPayment + // Add remaining payment
+      this.totalAdditionalPayment + // Add total additional costs
+      (this.waitingCost || 0) // Include waiting cost if present
     );
   }
 
   finalizePayment() {
     this.submitted = true;
 
-    if (!this.isPaymentAdded) {
-      this.paymentStatus =
-        'Please add costs and press "Add to Payment" before finalizing.';
-      return;
-    }
-
-    if (!this.isFormValid()) {
+    // Check if the payment is valid even with no additional costs
+    if (!this.isFormValid() && this.additionalCosts.length > 0) {
       this.paymentStatus = 'Please complete all required fields.';
       return;
     }
 
+    // Calculate the total paid based on the payment method
     const totalPaid = this.calculateTotalPaid();
     if (totalPaid === null) {
       this.paymentStatus = 'Please enter the required payment details.';
       return;
     }
 
+    // If there are no additional costs, just finalize the payment
+    const totalRemainingPayment = this.getTotalRemainingPayment();
+
     this.router.navigate(['/payment-status'], {
       state: {
-        remainingPayment: totalPaid,
+        remainingPayment: totalRemainingPayment,
         paymentMethod: this.selectedPaymentMethod,
         currencySymbol: this.currencySymbol,
         otherPaymentDetails: this.otherPaymentDetails,
@@ -123,6 +122,7 @@ export class PaymentsTabComponent implements OnInit {
   removeCost(index: number) {
     if (!this.additionalCosts[index].addedToPayment) {
       this.additionalCosts.splice(index, 1);
+      this.calculateTotalAdditionalPayment(); // Update total when removing
     } else {
       this.paymentStatus =
         'Cannot delete a cost that has been added to payment.';
@@ -162,11 +162,12 @@ export class PaymentsTabComponent implements OnInit {
   }
 
   getTotalRemainingCost(): number {
-    const remainingPayment = 500; // Fixed value
-    const totalAdditionalPayment = this.successfulCosts.reduce((total, cost) => total + (cost.amount || 0), 0);
-    return remainingPayment + totalAdditionalPayment;
+    const totalAdditionalPayment = this.successfulCosts.reduce(
+      (total, cost) => total + (cost.amount || 0),
+      0
+    );
+    return this.remainingPayment + totalAdditionalPayment; // Fixed value
   }
-  
 
   isCostValid(cost: AdditionalCost): boolean {
     return (
@@ -198,11 +199,9 @@ export class PaymentsTabComponent implements OnInit {
     this.apiService.addAdditionalCost(this.booking_id, rates).subscribe({
       next: () => {
         this.isPaymentAdded = true;
-
         this.successfulCosts.push({ name: cost.name, amount: cost.amount });
-
         cost.addedToPayment = true;
-
+        this.calculateTotalAdditionalPayment();
         this.showSuccessMessage = true;
         console.log('Payment submitted successfully');
       },
