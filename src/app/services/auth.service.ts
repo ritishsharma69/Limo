@@ -14,6 +14,7 @@ export class AppService {
     localStorage.removeItem('token');
     localStorage.removeItem('userData');
     localStorage.removeItem('role');
+    localStorage.removeItem('isOnDuty');
     this.router.navigateByUrl('/login');
   }
 

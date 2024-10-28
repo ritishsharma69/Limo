@@ -25,6 +25,10 @@ import { Platform } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { NavigationTrackingService } from './services/analytics/navigation-tracking.service';
 // import { AngularFireCrashlytics } from '@angular/fire/crashlytics';
+import { NavController } from '@ionic/angular';
+import { App } from '@capacitor/app';
+import { CommonService } from './services/common.service';
+import { IframeService } from './services/Iframe.service';
 
 @Component({
   selector: 'app-root',
@@ -53,12 +57,18 @@ import { NavigationTrackingService } from './services/analytics/navigation-track
   ],
 })
 export class AppComponent implements OnInit {
+  private backButtonSubscription: any;
+  public showIframe: boolean = false;
+
   constructor(
     private router: Router,
     private platform: Platform,
     private firebaseInitializer: FirebaseInitializerService,
     private navigationTrackingService: NavigationTrackingService,
     // private crashlytics: AngularFireCrashlytics,
+    private navCtrl: NavController,
+    private commonService: CommonService,
+    private iframeService: IframeService,
   ) {}
 
   ngOnInit() {
@@ -66,10 +76,62 @@ export class AppComponent implements OnInit {
 
     this.trackNavigationEvents();
 
+    // this.iframeService.iframeVisible$.subscribe((isVisible) => {
+    //   this.showIframe = isVisible; // Update local state
+    // });
+
+    this.backButtonSubscription =
+      this.platform.backButton.subscribeWithPriority(10, async () => {
+        const currentUrl = this.router.url;
+
+        if (currentUrl === '/dashboard/pending' || currentUrl === '/login') {
+          const confirmed = await this.commonService.alertConfirm(
+            'Confirm Exit',
+            'Are you sure you want to exit the app?'
+          );
+          if (confirmed) {
+            App.exitApp();
+          }
+        } else {
+          this.navCtrl.back();
+        }
+      });
+  //   this.backButtonSubscription =
+  // this.platform.backButton.subscribeWithPriority(10, async () => {
+  //   const currentUrl = this.router.url;
+
+  //   if (this.showIframe) {
+  //     // If the iframe is open, use the iframe's history
+  //     if (window.history.length > 1) {
+  //       window.history.back(); // Go back in iframe history
+  //     } else {
+  //       this.showIframe = false; // Close the iframe if there's no history
+  //     }
+  //   } else if (currentUrl === '/dashboard/pending' || currentUrl === '/login') {
+  //     const confirmed = await this.commonService.alertConfirm(
+  //       'Confirm Exit',
+  //       'Are you sure you want to exit the app?'
+  //     );
+  //     if (confirmed) {
+  //       App.exitApp();
+  //     }
+  //   } else {
+  //     this.navCtrl.back();
+  //   }
+  // });
+
+
     FirebaseAnalytics.initializeFirebase(environment.firebase).then((res) => {
       console.log(res);
     });
   }
+
+  // ngOnDestroy() {
+  //   // Unsubscribe from back button event
+  //   if (this.backButtonSubscription) {
+  //     this.backButtonSubscription.unsubscribe();
+  //   }
+  // }
 
   public appPages = [
     {
