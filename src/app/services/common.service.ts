@@ -27,6 +27,34 @@ export class CommonService {
     await alert.present();
   }
 
+  async alertConfirm(header: string, message: string): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const alert = await this.alertController.create({
+        header: header,
+        message: message,
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => {
+              console.log('Alert canceled');
+              resolve(false);
+            },
+          },
+          {
+            text: 'OK',
+            role: 'confirm',
+            handler: () => {
+              console.log('Alert confirmed');
+              resolve(true);
+            },
+          },
+        ],
+      });
+      await alert.present();
+    });
+  }
+
   async showLoader() {
     // You might want to keep this if you have a specific use case for it
     const loader = await this.loadingController.create({

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
-import { loginGaurdGuard } from './services/loginGaurd.guard';
+import { loginGaurdGuard } from './guard/loginGaurd.guard';
+import { roleGuard } from './guard/role.guard';
 
 export const routes: Routes = [
   {
@@ -13,7 +14,7 @@ export const routes: Routes = [
       import('./dashboard/dashboard/dashboard.component').then(
         (m) => m.DashboardComponent
       ),
-    canActivate: [loginGaurdGuard],
+    canActivate: [loginGaurdGuard,],
     children: [
       {
         path: 'pending',
@@ -21,6 +22,8 @@ export const routes: Routes = [
           import('./dashboard/pending/pending.component').then(
             (m) => m.PendingComponent
           ),
+          canActivate: [roleGuard],
+          data: { roles: [3] },
       },
       {
         path: 'upcoming',
@@ -44,6 +47,8 @@ export const routes: Routes = [
       import('./driver-profile/driver-profile.component').then(
         (m) => m.DriverProfileComponent
       ),
+      canActivate: [roleGuard],
+      data: { roles: [3] },
   },
   {
     path: 'trip-history',
@@ -51,6 +56,8 @@ export const routes: Routes = [
       import('./trip-history/trip-history.component').then(
         (m) => m.TripHistoryComponent
       ),
+      canActivate: [roleGuard],
+      data: { roles: [3] },
   },
   {
     path: 'trip-detail',
@@ -58,6 +65,8 @@ export const routes: Routes = [
       import('./single-trip-detail/single-trip-detail.component').then(
         (m) => m.SingleTripDetailComponent
       ),
+      canActivate: [roleGuard],
+      data: { roles: [3] },
   },
   {
     path: 'edit-driver-details',
@@ -65,6 +74,8 @@ export const routes: Routes = [
       import('./edit-driver-profile/edit-driver-profile.component').then(
         (m) => m.EditDriverProfileComponent
       ),
+      canActivate: [roleGuard],
+      data: { roles: [3] },
   },
   {
     path: 'payment-status',

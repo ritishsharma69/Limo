@@ -67,8 +67,10 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userData.email = 'padberg.sheldon@example.net';
-    this.userData.password = 'Pass@123';
+    this.userData.email = 'nitish@gmail.com';
+    this.userData.password = 'Summer01$';
+    // this.userData.email = 'padberg.sheldon@example.net';
+    // this.userData.password = 'Pass@123';
   }
 
   toggleShow() {
@@ -113,12 +115,8 @@ export class LoginComponent implements OnInit {
                 role_id: user.role_id,
               });
 
-              if (user.role_id === 3) {
-                this.router.navigate(['/dashboard/pending']);
-                await this.handlePermissions();
-              } else {
-                this.openWeb();
-              }
+              await this.handleUserRole(user);
+
             }
           }
         },
@@ -135,6 +133,21 @@ export class LoginComponent implements OnInit {
           });
         },
       });
+  }
+
+  async handleUserRole(user: any) {
+    switch (user.role_id) {
+      case 3:
+        this.router.navigate(['/dashboard/pending']);
+        await this.handlePermissions();
+        break;
+      case 5:
+        this.openWeb();
+        break;
+      default:
+        this.commonService.showAlert('Input Error', 'Unauthorized');
+        break;
+    }
   }
 
   private async handlePermissions() {

@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   API_ENDPOINT: 'https://limostaging.netgen.work/admin/public',
-  iframeUrl: 'https://limostaging.netgen.work/auth/login',
+  iframeUrl: 'https://limostaging.netgen.work/front-booking/aryalimo',
   // firebase: {
   //   apiKey: 'AIzaSyBq1zlh93_4XM2nm-5cBI6lyO3K64FBGi8',
   //   authDomain: 'limoapp-3a6e1.firebaseapp.com',
