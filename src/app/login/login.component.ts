@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -20,7 +21,6 @@ import { Analytics, getAnalytics, logEvent } from '@angular/fire/analytics';
 import { FirebaseInitializerService } from '../services/analytics/firebase-initializer.service';
 import { NotificationService } from '../services/notification/notification.service';
 import { PermissionService } from '../services/permission.service';
-import { Browser } from '@capacitor/browser';
 
 @Component({
   selector: 'app-login',
@@ -45,21 +45,26 @@ export class LoginComponent implements OnInit {
   loadingCtrl = inject(LoadingController);
   commonService = inject(CommonService);
   appService = inject(AppService);
-  analyticss = inject(Analytics);
+  analytics = inject(Analytics);
   firebaseInitializer = inject(FirebaseInitializerService);
   notificationService = inject(NotificationService);
   permissionService = inject(PermissionService);
+  sanitizer = inject(DomSanitizer);
 
   showPassword: boolean = false;
-  dropdownOpen: boolean = false;
-  isPassenger: boolean = false; // Default to Driver
+  showIframe: boolean = false;
+  iframeUrl: SafeResourceUrl;
 
   userData = {
     email: '',
     password: '',
   };
 
-  constructor() {}
+  constructor() {
+    this.iframeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+      environment.iframeUrl
+    );
+  }
 
   ngOnInit() {
     this.userData.email = 'padberg.sheldon@example.net';
@@ -70,22 +75,9 @@ export class LoginComponent implements OnInit {
     this.showPassword = !this.showPassword;
   }
 
-  toggleDropdown() {
-    this.dropdownOpen = !this.dropdownOpen;
+  openWeb() {
+    this.showIframe = true;
   }
-
-  selectUserType(type: string) {
-    if (type === 'Passenger') {
-      this.openWeb(); // Open URL for Passenger
-    } else {
-      this.isPassenger = false; // Set to Driver
-    }
-    this.dropdownOpen = false; // Close dropdown after selection
-  }
-
-  openWeb = async () => {
-    await Browser.open({ url: 'https://limostaging.netgen.work/auth/login' });
-  };
 
   async handleLogin() {
     const { email, password } = this.userData;
@@ -104,6 +96,8 @@ export class LoginComponent implements OnInit {
       .post<LoginResponse>(`${environment.API_ENDPOINT}/api/login`, postData)
       .subscribe({
         next: async (data) => {
+          console.log(data);
+
           if (data.success && data.data) {
             const { token, user } = data.data;
 
@@ -119,8 +113,12 @@ export class LoginComponent implements OnInit {
                 role_id: user.role_id,
               });
 
-              this.router.navigate(['/dashboard/pending']);
-              await this.handlePermissions();
+              if (user.role_id === 3) {
+                this.router.navigate(['/dashboard/pending']);
+                await this.handlePermissions();
+              } else {
+                this.openWeb();
+              }
             }
           }
         },
@@ -131,7 +129,7 @@ export class LoginComponent implements OnInit {
               : 'Something went wrong, please try again.';
 
           this.commonService.showAlert('Login Failed', errorMessage);
-          logEvent(this.analyticss, 'login_failed', {
+          logEvent(this.analytics, 'login_failed', {
             email: email,
             error_message: errorMessage,
           });

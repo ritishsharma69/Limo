@@ -1,10 +1,18 @@
-<div class="container login-container d-flex align-items-center justify-content-center vh-100">
+<div class="iframe-container" *ngIf="showIframe">
+  <iframe [src]="iframeUrl" class="full-width-iframe"></iframe>
+</div>
+
+<!-- Login Form -->
+<div
+  *ngIf="!showIframe"
+  class="login-container d-flex align-items-center justify-content-center vh-100"
+>
   <div class="secondary-card card shadow-lg">
     <h1 class="text-center mb-4 custom-heading">Welcome</h1>
     <h6 class="text-center text-muted mb-4">Limo App</h6>
-    <form (ngSubmit)="handleLogin()" class="login-form">
+    <form (ngSubmit)="handleLogin()">
       <div class="mb-3">
-        <label for="email" class="form-label fw-semibold">Email</label>
+        <label for="email" class="fw-semibold">Email</label>
         <input
           id="email"
           placeholder="Enter Your email"
@@ -17,7 +25,7 @@
       </div>
 
       <div class="mb-3 position-relative">
-        <label for="password" class="form-label fw-semibold">Password</label>
+        <label for="password" class="fw-semibold">Password</label>
         <div class="input-group">
           <input
             id="password"
@@ -43,7 +51,7 @@
 
       <div class="text-center mt-4">
         <button
-          class="btn custom-btn w-100 d-flex align-items-center justify-content-center transition-button login-button"
+          class="btn w-100 d-flex align-items-center justify-content-center login-button"
           type="submit"
         >
           <i class="fa-solid fa-right-to-bracket"></i>
@@ -51,34 +59,5 @@
         </button>
       </div>
     </form>
-  </div>
-
-  <!-- Dropdown Button -->
-  <div class="dropdown">
-    <button
-      class="btn dropdown-toggle role-button"
-      type="button"
-      (click)="toggleDropdown()"
-      [attr.aria-expanded]="dropdownOpen ? 'true' : 'false'"
-    >
-      <i class="fa-solid" [ngClass]="isPassenger ? 'fa-user' : 'fa-user-taxi'"></i>
-      <span class="ms-2">{{ isPassenger ? 'Passenger' : 'Driver' }}</span>
-    </button>
-    <div
-      class="dropdown-menu"
-      [ngClass]="{ 'show': dropdownOpen }"
-      *ngIf="dropdownOpen"
-    >
-      <button class="dropdown-item" 
-              [ngClass]="{'active': !isPassenger}" 
-              (click)="selectUserType('Driver')">
-        <i class="fa-solid fa-car"></i> Driver
-      </button>
-      <button class="dropdown-item" 
-              [ngClass]="{'active': isPassenger}" 
-              (click)="selectUserType('Passenger')">
-        <i class="fa-solid fa-user"></i> Passenger
-      </button>
-    </div>
   </div>
 </div>

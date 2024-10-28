@@ -15,77 +15,8 @@
   padding: 2rem;
 }
 
-/* Dropdown Styles */
-.dropdown {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-}
-
-.role-button {
-  background: linear-gradient(to right, var(--bg-blue-200), var(--bg-blue-300));
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 15px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.role-button:hover {
-  background: linear-gradient(to right, var(--bg-blue-300), var(--bg-blue-400));
-  transform: scale(1.05);
-}
-
-.dropdown-menu {
-  min-width: 120px;
-  animation: fadeIn 0.3s;
-}
-
-.dropdown-item.active {
-  background-color: var(--bg-blue-200); /* Active state highlight */
-  color: white;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.dropdown-item {
-  display: flex;
-  align-items: center;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.dropdown-item:hover {
-  background-color: var(--bg-blue-200); /* Highlight color on hover */
-  transform: translateX(5px); /* Slight right shift on hover */
-}
-
-.dropdown-item i {
-  margin-right: 8px;
-}
-
-/* Input field styles */
 .form-control {
   border-radius: 8px;
-}
-
-/* Label styles */
-.form-label {
-  font-weight: 600;
-}
-
-.custom-btn {
-  background-color: var(--bg-orange-100);
-  border: none;
-  color: white;
 }
 
 .custom-btn:hover {
@@ -96,19 +27,28 @@
   color: var(--bg-orange-100);
 }
 
-ion-toast {
+.login-button {
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  background-color: var(--bg-orange-100);
+  border: none;
   color: white;
 }
 
-.login-form {
-  transition: all 0.3s ease;
-}
-
-.transition-button {
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
 .login-button:hover {
-  transform: scale(1.05); /* Scale effect on hover */
-  background-color: var(--bg-orange-400); /* Highlight color on hover */
+  transform: scale(1.05);
+  background-color: var(--bg-orange-400);
+}
+
+.iframe-container {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background-color: transparent;
+}
+
+.iframe-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: transparent;
 }

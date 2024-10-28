@@ -32,7 +32,7 @@ export class LoaderService {
           await this.loading.present();
 
           // Timeout to auto-dismiss loader if stuck
-          this.loaderTimeout = setTimeout(() => this.forceDismissLoader(), 10000);
+          this.loaderTimeout = setTimeout(() => this.forceDismissLoader(), 4000);
         } catch (error) {
           console.error('Error presenting loader:', error);
         }

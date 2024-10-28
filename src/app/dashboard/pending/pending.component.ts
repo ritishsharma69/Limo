@@ -81,6 +81,8 @@ export class PendingComponent {
   actionText = '';
   currentAction: 'accept' | 'reject' = 'accept';
 
+  selectedBookingId: string = '';
+
   constructor() {}
 
   ngOnInit() {
@@ -202,7 +204,8 @@ export class PendingComponent {
     }
   }
 
-  onAccept() {
+  onAccept(bookingId: string): void {
+    this.selectedBookingId = bookingId;
     this.actionTitle = 'Confirm Acceptance';
     this.actionText = 'Accepting the trip';
     this.currentAction = 'accept';
@@ -210,7 +213,8 @@ export class PendingComponent {
     console.log('Modal opened:', this.showConfirmationModal);
   }
 
-  onReject() {
+  onReject(bookingId: string): void {
+    this.selectedBookingId = bookingId;
     this.actionTitle = 'Confirm Rejection';
     this.actionText = 'Rejecting the trip';
     this.currentAction = 'reject';
@@ -228,7 +232,7 @@ export class PendingComponent {
         }, 300);
         //   this.apiService.acceptRequest().subscribe({
         //     next: () => {
-        //       console.log('clickd accept');
+        //       console.log('clicked accept');
         //     },
         //     error: (error) => {
         //       console.error('Error occurred:', error);
@@ -239,7 +243,7 @@ export class PendingComponent {
         //   this.apiService.rejectRequest().subscribe({
         //     next: () => {
         //       this.router.navigate(['/dashboard']);
-        //       console.log('clickd reject');
+        //       console.log('clicked reject');
         //     },
         //     error: (error) => {
         //       console.error('Error occurred while rejecting the request:', error);

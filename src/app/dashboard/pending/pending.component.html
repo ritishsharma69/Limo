@@ -53,13 +53,13 @@
         <div class="button-container mt-1">
           <button
             class="reject btn-flex btn border border-secondary p-3 text-uppercase"
-            (click)="onReject()"
+            (click)="onReject(trip.id)"
           >
             REJECT
           </button>
           <button
             class="accept btn-flex btn p-3 text-uppercase"
-            (click)="onAccept()"
+            (click)="onAccept(trip.id)"
           >
             ACCEPT
           </button>

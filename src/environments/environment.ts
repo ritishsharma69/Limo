@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   API_ENDPOINT: 'https://limostaging.netgen.work/admin/public',
+  iframeUrl: 'https://limostaging.netgen.work/auth/login',
   firebase: {
     apiKey: 'AIzaSyAaKb4S4_op5m0tT5WsMQHrH-it9T7F0Ao',
     authDomain: 'driver-app-2458c.firebaseapp.com',
