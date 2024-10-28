@@ -180,7 +180,11 @@
       <button
         class="btn btn-lg finalizePayment fs-13"
         (click)="finalizePayment()"
-        [disabled]="!isPaymentAdded && additionalCosts.length > 0"
+        [disabled]="
+          !isPaymentAdded &&
+          (additionalCosts.length > 0 ||
+            getTotalRemainingPaymentWithoutWaitingTime() <= 0)
+        "
       >
         Finalize Payment
       </button>
