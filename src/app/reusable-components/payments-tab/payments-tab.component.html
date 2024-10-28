@@ -17,62 +17,30 @@
       <app-headline-comp title="Additional Costs"></app-headline-comp>
     </div>
 
-    <div
-      *ngFor="let cost of additionalCosts; let i = index"
-      class="mt-3 d-flex justify-content-between"
+    <div class="mt-3 d-flex justify-content-between align-items-center">
+      <input
+        type="text"
+        [(ngModel)]="newCostName"
+        placeholder="Cost Name"
+        class="form-control fs-13 me-2"
+      />
+      <input
+        type="number"
+        [(ngModel)]="newCostAmount"
+        placeholder="Enter Amount"
+        class="form-control fs-13 me-2"
+      />
+    </div>
+    
+    <button
+      class="btn btn-success fs-13 mt-2"
+      (click)="addCost()"
     >
-      <div class="flex-grow-1 d-flex gap-2 flex-column">
-        <div class="d-flex justify-content-between align-item-center ms-2">
-          <div class="my-auto" style="font-size: 14px">Cost {{ i + 1 }}:</div>
-          <button
-            type="button"
-            class="btn"
-            (click)="removeCost(i)"
-            [disabled]="cost.addedToPayment"
-            style="border: none; background: transparent; color: red"
-          >
-            <i class="btn-outline-success fa-solid fa-trash"></i>
-          </button>
-        </div>
-        <input
-          type="text"
-          [(ngModel)]="cost.name"
-          placeholder="Cost Name"
-          class="form-control fs-13"
-          [ngClass]="{ 'is-invalid': isCostInvalid(cost) }"
-          [readonly]="cost.addedToPayment"
-        />
-        <input
-          type="number"
-          [(ngModel)]="cost.amount"
-          placeholder="Enter Amount"
-          class="form-control fs-13"
-          [ngClass]="{ 'is-invalid': isCostInvalid(cost) }"
-          (ngModelChange)="calculateTotalAdditionalPayment()"
-          [readonly]="cost.addedToPayment"
-        />
+      Add Cost
+    </button>
 
-        <button
-          class="btn btn-success fs-13 mt-2"
-          (click)="addCostToPayment(cost)"
-          [disabled]="!isCostValid(cost) || cost.addedToPayment"
-        >
-          Add to Payment
-        </button>
-      </div>
-    </div>
-
-    <div class="d-flex justify-content-between align-items-center mt-2">
-      <button
-        class="btn btn-outline-success d-flex align-items-center justify-content-center"
-        (click)="addCost()"
-        style="width: 40px; height: 40px; border-radius: 50%; padding: 0"
-      >
-        <i class="fa-solid fa-plus"></i>
-      </button>
-    </div>
     <!-- Cost Breakdown Section -->
-    <div class="mb-4">
+    <div class="mb-4 mt-3">
       <span class="text-center d-block" style="font-size: 15px">
         Cost Breakdown
       </span>
@@ -82,8 +50,7 @@
           style="font-size: 13.3px"
         >
           <strong>Remaining Payment:</strong>
-          <span class="text-success">{{ currencySymbol }}500</span>
-          <!-- Fixed value -->
+          <span class="text-success">{{ currencySymbol }}{{ remainingPayment }}</span>
         </li>
 
         <li
@@ -91,10 +58,16 @@
           class="list-group-item d-flex justify-content-between"
           style="font-size: 13.3px"
         >
-          <strong>Cost {{ i + 1 }}:</strong>
-          <span class="text-success"
-            >{{ currencySymbol }}{{ cost.amount }}</span
+          <strong>{{ i + 1 }}. {{ cost.name }}:</strong>
+          <span class="text-success">{{ currencySymbol }}{{ cost.amount }}</span>
+          <button
+            type="button"
+            class="btn btn-outline-danger btn-sm"
+            (click)="removeSuccessfulCost(i)"
+            style="border: none;"
           >
+            <i class="fa-solid fa-trash"></i>
+          </button>
         </li>
 
         <li
@@ -102,11 +75,19 @@
           style="font-size: 13.3px"
         >
           <strong>Total Remaining Cost:</strong>
-          <strong class="text-success"
-            >{{ currencySymbol }}{{ getTotalRemainingCost() }}</strong
-          >
+          <strong class="text-success">{{ currencySymbol }}{{ getTotalRemainingCost() }}</strong>
         </li>
       </ul>
+    </div>
+
+    <div class="text-center my-3">
+      <button
+        class="btn btn-lg btn-primary finalizeCosts fs-13"
+        (click)="finalizeAdditionalCosts()"
+        [disabled]="successfulCosts.length === 0"
+      >
+        Finalize Additional Costs
+      </button>
     </div>
 
     <!-- Payment Options Section -->
@@ -182,7 +163,7 @@
         (click)="finalizePayment()"
         [disabled]="
           !isPaymentAdded &&
-          (additionalCosts.length > 0 ||
+          (successfulCosts.length === 0 ||
             getTotalRemainingPaymentWithoutWaitingTime() <= 0)
         "
       >

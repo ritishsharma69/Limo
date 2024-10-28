@@ -8,7 +8,6 @@ import { ApiService } from 'src/app/services/api.service';
 interface AdditionalCost {
   name: string;
   amount: number | null;
-  addedToPayment: boolean;
 }
 
 @Component({
@@ -27,11 +26,9 @@ export class PaymentsTabComponent implements OnInit {
   collectedAmount: number | null = null;
   otherPaymentDetails: string | null = null;
   paymentStatus: string | null = null;
-  totalAdditionalPayment: number = 0;
-  additionalCosts: AdditionalCost[] = [
-    { name: '', amount: null, addedToPayment: false },
-  ];
-  successfulCosts: { name: string; amount: number | null }[] = [];
+  newCostName: string = '';
+  newCostAmount: number | null = null;
+  successfulCosts: AdditionalCost[] = [];
   submitted: boolean = false;
   isPaymentAdded: boolean = false;
   showErrorPopup: boolean = false;
@@ -39,54 +36,94 @@ export class PaymentsTabComponent implements OnInit {
   private apiService = inject(ApiService);
   private router = inject(Router);
 
-  ngOnInit() {
-    this.calculateTotalAdditionalPayment();
+  ngOnInit() {}
+
+  addCost() {
+    if (!this.newCostName || this.newCostAmount === null || this.newCostAmount <= 0) {
+      this.paymentStatus = 'Please fill out the cost name and valid amount.';
+      return;
+    }
+
+    this.successfulCosts.push({
+      name: this.newCostName,
+      amount: this.newCostAmount,
+    });
+
+    // Reset the input fields after adding
+    this.newCostName = '';
+    this.newCostAmount = null;
+
+    this.showSuccessMessage = true;
+  }
+
+  finalizeAdditionalCosts() {
+    if (this.successfulCosts.length === 0) {
+      this.paymentStatus = 'No additional costs to finalize.';
+      return;
+    }
+
+    const rates = this.successfulCosts.map(cost => ({
+      name: cost.name,
+      fixed_amount: cost.amount,
+    }));
+
+    if (!this.booking_id) {
+      this.paymentStatus = 'Please enter a booking ID.';
+      return;
+    }
+
+    this.apiService.addAdditionalCost(this.booking_id, rates).subscribe({
+      next: () => {
+        this.isPaymentAdded = true;
+        this.showSuccessMessage = true;
+        console.log('All additional costs submitted successfully.');
+      },
+      error: (err) => {
+        console.error('Error submitting additional costs:', err);
+        this.paymentStatus = 'Error while finalizing costs.';
+      },
+    });
+
+    // Clear the costs after finalizing
+    this.successfulCosts = [];
   }
 
   getTotalRemainingPaymentWithoutWaitingTime(): number {
     return (
       this.remainingPayment +
-      this.successfulCosts.reduce(
-        (total, cost) => total + (cost.amount || 0),
-        0
-      )
+      this.successfulCosts.reduce((total, cost) => total + (cost.amount || 0), 0)
     );
   }
 
   selectPaymentMethod(method: string) {
     this.selectedPaymentMethod = method;
-    this.showErrorPopup =
-      this.additionalCosts.length > 0 && !this.isPaymentAdded;
     this.collectedAmount = null;
     this.otherPaymentDetails = null;
   }
 
-  getTotalRemainingPayment(): number {
-    return (
-      this.remainingPayment + // Add remaining payment
-      this.totalAdditionalPayment + // Add total additional costs
-      (this.waitingCost || 0) // Include waiting cost if present
-    );
+  getTotalRemainingCost(): number {
+    return this.remainingPayment + this.getTotalAdditionalCost();
+  }
+
+  getTotalAdditionalCost(): number {
+    return this.successfulCosts.reduce((total, cost) => total + (cost.amount || 0), 0);
   }
 
   finalizePayment() {
     this.submitted = true;
 
-    // Check if the payment is valid even with no additional costs
-    if (!this.isFormValid() && this.additionalCosts.length > 0) {
+    if (!this.isFormValid() && this.successfulCosts.length > 0) {
       this.paymentStatus = 'Please complete all required fields.';
       return;
     }
 
-    // Calculate the total paid based on the payment method
     const totalPaid = this.calculateTotalPaid();
     if (totalPaid === null) {
       this.paymentStatus = 'Please enter the required payment details.';
       return;
     }
 
-    // If there are no additional costs, just finalize the payment
-    const totalRemainingPayment = this.getTotalRemainingPayment();
+    const totalRemainingPayment = this.getTotalRemainingPaymentWithoutWaitingTime();
 
     this.router.navigate(['/payment-status'], {
       state: {
@@ -100,47 +137,18 @@ export class PaymentsTabComponent implements OnInit {
 
   private calculateTotalPaid(): number | null {
     if (
-      (this.selectedPaymentMethod === 'cash' &&
-        this.collectedAmount &&
-        this.collectedAmount > 0) ||
+      (this.selectedPaymentMethod === 'cash' && this.collectedAmount && this.collectedAmount > 0) ||
       this.selectedPaymentMethod === 'card' ||
       (this.selectedPaymentMethod === 'other' && this.otherPaymentDetails)
     ) {
-      return this.getTotalRemainingPayment();
+      return this.getTotalRemainingPaymentWithoutWaitingTime();
     }
     return null;
   }
 
-  addCost() {
-    this.additionalCosts.push({
-      name: '',
-      amount: null,
-      addedToPayment: false,
-    });
-  }
-
-  removeCost(index: number) {
-    if (!this.additionalCosts[index].addedToPayment) {
-      this.additionalCosts.splice(index, 1);
-      this.calculateTotalAdditionalPayment(); // Update total when removing
-    } else {
-      this.paymentStatus =
-        'Cannot delete a cost that has been added to payment.';
-    }
-  }
-
-  calculateTotalAdditionalPayment() {
-    this.totalAdditionalPayment = this.additionalCosts.reduce(
-      (total, cost) => total + (cost.addedToPayment ? cost.amount || 0 : 0),
-      0
-    );
-  }
-
   isFormValid(): boolean {
-    const allCostsValid = this.additionalCosts.every(
-      (cost) =>
-        cost.addedToPayment ||
-        (!!cost.name && cost.amount !== null && cost.amount > 0)
+    const allCostsValid = this.successfulCosts.every(
+      (cost) => !!cost.name && cost.amount !== null && cost.amount > 0
     );
 
     const paymentMethodValid =
@@ -153,62 +161,7 @@ export class PaymentsTabComponent implements OnInit {
     return allCostsValid && paymentMethodValid;
   }
 
-  isCostInvalid(cost: AdditionalCost): boolean {
-    return (
-      this.submitted &&
-      !cost.addedToPayment &&
-      (!cost.name || cost.amount === null || cost.amount <= 0)
-    );
-  }
-
-  getTotalRemainingCost(): number {
-    const totalAdditionalPayment = this.successfulCosts.reduce(
-      (total, cost) => total + (cost.amount || 0),
-      0
-    );
-    return this.remainingPayment + totalAdditionalPayment; // Fixed value
-  }
-
-  isCostValid(cost: AdditionalCost): boolean {
-    return (
-      !cost.addedToPayment &&
-      !!cost.name &&
-      cost.amount !== null &&
-      cost.amount > 0
-    );
-  }
-
-  addCostToPayment(cost: AdditionalCost) {
-    if (!cost.name || cost.amount === null || cost.amount <= 0) {
-      this.paymentStatus = 'Please fill out the cost name and valid amount.';
-      return;
-    }
-
-    const rates = [
-      {
-        name: cost.name,
-        fixed_amount: cost.amount,
-      },
-    ];
-
-    if (!this.booking_id) {
-      this.paymentStatus = 'Please enter a booking ID.';
-      return;
-    }
-
-    this.apiService.addAdditionalCost(this.booking_id, rates).subscribe({
-      next: () => {
-        this.isPaymentAdded = true;
-        this.successfulCosts.push({ name: cost.name, amount: cost.amount });
-        cost.addedToPayment = true;
-        this.calculateTotalAdditionalPayment();
-        this.showSuccessMessage = true;
-        console.log('Payment submitted successfully');
-      },
-      error: () => {
-        this.paymentStatus =
-          'There was an error processing your payment. Please try again.';
-      },
-    });
+  removeSuccessfulCost(index: number) {
+    this.successfulCosts.splice(index, 1);
   }
 }
